@@ -9,26 +9,22 @@ from SUser.auth_tsinghua import auth_tsinghua
 import json
 
 def index(request):
+	rdata = {}
+	op = request.POST.get('op', '')
+
+	# 检查登录状态
 	user = None
-	if not request.user.is_authenticated():
-		user = request.user
-	rdata = {}
-	return render(request, 'index.html', rdata)
-
-def login(request):
-	# 如果已登录直接跳转
 	if request.user.is_authenticated():
-		return HttpResponseRedirect('/index/')
-	rdata = {}
-	login = False
+		user = request.user
+		rdata['username'] = user.username
+	rdata['login'] = user is not None
 
-	# 获取用户名密码
-	username = request.POST.get('username')
-	password = request.POST.get('password')
-	if username is not None and password is not None:
+	if op == 'login':
+		username = request.POST.get('username', '')
+		password = request.POST.get('password', '')
 		users = User.objects.filter(username=username)
 		if len(users) == 0:
-			rdata['info'] = '用户名不存在'
+			rdata['result'] = '用户名不存在'
 		else:
 			# 如果不是root进行清华验证
 			# if username != 'root':
@@ -41,20 +37,18 @@ def login(request):
 			user = auth.authenticate(username=username, password=password)
 			if user is not None:
 				auth.login(request, user)
-				login = True
+				rdata['result'] = '成功'
 			else:
-				rdata['info'] = '密码错误'
+				rdata['result'] = '密码错误'
+		return HttpResponse(json.dumps(rdata))
 
-	if login:
-		return HttpResponseRedirect('/index/')
-	else:
-		return render(request, 'login.html', rdata)
+	if op == 'logout':
+		auth.logout(request)
+		return HttpResponse(json.dumps(rdata))
 
-def logout(request):
-	auth.logout(request)
-	return HttpResponseRedirect('/login/')
+	return render(request, 'index.html', rdata)
 
-def install(request, username):
+def add_user(request, username):
 	password = username
 	user = auth.authenticate(username=username, password=password)
 	authority = {'super': False, 'school': False, 'department': [], 'branch': [], 'visit': []}

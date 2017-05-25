@@ -7,8 +7,10 @@ class SUser(models.Model):
 	authority = models.TextField()
 
 class Department(models.Model):
+	name = models.CharField(max_length=32, default='')
 	branch = models.TextField()
 
 class Branch(models.Model):
+	name = models.CharField(max_length=32, default='')
 	did = models.IntegerField()
 	suser = models.TextField()
