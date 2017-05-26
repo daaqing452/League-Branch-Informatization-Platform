@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+</head>
+
+<body>
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#">首页</a>
+            </li>
+            <li>
+                <a href="#">院系</a>
+            </li>
+            <li >
+                <a data-toggle="modal" data-target="#myModal" onclick="apply()">申请</a>
+            </li>
+            <li >
+                <a data-toggle="modal" data-target="#myModal" onclick="mail()">站内信(1条新信息)</a>
+            </li>
+            <li >
+                <a data-toggle="modal" data-target="#myModal" onclick="login()">登录</a>
+            </li>
+        </ul>
+    </div>
+    {% block context %}
+        添加内容
+    {% endblock context %}
+
+<script src="{% static "js/jquery-3.1.1.min.js" %}"> </script>
+<script src="{% static "js/csrf.js" %}"> </script>
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"> </script>
+<script src="{% static "js/base.js" %}"> </script>
+</body>
+</html>

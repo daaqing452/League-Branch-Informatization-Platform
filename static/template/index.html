@@ -1,51 +1,21 @@
-<!DOCTYPE html>
-{% load static %}
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>首页</title>
-	<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
-	<script src="{% static "js/jquery-3.1.1.min.js" %}"> </script>
-	<script src="{% static "js/csrf.js" %}"> </script>
-	<script src="{% static "bootstrap/js/bootstrap.min.js" %}"> </script>
-	<script src="{% static "js/index.js" %}"> </script>
-</head>
-
-<body>
-{% if login %}
-{{ username }}
-<a id="logout">登出</a>
-{% else %}
-<a id="login">登录</a>
-<br/>
-<input id="username" type="text" name="username" placeholder="学号"/>
-<br/>
-<input id="password" type="password" name="password" placeholder="密码"/>
-<br/>
-<button id="login">登录</button>
-</form>
-{% endif %}
-<br/>
-
-{% if login %}
-<button id="apply_authority_button">申请权限</button>
-<!-- need to be model -->
-<div id="apply_authority_panel" style="border:1px solid">
-	<span>申请权限</span>
-	<select id="apply_authority_select_1" class="form-control">
-		<option>申请校管理员</option>
-		<option>申请院系级管理员</option>
-		<option>申请班团级管理员</option>
-		<option>申请团支部成员</option>
-	</select>
-	<select id="apply_authority_select_2" class="form-control">
-	</select>
-	<select id="apply_authority_select_3" class="form-control">
-	</select>
-</div>
-{% endif %}
-
-<button id="apply_authority_button">添加院系</button>
-<br/>
-hello
-</body>
+{% extends "base.html" %}
+    {% block context %}
+      
+    <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" >
+	    <div class="modal-content">
+	      <div class="modal-header" align="center">
+	        <h4 class="modal-title" id="myModalLabel" >  </h4>
+	      </div>
+	      <div class="modal-body" id="myModal_body"> 
+	       
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default " data-dismiss="modal" > 关闭 </button>
+	        <button type="button" class="btn btn-primary">确认</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    {% endblock context %}
