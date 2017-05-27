@@ -24,7 +24,13 @@ function commit(flag){
 		case 2:{
 			break;
 		}
+		//发送站内信
 		case 3:{
+
+			break;
+		}
+		//阅读站内信
+		case 4:{
 
 			break;
 		}
@@ -86,5 +92,14 @@ function mail(){
 	$("#myModalLabel").text("站内信");
 
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
+
+}
+
+function readMail(b){
+	$b = $(b);
+	var message_title = $b.text();
+	$("#myModalLabel").text(message_title);
+	
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 
 }
