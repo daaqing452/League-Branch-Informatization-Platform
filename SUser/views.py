@@ -13,9 +13,6 @@ def index(request):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
-	departments = Department.objects.all()
-	rdata['departments'] = departments
-
 	if op == 'login':
 		username = request.POST.get('username', '')
 		password = request.POST.get('password', '')

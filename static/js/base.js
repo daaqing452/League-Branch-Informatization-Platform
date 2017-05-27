@@ -1,3 +1,7 @@
+$(document).ready(function(){
+	
+});
+
 function commit(flag){
 	switch(flag){
 		//登录
