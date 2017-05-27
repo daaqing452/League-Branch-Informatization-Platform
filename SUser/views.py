@@ -53,7 +53,8 @@ def index(request):
 	return render(request, 'index.html', rdata)
 
 def setting(request):
-	pass
+	rdata = {}
+	return render(request, 'setting.html', rdata)
 
 def delete_user(request, username):
 	users = User.objects.filter(username=username)
