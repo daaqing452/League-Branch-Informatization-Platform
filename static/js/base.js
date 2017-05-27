@@ -53,8 +53,7 @@ function mail(){
 	$(".modal-dialog").width(500);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("站内信");
-	
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
 
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
 
 }
