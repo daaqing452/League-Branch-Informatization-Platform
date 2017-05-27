@@ -2,7 +2,9 @@
 from django.db import models
 
 class Message(models.Model):
-	send_uid = models.IntegerField()
-	recv_uid = models.TextField()
-	mtype = models.IntegerField()
+	send_uid = models.IntegerField(default=0)
+	recv_uid = models.TextField(default='[]')
+	mtype = models.IntegerField(default=0)
 	text = models.TextField()
+	attachment = models.TextField(default='[]')
+	read = models.BooleanField(default=False)

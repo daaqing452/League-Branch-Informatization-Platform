@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
 });
 
 function commit(flag){
@@ -90,20 +90,18 @@ function apply(){
 
 }
 
-function mail(){
+function new_message(){
 	$(".modal-dialog").width(500);
 	$("#myModal_body").empty();
-	$("#myModalLabel").text("站内信");
-
+	$("#myModalLabel").text("发送新消息");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
 
 }
 
-function readMail(b){
+function read_message(b){
 	$b = $(b);
 	var message_title = $b.text();
 	$("#myModalLabel").text(message_title);
-	
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 
 }
