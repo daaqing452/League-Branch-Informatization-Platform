@@ -1,3 +1,37 @@
+function commit(flag){
+	switch(flag){
+		//登录
+		case 1:{
+			var username = $("#username").val();
+			var password = $("#password").val();
+			$.ajax({
+				url: "/index/",
+				type: "POST",
+				data: {"op": "login", "username": username, "password": password},
+				success: function(data) {
+					data = JSON.parse(data);
+					var result = data['result'];
+					if (result == "成功") {
+						window.location.reload();
+					} else {
+						alert(result);
+					}
+				}
+			});
+			break;
+		}
+		//申请
+		case 2:{
+			break;
+		}
+		case 3:{
+
+			break;
+		}
+	}
+	$("#myModal").modal('hide');
+}
+
 function login(){
 	$(".modal-dialog").width(250);
 	$("#myModal_body").empty();
@@ -7,25 +41,16 @@ function login(){
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(1)");
 }
 
-function commit(flag){
-	switch(flag){
-		//登录
-		case 1:{
-			var username = $("#username").val();
-			var password = $("#password").val();
-			break;
+function logout(){
+	$.ajax({
+		url: "/index/",
+		type: "POST",
+		data: {"op": "logout"},
+		success: function(data) {
+			data = JSON.parse(data);
+			window.location.reload();
 		}
-		//申请
-		case 2:{
-
-			break;
-		}
-		case 3:{
-
-			break;
-		}
-	}
-	$("#myModal").modal('hide');
+	});
 }
 
 function apply(){

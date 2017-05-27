@@ -16,15 +16,29 @@
             <li>
                 <a href="#">院系</a>
             </li>
-            <li >
+            <li>
                 <a data-toggle="modal" data-target="#myModal" onclick="apply()">申请</a>
             </li>
-            <li >
-                <a data-toggle="modal" data-target="#myModal" onclick="mail()">站内信(1条新信息)</a>
+            {% if admin %}
+            <li>
+                <a data-toggle="modal" data-target="#myModal" html="/admin/">管理员界面</a>
             </li>
-            <li >
+            {% endif %}
+            <li>
+                <a data-toggle="modal" data-target="#myModal" onclick="mail()">站内信</a>
+            </li>
+            {% if login %}
+            <li>
+                <a data-toggle="modal" data-target="#myModal" onclick="profile()">{{username}}</a>
+            </li>
+            <li>
+                <a data-toggle="modal" data-target="#myModal" onclick="logout()">登出</a>
+            </li>
+            {% else %}
+            <li>
                 <a data-toggle="modal" data-target="#myModal" onclick="login()">登录</a>
             </li>
+            {% endif %}
         </ul>
     </div>
     {% block context %}

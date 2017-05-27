@@ -18,16 +18,4 @@ $(document).ready(function(){
 			}
 		})
 	});
-
-	$("#logout").click(function(){
-		$.ajax({
-			url: "/index/",
-			type: "POST",
-			data: {"op": "logout"},
-			success: function(data) {
-				data = JSON.parse(data);
-				window.location.reload();
-			}
-		})
-	})
 });
