@@ -65,9 +65,15 @@ function apply(){
     					+"</select><br>"
     $("#myModal_body").append(HTMLContent);
     var HTMLContent = "<select id=\"apply_authority_select_2\" class=\"form-control\">"
+    					+"<option>计算机系</option>"
+    					+"<option>建筑学院</option>"
+    					+"<option>自动化系</option>"
     					+"</select><br>"
     $("#myModal_body").append(HTMLContent);
     var HTMLContent = "<select id=\"apply_authority_select_3\" class=\"form-control\">"
+    					+"<option>计61班</option>"
+    					+"<option>计62班</option>"
+    					+"<option>计63班</option>"
     					+"</select>"
     $("#myModal_body").append(HTMLContent);
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(2)");

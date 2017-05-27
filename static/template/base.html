@@ -44,7 +44,23 @@
     {% block context %}
         添加内容
     {% endblock context %}
-
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" >
+        <div class="modal-content">
+          <div class="modal-header" align="center">
+            <h4 class="modal-title" id="myModalLabel" >  </h4>
+          </div>
+          <div class="modal-body" id="myModal_body"> 
+           
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default " data-dismiss="modal" > 关闭 </button>
+            <button type="button" class="btn btn-primary">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
 <script src="{% static "js/jquery-3.1.1.min.js" %}"> </script>
 <script src="{% static "js/csrf.js" %}"> </script>
 <script src="{% static "bootstrap/js/bootstrap.min.js" %}"> </script>
