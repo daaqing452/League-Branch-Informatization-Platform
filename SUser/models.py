@@ -4,7 +4,10 @@ from django.db import models
 class SUser(models.Model):
 	uid = models.IntegerField()
 	username = models.CharField(max_length=32, default='')
-	authority = models.TextField()
+	admin_super = models.BooleanField(default=False)
+	admin_school = models.BooleanField(default=False)
+	admin_department = models.TextField(default='[]')
+	admin_branch = models.TextField(default='[]')
 
 class Department(models.Model):
 	name = models.CharField(max_length=32, default='')
