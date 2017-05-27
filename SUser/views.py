@@ -16,7 +16,11 @@ def index(request):
 	user = None
 	if request.user.is_authenticated():
 		user = request.user
+		suser = SUser.objects.filter(username=user.username)[0]
 		rdata['username'] = user.username
+		print(suser.authority)
+		authority = json.loads(suser.authority)
+		rdata['admin'] = authority['school']
 	rdata['login'] = user is not None
 
 	if op == 'login':
@@ -48,15 +52,29 @@ def index(request):
 
 	return render(request, 'index.html', rdata)
 
+def setting(request):
+	rdata = {}
+	return render(request, 'setting.html', rdata)
+
+def delete_user(request, username):
+	users = User.objects.filter(username=username)
+	if len(users) > 0: users[0].delete()
+	susers = SUser.objects.filter(username=username)
+	html = 'no such user ' + username
+	if len(susers) > 0:
+		susers[0].delete()
+		html = 'delete ' + username + ' successful'
+	return HttpResponse(html)
+
 def add_user(request, username):
 	password = username
 	user = auth.authenticate(username=username, password=password)
 	authority = {'super': False, 'school': False, 'department': [], 'branch': [], 'visit': []}
-	if username == 'root': authority['super'] = True
+	if username == 'root': authority['super'] = authority['school'] = True
 	if user is None:
 		user = User.objects.create_user(username=username, password=password)
-		suser = SUser.objects.create(username=username, uid=user.id)
-		html = 'add ' + username + ' successful <br/>'
+		suser = SUser.objects.create(username=username, uid=user.id, authority=json.dumps(authority))
+		html = 'add ' + username + ' successful'
 	else:
-		html = ' already exists <br/>'
+		html = username + ' already exists'
 	return HttpResponse(html)
