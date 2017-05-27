@@ -1,5 +1,16 @@
 {% extends "base.html" %}
+	{% load static %}
     {% block context %}
-      
+    <script src="{% static "js/index.js" %}"> </script>
+
+    {% if suser.admin_school %}
+    <button id="add_department">添加院系</button>
+    <br/>
+    {% endif %}
+
+    {% for department in departments %}
+	<a href="/department/{{ department.id }}/"> {{ department.name }} </a>
+	<br/>
+    {% endfor %}
     
     {% endblock context %}

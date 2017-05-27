@@ -17,14 +17,14 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 import LBInformatization.settings as settings
-from SUser.views import index, setting, add_user, delete_user
+from SUser.views import index, department, add_user, delete_user
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^$', index),
     url(r'^index/$', index),
-    url(r'^setting/$', setting),
+    url(r'^department/([0-9]{1,9})/$', department),
     url(r'^au/([a-z0-9]{1,20})/$', add_user),
     url(r'^du/([a-z0-9]{1,20})/$', delete_user),
     

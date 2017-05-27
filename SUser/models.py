@@ -10,10 +10,8 @@ class SUser(models.Model):
 	admin_branch = models.TextField(default='[]')
 
 class Department(models.Model):
-	name = models.CharField(max_length=32, default='')
-	branch = models.TextField()
+	name = models.CharField(max_length=64, default='')
 
 class Branch(models.Model):
 	name = models.CharField(max_length=32, default='')
 	did = models.IntegerField()
-	suser = models.TextField()

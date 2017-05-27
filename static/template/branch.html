@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <script src="{% static "js/branch.js" %}"> </script>
+
+    <h3> {{ branch.name }} </h3>
+    <br/>
+    
+    {% endblock context %}

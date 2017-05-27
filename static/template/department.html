@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <script src="{% static "js/department.js" %}"> </script>
+
+    <h3> {{ department.name }} </h3>
+    <br/>
+    <button id="add_branch">添加团支部</button>
+    <br/>
+
+    {% for branch in branchs %}
+    <a href="/branch/{{ branch.id }}/">{{ branch.name }}</a>
+    <br/>
+    {% endfor %}
+    
+    {% endblock context %}
