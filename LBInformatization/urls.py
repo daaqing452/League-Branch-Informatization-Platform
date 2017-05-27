@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 import LBInformatization.settings as settings
 from SUser.views import index, department, branch, add_user, delete_user
+from Message.views import message
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,5 +29,8 @@ urlpatterns = [
     url(r'^branch/([0-9]{1,9})/$', branch),
     url(r'^au/([a-z0-9]{1,20})/$', add_user),
     url(r'^du/([a-z0-9]{1,20})/$', delete_user),
+
+    url(r'^message/$', message),
+    url(r'^message/([0-9]{1,9})/$', message),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
