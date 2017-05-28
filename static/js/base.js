@@ -101,11 +101,12 @@ function commit(flag){
 			break;
 		}
 	}
+	KindEditor.remove('textarea[name="sg_text"]');
 	
 }
 
 function cancel(){
-	
+	KindEditor.remove('textarea[name="sg_text"]');
 }
 
 function login(){
@@ -157,7 +158,11 @@ function apply(){
 
 }
 
-
+//去掉包含该元素的div
+function del_line(b){
+	$b = $(b);
+	$b.parents("div").eq(0).remove();
+}
 
 function send_message(){
 	$(".modal-dialog").width(500);
@@ -167,8 +172,21 @@ function send_message(){
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用逗号隔开）\"/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
-	$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"></textarea><br/>");
+	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
+	KindEditor.create('textarea[name="sg_text"]', {
+                    resizeType : 1,
+                    allowPreviewEmoticons : false,
+                    allowImageRemote : false,
+                    useContextmenu : false,
+                    uploadJson : '/uploadFile/',
+                    width : '100%',
+                    items : [
+                        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                        'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
+    });
+    
 }
 
 function read_message(b){
