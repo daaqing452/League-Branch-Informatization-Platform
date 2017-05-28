@@ -7,8 +7,10 @@ from django.shortcuts import render
 from SUser.models import SUser, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
 from SUser.utils import get_request_basis
+from django.views.decorators.csrf import csrf_exempt
 import json
 
+@csrf_exempt 
 def index(request):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}

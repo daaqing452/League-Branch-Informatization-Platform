@@ -5,6 +5,7 @@ from django.shortcuts import render
 from SUser.models import SUser
 from SUser.utils import get_request_basis
 import json
+import time
 
 def message(request, mid=-1):
 	rdata, op, suser = get_request_basis(request)
@@ -22,3 +23,4 @@ def message(request, mid=-1):
 		return HttpResponse(json.dumps(jdata))
 
 	return render(request, 'message.html', rdata)
+

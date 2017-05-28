@@ -4,7 +4,7 @@
     <script src="{% static "js/index.js" %}"> </script>
 
     {% if suser.admin_school %}
-    <button id="add_department">添加院系</button>
+    <button class="btn btn-primary" id="add_department" data-toggle="modal" data-target="#myModal" onclick="add_d()">添加院系</button>
     <br/>
     {% endif %}
 

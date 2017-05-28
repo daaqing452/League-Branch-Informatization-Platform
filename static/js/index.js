@@ -1,17 +1,14 @@
 $(document).ready(function(){
 	
-	$("button#add_department").click(function(){
-		var name = prompt("院系名", "");
-		$.ajax({
-			url: window.location.href,
-			type: "POST",
-			data: {"op": "add_department", "name": name},
-			success: function(data) {
-				data = JSON.parse(data);
-				alert("添加成功！");
-				window.location.reload();
-			}
-		});
-	});
 	
 });
+
+
+function add_d(){
+	$(".modal-dialog").width(250);
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("添加院系");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"departmentname\" type=\"text\"  placeholder=\"院系名\"/><br/>");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(5)");
+}
+
