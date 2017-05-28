@@ -121,7 +121,7 @@ function send_message(){
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("发送新消息");
 	$("#myModelYes").text("发送");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用逗号隔开）\"/><br/>");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
