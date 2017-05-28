@@ -5,7 +5,7 @@
 
     <h3> {{ department.name }} </h3>
     <br/>
-    <button id="add_branch">添加团支部</button>
+    <button class="btn btn-primary"  id="add_branch" data-toggle="modal" data-target="#myModal" onclick="add_b()">添加团支部</button>
     <br/>
 
     {% for branch in branchs %}

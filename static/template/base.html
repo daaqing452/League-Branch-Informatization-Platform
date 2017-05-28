@@ -8,6 +8,9 @@
     <script src="{% static "js/jquery-3.1.1.min.js" %}"> </script>
     <script src="{% static "js/csrf.js" %}"> </script>
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"> </script>
+    <link href="{% static "kindeditor/themes/default/default.css" %}" rel="stylesheet">
+<script src="{% static "kindeditor/kindeditor-all.js" %}"></script>
+<script src="{% static "kindeditor/lang/zh-CN.js" %}"></script>
     <script src="{% static "js/base.js" %}"> </script>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
 </head>
@@ -64,8 +67,9 @@
     {% block context %}
         添加内容
     {% endblock context %}
+    
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog" >
         <div class="modal-content">
           <div class="modal-header" align="center">
@@ -75,7 +79,7 @@
            
           </div>
           <div class="modal-footer">
-            <button id="myModelNo" type="button" class="btn btn-default " data-dismiss="modal" > 取消 </button>
+            <button id="myModelNo" type="button" class="btn btn-default " data-dismiss="modal" onclick="cancel()" > 取消 </button>
             <button id="myModelYes" type="button" class="btn btn-primary">确认</button>
           </div>
         </div>

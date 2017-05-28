@@ -22,10 +22,12 @@ function commit(flag){
 					}
 				}
 			});
+			$("#myModal").modal('hide');
 			break;
 		}
 		//申请
 		case 2:{
+			$("#myModal").modal('hide');
 			break;
 		}
 		//发送站内信
@@ -57,15 +59,54 @@ function commit(flag){
 					alert("发送成功！");
 				}
 			});
+			$("#myModal").modal('hide');
 			break;
 		}
 		//阅读站内信
 		case 4:{
 
+			$("#myModal").modal('hide');
+			break;
+		}
+		//添加院系
+		case 5:{
+			var name = $("#departmentname").val();
+			$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op": "add_department", "name": name},
+			success: function(data) {
+				data = JSON.parse(data);
+				alert("添加成功！");
+				window.location.reload();
+				}
+			});
+			$("#myModal").modal('hide');
+			break;
+		}
+		//添加支部
+		case 6:{
+			var name = $("#branchname").val();
+			$.ajax({
+				url: window.location.href,
+				type: "POST",
+				data: {"op": "add_branch", "name": name},
+				success: function(data) {
+					data = JSON.parse(data);
+					alert("添加成功！");
+					window.location.reload();
+				}
+			});
+			$("#myModal").modal('hide');
 			break;
 		}
 	}
-	$("#myModal").modal('hide');
+	KindEditor.remove('textarea[name="sg_text"]');
+	
+}
+
+function cancel(){
+	KindEditor.remove('textarea[name="sg_text"]');
 }
 
 function login(){
@@ -75,6 +116,7 @@ function login(){
 	$("#myModal_body").append("<input class=\"form-control\" id=\"username\" type=\"text\" name=\"username\" placeholder=\"学号\"/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"password\" type=\"password\" name=\"password\" placeholder=\"密码\"/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(1)");
+
 }
 
 function logout(){
@@ -116,6 +158,12 @@ function apply(){
 
 }
 
+//去掉包含该元素的div
+function del_line(b){
+	$b = $(b);
+	$b.parents("div").eq(0).remove();
+}
+
 function send_message(){
 	$(".modal-dialog").width(500);
 	$("#myModal_body").empty();
@@ -123,8 +171,22 @@ function send_message(){
 	$("#myModelYes").text("发送");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
-	$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
+	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
+	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
+	KindEditor.create('textarea[name="sg_text"]', {
+                    resizeType : 1,
+                    allowPreviewEmoticons : false,
+                    allowImageRemote : false,
+                    useContextmenu : false,
+                    uploadJson : '/uploadFile/',
+                    width : '100%',
+                    items : [
+                        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                        'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
+    });
+    
 }
 
 function read_message(b){

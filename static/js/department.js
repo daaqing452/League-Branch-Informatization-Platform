@@ -1,17 +1,13 @@
 $(document).ready(function(){
 	
-	$("button#add_branch").click(function(){
-		var name = prompt('团支部名', '');
-		$.ajax({
-			url: window.location.href,
-			type: "POST",
-			data: {"op": "add_branch", "name": name},
-			success: function(data) {
-				data = JSON.parse(data);
-				alert("添加成功！");
-				window.location.reload();
-			}
-		});
-	});
-	
+
 });
+
+
+function add_b(){
+	$(".modal-dialog").width(250);
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("添加团支部");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"branchname\" type=\"text\"  placeholder=\"支部名\"/><br/>");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(6)");
+}
