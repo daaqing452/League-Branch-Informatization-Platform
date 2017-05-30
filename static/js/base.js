@@ -38,24 +38,13 @@ function commit(flag){
 			$.ajax({
 				url: "/message/",
 				type: "POST",
-				data: {"op": "check_recver", "recver": JSON.stringify(recver)},
+				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
 				success: function(data) {
 					data = JSON.parse(data);
 					var result = data["result"];
-					if (result == "yes") {
-						$.ajax({
-							url: "/message/",
-							type: "POST",
-							data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
-							success: function(data) {
-								data = JSON.parse(data);
-								alert("发送成功！");
-							}
-						});
-						$("#myModal").modal('hide');
-						KindEditor.remove('textarea[name="sg_text"]');
-					} else {
+					if (result != "yes") {
 						alert(result);
+					} else {
 					}
 				}
 			});
@@ -63,7 +52,6 @@ function commit(flag){
 		}
 		//阅读站内信
 		case 4:{
-
 			$("#myModal").modal('hide');
 			break;
 		}

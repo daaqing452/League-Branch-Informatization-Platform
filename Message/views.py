@@ -12,15 +12,22 @@ def message(request, mid=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
-	if op == 'check_recver':
+	if op == 'send_message':
 		recvers = json.loads(request.POST.get('recver', '[]'))
-		jdata['result'] = 'yes'
+		# 检查收件人
+		check_recvers = 'yes'
 		for recver in recvers:
 			if recver == '': continue
 			susers = SUser.objects.filter(username=recver)
 			if len(susers) == 0:
-				jdata['result'] = '用户"' + recver + '"不存在'
+				check_recvers = '用户"' + recver + '"不存在'
 				break
+		if check_recvers != 'yes':
+			jdata['result'] = check_recvers
+			return HttpResponse(json.dumps(jdata))
+		# 发送
+		title = request.POST.get('title')
+		text = request.POST.get('text')
 		return HttpResponse(json.dumps(jdata))
 
 	return render(request, 'message.html', rdata)
