@@ -49,8 +49,10 @@ function commit(flag){
 					}
 				}
 			});
-			if (!yes) break;
-			$.ajax({
+			console.log(yes);
+			if(!yes) break;
+			else{
+				$.ajax({
 				url: "/message/",
 				type: "POST",
 				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
@@ -58,9 +60,10 @@ function commit(flag){
 					data = JSON.parse(data);
 					alert("发送成功！");
 				}
-			});
-			$("#myModal").modal('hide');
-			KindEditor.remove('textarea[name="sg_text"]');
+				});
+				$("#myModal").modal('hide');
+				KindEditor.remove('textarea[name="sg_text"]');
+			}
 			break;
 		}
 		//阅读站内信
