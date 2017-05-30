@@ -38,10 +38,13 @@ def uploadFile(request):
 		buf = request.FILES.get('imgFile', None)
 		file_name = buf.name
 		file_buff = buf.read()
-		save_file("media", file_name, file_buff)
+		time_stamp = time.strftime('%Y%m%d%H%M%S')
+		real_file_name = str(time_stamp)+"-"+file_name
+		save_file("media", real_file_name, file_buff)
 		dict_tmp = {}
 		dict_tmp["error"] = 0
 		dict_tmp["url"] = "/media/"+file_name
+		dict_tmp["real_url"] = "/media/"+ real_file_name
 		return HttpResponse(json.dumps(dict_tmp))
 
 def save_file(path, file_name, data):
