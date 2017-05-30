@@ -60,6 +60,7 @@ function commit(flag){
 				}
 			});
 			$("#myModal").modal('hide');
+			KindEditor.remove('textarea[name="sg_text"]');
 			break;
 		}
 		//阅读站内信
@@ -101,7 +102,6 @@ function commit(flag){
 			break;
 		}
 	}
-	KindEditor.remove('textarea[name="sg_text"]');
 	
 }
 
@@ -192,7 +192,7 @@ function send_message(){
 function read_message(b){
 	$b = $(b);
 	var message_title = $b.text();
+	$("#myModal_body").empty();
 	$("#myModalLabel").text(message_title);
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
-
 }
