@@ -44,7 +44,7 @@ function commit(flag){
 					data = JSON.parse(data);
 					var result = data['result'];
 					if (result != 'yes') {
-						alert(result);
+						//alert(result);
 						yes = false;
 					}
 				}
@@ -135,27 +135,46 @@ function apply(){
 	$(".modal-dialog").width(250);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("申请权限");
-	var HTMLContent = "<select id=\"apply_authority_select_1\" class=\"form-control\">"
-        				+"<option>申请校管理员</option>"
-       					+"<option>申请院系级管理员</option>"
-        				+"<option>申请班团级管理员</option>"
-        				+"<option>申请团支部成员</option>"
-    					+"</select><br>";
-    $("#myModal_body").append(HTMLContent);
-    var HTMLContent = "<select id=\"apply_authority_select_2\" class=\"form-control\">"
-    					+"<option>计算机系</option>"
-    					+"<option>建筑学院</option>"
-    					+"<option>自动化系</option>"
-    					+"</select><br>";
-    $("#myModal_body").append(HTMLContent);
-    var HTMLContent = "<select id=\"apply_authority_select_3\" class=\"form-control\">"
-    					+"<option>计61班</option>"
-    					+"<option>计62班</option>"
-    					+"<option>计63班</option>"
-    					+"</select>";
+	var HTMLContent = "<select id=\"apply_select_1\" class=\"form-control\" onchange=\"apply_select_1_onchange()\">"
+        				+"<option value=0>申请校管理员</option>"
+       					+"<option value=1>申请院系级管理员</option>"
+        				+"<option value=2>申请班团级管理员</option>"
+        				+"<option value=3>申请团支部成员</option>"
+    					+"</select>"
+    					+"<br id=\"apply_select_1\" />";
     $("#myModal_body").append(HTMLContent);
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(2)");
 
+}
+
+function apply_select_1_onchange() {
+	var value = $("select#apply_select_1").val();
+	$("select#apply_select_2").remove();
+	$("br#apply_select_2").remove();
+	$("select#apply_select_3").remove();
+	$("br#apply_select_3").remove();
+	if (value >= 1) {
+		var HTMLContent = "<select id=\"apply_select_2\" class=\"form-control\" onchange=\"apply_select_2_onchange()\">"
+    					+"<option>计算机系</option>"
+    					+"<option>建筑学院</option>"
+    					+"<option>自动化系</option>"
+    					+"</select>"
+    					+"<br id=\"apply_select_2\" />";
+    	$("#myModal_body").append(HTMLContent);
+	}
+	if (value >= 2) {
+		var HTMLContent = "<select id=\"apply_select_3\" class=\"form-control\">"
+    					+"<option>计61班</option>"
+    					+"<option>计62班</option>"
+    					+"<option>计63班</option>"
+    					+"</select>"
+    					+"<br id=\"apply_select_3\" />";
+    	$("#myModal_body").append(HTMLContent);
+	}
+}
+
+function apply_select_2_onchange() {
+	
 }
 
 //去掉包含该元素的div
@@ -169,7 +188,7 @@ function send_message(){
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("发送新消息");
 	$("#myModelYes").text("发送");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用逗号隔开）\"/><br/>");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
 	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
