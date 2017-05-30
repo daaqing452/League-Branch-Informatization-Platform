@@ -35,35 +35,30 @@ function commit(flag){
 			var recver = $("#sg_recver").val().replace(/( )/g, "").split(";");
 			var title = $("#sg_title").val();
 			var text = $("#sg_text").val();
-			var yes = true;
 			$.ajax({
 				url: "/message/",
 				type: "POST",
 				data: {"op": "check_recver", "recver": JSON.stringify(recver)},
 				success: function(data) {
 					data = JSON.parse(data);
-					var result = data['result'];
-					if (result != 'yes') {
-						//alert(result);
-						yes = false;
+					var result = data["result"];
+					if (result == "yes") {
+						$.ajax({
+							url: "/message/",
+							type: "POST",
+							data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
+							success: function(data) {
+								data = JSON.parse(data);
+								alert("发送成功！");
+							}
+						});
+						$("#myModal").modal('hide');
+						KindEditor.remove('textarea[name="sg_text"]');
+					} else {
+						alert(result);
 					}
 				}
 			});
-			console.log(yes);
-			if(!yes) break;
-			else{
-				$.ajax({
-				url: "/message/",
-				type: "POST",
-				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
-				success: function(data) {
-					data = JSON.parse(data);
-					alert("发送成功！");
-				}
-				});
-				$("#myModal").modal('hide');
-				KindEditor.remove('textarea[name="sg_text"]');
-			}
 			break;
 		}
 		//阅读站内信
