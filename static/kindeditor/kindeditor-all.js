@@ -7529,6 +7529,7 @@ KindEditor.plugin('insertfile', function(K) {
 			'</span>',
 			'</div>',
 			'<div class="ke-dialog-row">',
+			'<input type="hidden"  id="realTitle" value=""></input>',
 			'<label for="keTitle" style="width:60px;">' + lang.title + '</label>',
 			'<input type="text" id="keTitle" class="ke-input-text" name="title" value="" style="width:160px;" /></div>',
 			'</div>',
@@ -7576,6 +7577,7 @@ KindEditor.plugin('insertfile', function(K) {
 						}
 						urlBox.val(url);
 						titleBox.val(url.slice(7));
+						$("#realTitle").val(data.real_url)
 						if (self.afterUpload) {
 							self.afterUpload.call(self, url, data, name);
 						}
@@ -7624,12 +7626,13 @@ KindEditor.plugin('insertfile', function(K) {
 	};
 	self.clickToolbar(name, function() {
 		self.plugin.fileDialog({
-			clickFn : function(url, title) {
+			clickFn : function(url, title, real_url) {
 				//var html = '附件:<a class="ke-insertfile" href="' + url + '" data-ke-src="' + url + '" target="_blank">' + title + '</a><br>';
 				var html = '';
 				//console.log("url"+url);
 				//console.log("title"+title);
-				$('#myModal_body').append('<div>'+title+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
+				var real_url = $("#realTitle").val();
+				$('#myModal_body').append('<div url=\"'+real_url + '\">'+title+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 				self.insertHtml(html).hideDialog().focus();
 			}
 		});
