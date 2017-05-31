@@ -7632,7 +7632,7 @@ KindEditor.plugin('insertfile', function(K) {
 				//console.log("url"+url);
 				//console.log("title"+title);
 				var real_url = $("#realTitle").val();
-				$('#myModal_body').append('<div class=\"attachment\" url=\"'+real_url + '\">'+title+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
+				$('#myModal_body').append('<div class=\"attachment\" url=\"'+real_url + '\" title=\"'+title+'\">'+title+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 				self.insertHtml(html).hideDialog().focus();
 			}
 		});

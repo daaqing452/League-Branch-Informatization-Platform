@@ -38,9 +38,13 @@ function commit(flag){
 			var length = $("div.attachment").length;
 			var attach_list = new Array();
 			for(var i = 0; i < length; i ++ ){
-				attach_list.push($("div.attachment").eq(i).attr("url"));
+				var attach = new Array();
+				attach.push($("div.attachment").eq(i).attr("title"));
+				attach.push($("div.attachment").eq(i).attr("url"));
+				attach_list.push(attach);
 				alert($("div.attachment").eq(i).val());
 			}
+			//console.log(attach_list);
 			$.ajax({
 				url: "/message/",
 				type: "POST",
