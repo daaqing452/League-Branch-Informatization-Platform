@@ -35,10 +35,16 @@ function commit(flag){
 			var recver = $("#sg_recver").val().replace(/( )/g, "").split(";");
 			var title = $("#sg_title").val();
 			var text = $("#sg_text").val();
+			var length = $("div.attachment").length;
+			var attach_list = new Array();
+			for(var i = 0; i < length; i ++ ){
+				attach_list.push($("div.attachment").eq(i).attr("url"));
+				alert($("div.attachment").eq(i).val());
+			}
 			$.ajax({
 				url: "/message/",
 				type: "POST",
-				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text},
+				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
 				success: function(data) {
 					data = JSON.parse(data);
 					var result = data["result"];
@@ -90,16 +96,6 @@ function commit(flag){
 		}
 	}
 	
-}
-
-//返回附件地址
-function get_attach_list(){
-	var length = $("div.attachment").length;
-	var attach_list = new Array();
-	for(var i = 0; i < length; i ++ ){
-		attach_list.push($("div.attachment").eq(i).attr("url"));
-	}
-	return attach_list;
 }
 
 function cancel(){

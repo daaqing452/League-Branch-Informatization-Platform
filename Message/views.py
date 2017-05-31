@@ -33,6 +33,8 @@ def message(request, mid=-1):
 			jdata['result'] = check_recvers
 			return HttpResponse(json.dumps(jdata))
 		# 逐条发送
+		print(recver_uids, request.POST.get('attachment'))
+		xxx
 		for recver_uid in recver_uids:
 			message = Message.objects.create(recv_uid=recver_uid, send_uid=suser.id, read=False, m_type=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=json.dumps('[]'))
 		return HttpResponse(json.dumps(jdata))
