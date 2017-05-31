@@ -92,6 +92,16 @@ function commit(flag){
 	
 }
 
+//返回附件地址
+function get_attach_list(){
+	var length = $("div.attachment").length;
+	var attach_list = new Array();
+	for(var i = 0; i < length; i ++ ){
+		attach_list.push($("div.attachment").eq(i).attr("url"));
+	}
+	return attach_list;
+}
+
 function cancel(){
 	KindEditor.remove('textarea[name="sg_text"]');
 }
@@ -181,18 +191,17 @@ function send_message(){
 	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
 	KindEditor.create('textarea[name="sg_text"]', {
-                    resizeType : 1,
-                    allowPreviewEmoticons : false,
-                    allowImageRemote : false,
-                    useContextmenu : false,
-                    uploadJson : '/uploadFile/',
-                    width : '100%',
-                    items : [
-                        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-                        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                        'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
     });
-    
 }
 
 function read_message(b){
