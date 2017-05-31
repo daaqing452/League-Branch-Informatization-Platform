@@ -5,9 +5,14 @@ from django.shortcuts import render
 from SUser.models import SUser
 from SUser.utils import get_request_basis
 from django.views.decorators.csrf import csrf_exempt
+from Message.models import Message
+import datetime
 import json
 import time
 
+# m_type
+#   0: 预留
+#   1: 用户发送
 def message(request, mid=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
@@ -16,18 +21,20 @@ def message(request, mid=-1):
 		recvers = json.loads(request.POST.get('recver', '[]'))
 		# 检查收件人
 		check_recvers = 'yes'
+		recver_uids = []
 		for recver in recvers:
 			if recver == '': continue
 			susers = SUser.objects.filter(username=recver)
 			if len(susers) == 0:
 				check_recvers = '用户"' + recver + '"不存在'
 				break
+			recver_uids.append(susers[0].id)
 		if check_recvers != 'yes':
 			jdata['result'] = check_recvers
 			return HttpResponse(json.dumps(jdata))
-		# 发送
-		title = request.POST.get('title')
-		text = request.POST.get('text')
+		# 逐条发送
+		for recver_uid in recver_uids:
+			message = Message.objects.create(recv_uid=recver_uid, send_uid=suser.id, read=False, m_type=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=json.dumps('[]'))
 		return HttpResponse(json.dumps(jdata))
 
 	return render(request, 'message.html', rdata)

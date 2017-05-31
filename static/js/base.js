@@ -45,6 +45,7 @@ function commit(flag){
 					if (result != "yes") {
 						alert(result);
 					} else {
+
 					}
 				}
 			});
