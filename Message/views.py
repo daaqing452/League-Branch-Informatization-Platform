@@ -29,16 +29,52 @@ def message(request, mid=-1):
 				check_recvers = '用户"' + recver + '"不存在'
 				break
 			recver_uids.append(susers[0].id)
+		jdata['result'] = check_recvers
 		if check_recvers != 'yes':
-			jdata['result'] = check_recvers
 			return HttpResponse(json.dumps(jdata))
 		# 逐条发送
-		print(recver_uids, request.POST.get('attachment'))
-		xxx
 		for recver_uid in recver_uids:
-			message = Message.objects.create(recv_uid=recver_uid, send_uid=suser.id, read=False, m_type=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=json.dumps('[]'))
+			message = Message.objects.create(recv_uid=recver_uid, send_uid=suser.id, read=False, mtype=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=request.POST.get('attachment'))
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'read_message':
+		messages = Message.objects.filter(id=request.POST.get('mid'))
+		if len(messages) > 0:
+			message = messages[0]
+			jdata['send_username'] = SUser.objects.get(id=message.send_uid).username
+			jdata['mtype'] = message.mtype
+			jdata['send_time'] = message.send_time.strftime("%Y-%m-%d %H:%M:%S")
+			jdata['title'] = message.title
+			if jdata['title'] == '': jdata['title'] = '（无标题）'
+			jdata['text'] = message.text
+			jdata['attachment'] = message.attachment
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'close_message':
+		messages = Message.objects.filter(id=request.POST.get('mid'))
+		if len(messages) > 0:
+			message = messages[0]
+			message.read = True
+			message.save()
+		return HttpResponse(json.dumps(jdata))
+
+	if suser is None:
+		return HttpResponseRedirect('/index/')
+
+	if mid == -1:
+		rdata['read_all'] = True
+		messages = Message.objects.filter(recv_uid=suser.id)
+		re_messages = []
+		for message in messages:
+			d = {}
+			d['id'] = message.id
+			d['read'] = message.read
+			d['title'] = message.title
+			if d['title'] == '': d['title'] = '（无标题）'
+			d['send_username'] = SUser.objects.get(id=message.send_uid).username
+			d['send_time'] = message.send_time.strftime("%Y-%m-%d %H:%M:%S")
+			re_messages.append(d);
+		rdata['messages'] = re_messages
 	return render(request, 'message.html', rdata)
 
 @csrf_exempt 
