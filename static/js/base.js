@@ -1,6 +1,15 @@
 $(document).ready(function(){
-
+	check_red_spot();
 });
+
+function check_red_spot() {
+	var a = $("a[type=message]");
+	if (a.length == 0) {
+		$("span#red_spot").hide();
+	} else {
+		$("span#red_spot").show();
+	}
+}
 
 function commit(flag){
 	switch(flag){
@@ -13,7 +22,7 @@ function commit(flag){
 				type: "POST",
 				data: {"op": "login", "username": username, "password": password},
 				success: function(data) {
-					data = JSON.parse(data);
+					var data = JSON.parse(data);
 					var result = data['result'];
 					if (result == "成功") {
 						window.location.reload();
@@ -34,15 +43,16 @@ function commit(flag){
 		case 3:{
 			var recver = $("#sg_recver").val().replace(/( )/g, "").split(";");
 			var title = $("#sg_title").val();
+			/*
+				!!!
+			*/
 			var text = $("#sg_text").val();
-			var length = $("div.attachment").length;
 			var attach_list = new Array();
-			for(var i = 0; i < length; i ++ ){
+			for(var i = 0; i < $("div.attachment").length; i ++ ){
 				var attach = new Array();
 				attach.push($("div.attachment").eq(i).attr("title"));
 				attach.push($("div.attachment").eq(i).attr("url"));
 				attach_list.push(attach);
-				alert($("div.attachment").eq(i).val());
 			}
 			//console.log(attach_list);
 			$.ajax({
@@ -50,12 +60,13 @@ function commit(flag){
 				type: "POST",
 				data: {"op": "send_message", "recver": JSON.stringify(recver), "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
 				success: function(data) {
-					data = JSON.parse(data);
+					var data = JSON.parse(data);
 					var result = data["result"];
 					if (result != "yes") {
 						alert(result);
 					} else {
-
+						alert("发送成功");
+						$("#myModal").modal('hide');
 					}
 				}
 			});
@@ -63,6 +74,18 @@ function commit(flag){
 		}
 		//阅读站内信
 		case 4:{
+			var mid = $("#message_div").attr("mid");
+			$.ajax({
+				url: "/message/",
+				type: "POST",
+				data: {"op": "close_message", "mid": mid},
+				success: function(data) {
+					var data = JSON.parse(data);
+				}
+			});
+			var li = $("a[mid=" + mid + "]").parent();
+			li.remove();
+			check_red_spot();
 			$("#myModal").modal('hide');
 			break;
 		}
@@ -74,7 +97,7 @@ function commit(flag){
 			type: "POST",
 			data: {"op": "add_department", "name": name},
 			success: function(data) {
-				data = JSON.parse(data);
+				var data = JSON.parse(data);
 				alert("添加成功！");
 				window.location.reload();
 				}
@@ -90,7 +113,7 @@ function commit(flag){
 				type: "POST",
 				data: {"op": "add_branch", "name": name},
 				success: function(data) {
-					data = JSON.parse(data);
+					var data = JSON.parse(data);
 					alert("添加成功！");
 					window.location.reload();
 				}
@@ -122,7 +145,7 @@ function logout(){
 		type: "POST",
 		data: {"op": "logout"},
 		success: function(data) {
-			data = JSON.parse(data);
+			var data = JSON.parse(data);
 			window.location.reload();
 		}
 	});
@@ -206,8 +229,27 @@ function send_message(){
 
 function read_message(b){
 	$b = $(b);
-	var message_title = $b.text();
+	var title = $b.text();
+	var mid = $b.attr("mid");
 	$("#myModal_body").empty();
-	$("#myModalLabel").text(message_title);
+	$("#myModalLabel").text(title);
+	$.ajax({
+		url: "/message/",
+		type: "POST",
+		data: {"op": "read_message", "mid": mid},
+		success: function(data) {
+			var data = JSON.parse(data);
+			var HTMLContent = "<div id=\"message_div\" mid=" + mid + ">"
+				+"<span>发送时间：" + data["send_time"] + "</span><br/><br/>"
+				+"<span>" + data["text"] + "</span><br/><br/>";
+			attachment = JSON.parse(data["attachment"]);
+			for (var i = 0; i < attachment.length; i++) {
+				var attach = attachment[i];
+				HTMLContent += "<a href=\"" + attach[1] + "\">" + attach[0] + "</a><br/>";
+			}
+			HTMLContent += "</div>";
+			$("#myModal_body").append(HTMLContent);
+		}
+	});
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 }

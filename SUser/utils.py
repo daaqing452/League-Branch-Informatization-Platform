@@ -1,6 +1,7 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
 from SUser.models import SUser, Department, Branch
+from Message.models import Message
 
 def get_request_basis(request):
 	rdata = {}
@@ -22,5 +23,11 @@ def get_request_basis(request):
 		d1['branchs'] = Branch.objects.filter(did=department.id)
 		d0.append(d1)
 	rdata['departments'] = d0
+
+	# 消息
+	messages = []
+	if suser is not None:
+		messages = Message.objects.filter(recv_uid=suser.id).filter(read=False)
+	rdata['unread_messages'] = messages
 
 	return rdata, op, suser

@@ -3,6 +3,25 @@
     {% block context %}
     <script src="{% static "js/message.js" %}"> </script>
 
+    {% if read_all %}
+    <table>
+    	<tr>
+    		<td>状态</td>
+    		<td>标题</td>
+    		<td>发件人</td>
+    		<td>收件时间</td>
+    	</tr>
+    	{% for message in messages %}
+    	<tr>
+    		<td>{% if message.read %} 已读 {% else %} 未读 {% endif %}</td>
+    		<td><a href="/message/{{ message.id }}/">{{ message.title }}</a></td>
+    		<td>{{ message.send_username }}</td>
+    		<td>{{ message.send_time }}</td>
+    	</tr>
+    	{% endfor %}
+    </table>
+    {% else %}
     hello
+    {% endif %}
     
     {% endblock context %}
