@@ -1,3 +1,4 @@
+var editor;
 $(document).ready(function(){
 
 });
@@ -44,6 +45,7 @@ function commit(flag){
 				attach_list.push(attach);
 				alert($("div.attachment").eq(i).val());
 			}
+			//console.log(editor.html());
 			//console.log(attach_list);
 			$.ajax({
 				url: "/message/",
@@ -190,7 +192,7 @@ function send_message(){
 	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
 	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
-	KindEditor.create('textarea[name="sg_text"]', {
+	editor = KindEditor.create('textarea[name="sg_text"]', {
         resizeType : 1,
         allowPreviewEmoticons : false,
         allowImageRemote : false,
