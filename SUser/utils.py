@@ -29,5 +29,6 @@ def get_request_basis(request):
 	if suser is not None:
 		messages = Message.objects.filter(recv_uid=suser.id).filter(read=False)
 	rdata['unread_messages'] = messages
+	rdata['unread_messages_length'] = len(messages)
 
 	return rdata, op, suser
