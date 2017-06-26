@@ -176,27 +176,52 @@ function apply_select_1_onchange() {
 	$("select#apply_select_3").remove();
 	$("br#apply_select_3").remove();
 	if (value >= 1) {
-		var HTMLContent = "<select id=\"apply_select_2\" class=\"form-control\" onchange=\"apply_select_2_onchange()\">"
-    					+"<option>计算机系</option>"
-    					+"<option>建筑学院</option>"
-    					+"<option>自动化系</option>"
-    					+"</select>"
-    					+"<br id=\"apply_select_2\" />";
-    	$("#myModal_body").append(HTMLContent);
-	}
-	if (value >= 2) {
-		var HTMLContent = "<select id=\"apply_select_3\" class=\"form-control\">"
-    					+"<option>计61班</option>"
-    					+"<option>计62班</option>"
-    					+"<option>计63班</option>"
-    					+"</select>"
-    					+"<br id=\"apply_select_3\" />";
-    	$("#myModal_body").append(HTMLContent);
+		$.ajax({
+			url: "/index/",
+			type: "POST",
+			data: {"op": "get_departments"},
+			success: function(data) {
+				var data = JSON.parse(data);
+				var departments = data['departments'];
+				var HTMLContent = "<select id=\"apply_select_2\" class=\"form-control\" onchange=\"apply_select_2_onchange()\">";
+				for (var i in departments) {
+					var department = departments[i];
+					HTMLContent += "<option value='" + department["did"] + "'>" + department["name"] + "</option>";
+				}
+				HTMLContent += "</select><br id=\"apply_select_2\" />";
+		    	$("#myModal_body").append(HTMLContent);
+				if (value >= 2) {
+					apply_select_2_onchange();
+				}
+			}
+		});
 	}
 }
 
 function apply_select_2_onchange() {
-	
+	var value = $("select#apply_select_1").val();
+	$("select#apply_select_3").remove();
+	$("br#apply_select_3").remove();
+	if (value >= 2) {
+		var did = $("select#apply_select_2").val();
+		if (did == null) did = 1;
+		$.ajax({
+			url: "/index/",
+			type: "POST",
+			data: {"op": "get_branchs", "did": did},
+			success: function(data) {
+				var data = JSON.parse(data);
+				var branchs = data['branchs'];
+				var HTMLContent = "<select id=\"apply_select_3\" class=\"form-control\">";
+				for (var i in branchs) {
+					var branch = branchs[i];
+					HTMLContent += "<option bid='" + branch["bid"] + "'>" + branch["name"] + "</option>";
+				}
+				HTMLContent += "</select><br id=\"apply_select_3\" />";
+		    	$("#myModal_body").append(HTMLContent);
+			}
+		});
+	}
 }
 
 //去掉包含该元素的div

@@ -46,6 +46,27 @@ def index(request):
 		department = Department.objects.create(name=request.POST.get('name', ''))
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'get_departments':
+		departments = []
+		for department in Department.objects.all():
+			d = {}
+			d['did'] = department.id
+			d['name'] = department.name
+			departments.append(d)
+		jdata['departments'] = departments
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'get_branchs':
+		did = int(request.POST.get("did", -1))
+		branchs = []
+		for branch in Branch.objects.filter(did=did):
+			d = {}
+			d['bid'] = branch.id
+			d['name'] = branch.name
+			branchs.append(d)
+		jdata['branchs'] = branchs
+		return HttpResponse(json.dumps(jdata))
+
 	return render(request, 'index.html', rdata)
 
 def department(request, did):
