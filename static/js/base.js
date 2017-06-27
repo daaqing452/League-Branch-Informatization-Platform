@@ -12,7 +12,7 @@ function check_red_spot() {
 	}
 }
 
-function commit(flag){
+function commit(flag, param){
 	switch(flag){
 		//登录
 		case 1:{
@@ -37,6 +37,18 @@ function commit(flag){
 		}
 		//申请
 		case 2:{
+			var value = $("select#apply_select_1").val();
+			var param = {"op": "apply", "type": value};
+			if (value >= 1) param["did"] = $("select#apply_select_2").val();
+			if (value >= 2) param["bid"] = $("select#apply_select_3").val();
+			$.ajax({
+				url: "/index/",
+				type: "POST",
+				data: param,
+				success: function(data) {
+					var data = JSON.parse(data);
+				}
+			});
 			$("#myModal").modal('hide');
 			break;
 		}
@@ -80,7 +92,7 @@ function commit(flag){
 			$.ajax({
 				url: "/message/",
 				type: "POST",
-				data: {"op": "close_message", "mid": mid},
+				data: {"op": "close_message", "mid": mid, "yes": param},
 				success: function(data) {
 					var data = JSON.parse(data);
 				}
@@ -95,13 +107,13 @@ function commit(flag){
 		case 5:{
 			var name = $("#departmentname").val();
 			$.ajax({
-			url: window.location.href,
-			type: "POST",
-			data: {"op": "add_department", "name": name},
-			success: function(data) {
-				var data = JSON.parse(data);
-				alert("添加成功！");
-				window.location.reload();
+				url: window.location.href,
+				type: "POST",
+				data: {"op": "add_department", "name": name},
+				success: function(data) {
+					var data = JSON.parse(data);
+					alert("添加成功！");
+					window.location.reload();
 				}
 			});
 			$("#myModal").modal('hide');
@@ -161,12 +173,11 @@ function apply(){
         				+"<option value=0>申请校管理员</option>"
        					+"<option value=1>申请院系级管理员</option>"
         				+"<option value=2>申请班团级管理员</option>"
-        				+"<option value=3>申请团支部成员</option>"
+        				+"<option value=3>申请班团支部成员</option>"
     					+"</select>"
     					+"<br id=\"apply_select_1\" />";
     $("#myModal_body").append(HTMLContent);
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(2)");
-
 }
 
 function apply_select_1_onchange() {
@@ -177,7 +188,7 @@ function apply_select_1_onchange() {
 	$("br#apply_select_3").remove();
 	if (value >= 1) {
 		$.ajax({
-			url: "/index/",
+			url: "/department/0/",
 			type: "POST",
 			data: {"op": "get_departments"},
 			success: function(data) {
@@ -206,7 +217,7 @@ function apply_select_2_onchange() {
 		var did = $("select#apply_select_2").val();
 		if (did == null) did = 1;
 		$.ajax({
-			url: "/index/",
+			url: "/branch/0/",
 			type: "POST",
 			data: {"op": "get_branchs", "did": did},
 			success: function(data) {
@@ -215,7 +226,7 @@ function apply_select_2_onchange() {
 				var HTMLContent = "<select id=\"apply_select_3\" class=\"form-control\">";
 				for (var i in branchs) {
 					var branch = branchs[i];
-					HTMLContent += "<option bid='" + branch["bid"] + "'>" + branch["name"] + "</option>";
+					HTMLContent += "<option value='" + branch["bid"] + "'>" + branch["name"] + "</option>";
 				}
 				HTMLContent += "</select><br id=\"apply_select_3\" />";
 		    	$("#myModal_body").append(HTMLContent);
@@ -263,12 +274,17 @@ function read_message(b){
 	$.ajax({
 		url: "/message/",
 		type: "POST",
-		data: {"op": "read_message", "mid": mid},
+		data: {"op": "get_message", "mid": mid},
 		success: function(data) {
 			var data = JSON.parse(data);
+			var mtype = data["mtype"];
 			var HTMLContent = "<div id=\"message_div\" mid=" + mid + ">"
-				+"<span>发送时间：" + data["send_time"] + "</span><br/><br/>"
-				+"<span>" + data["text"] + "</span><br/><br/>";
+				+"<span>发送时间：" + data["send_time"] + "</span><br/><br/>";
+			HTMLContent += "<span>" + data["text"] + "</span><br/><br/>";
+			if (mtype >= 2 && mtype <= 5) {
+				$("#myModelYes").hide();
+				HTMLContent += "<button class='btn btn-default' onclick='commit(4,0)'>不同意</button>&nbsp;<button class='btn btn-primary' onclick='commit(4,1)'>同意</button><br/><br/>";
+			}
 			attachment = JSON.parse(data["attachment"]);
 			for (var i = 0; i < attachment.length; i++) {
 				var attach = attachment[i];

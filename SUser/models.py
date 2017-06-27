@@ -15,3 +15,4 @@ class Branch(models.Model):
 	name = models.CharField(max_length=32, default='')
 	did = models.IntegerField()
 	admin = models.TextField(default='[]')
+	member = models.TextField(default='[]')

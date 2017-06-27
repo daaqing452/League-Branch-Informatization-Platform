@@ -5,6 +5,7 @@ from django.shortcuts import render
 from SUser.models import SUser
 from SUser.utils import get_request_basis
 from django.views.decorators.csrf import csrf_exempt
+from SUser.models import SUser, Department, Branch
 from Message.models import Message
 import datetime
 import json
@@ -21,23 +22,23 @@ def message(request, mid=-1):
 		recvers = json.loads(request.POST.get('recver', '[]'))
 		# 检查收件人
 		check_recvers = 'yes'
-		recver_uids = []
+		recv_uids = []
 		for recver in recvers:
 			if recver == '': continue
 			susers = SUser.objects.filter(username=recver)
 			if len(susers) == 0:
 				check_recvers = '用户"' + recver + '"不存在'
 				break
-			recver_uids.append(susers[0].id)
+			recv_uids.append(susers[0].id)
 		jdata['result'] = check_recvers
 		if check_recvers != 'yes':
 			return HttpResponse(json.dumps(jdata))
 		# 逐条发送
-		for recver_uid in recver_uids:
-			message = Message.objects.create(recv_uid=recver_uid, send_uid=suser.id, read=False, mtype=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=request.POST.get('attachment'))
+		for recv_uid in recv_uids:
+			message = Message.objects.create(recv_uid=recv_uid, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title=request.POST.get('title'), text=request.POST.get('text'), attachment=request.POST.get('attachment'))
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'read_message':
+	if op == 'get_message':
 		messages = Message.objects.filter(id=request.POST.get('mid'))
 		if len(messages) > 0:
 			message = messages[0]
@@ -54,6 +55,46 @@ def message(request, mid=-1):
 		messages = Message.objects.filter(id=request.POST.get('mid'))
 		if len(messages) > 0:
 			message = messages[0]
+			mtype = message.mtype
+			# 申请
+			if mtype in [2, 3, 4, 5]:
+				yes = int(request.POST.get('yes'))
+				if yes == 0:
+					text = '您的申请未通过'
+				else:
+					sender = SUser.objects.get(id=message.send_uid)
+					meta = json.loads(message.meta)
+					if mtype == 2:
+						sender.admin_school = True
+						sender.save()
+						text = '您的 校级管理员 申请已通过'
+					elif mtype == 3:
+						department = Department.objects.get(id=meta['did'])
+						admin = json.loads(department.admin)
+						admin.append(sender.id)
+						department.admin = json.dumps(admin)
+						department.save()
+						text = '您的 ' + department.name + '管理员 申请已通过'
+					elif mtype == 4:
+						branch = Branch.objects.get(id=meta['bid'])
+						admin = json.loads(branch.admin)
+						admin.append(sender.id)
+						branch.admin = json.dumps(admin)
+						branch.save()
+						text = '您的 ' + branch.name + '管理员 申请已通过'
+					elif mtype == 5:
+						branch = Branch.objects.get(id=meta['bid'])
+						member = json.loads(branch.member)
+						member.append(sender.id)
+						branch.member = member
+						branch.save()
+						text = '您的 ' + branch.name + '成员 申请已通过'
+				# 回复结果
+				reply = Message.objects.create(recv_uid=message.send_uid, send_uid=message.recv_uid, mtype=1, send_time=datetime.datetime.now(), title='权限申请结果', text=text)
+				# 消除同组其他邮件
+				for peer_message in Message.objects.filter(group=message.group):
+					peer_message.read = True
+					peer_message.save()
 			message.read = True
 			message.save()
 		return HttpResponse(json.dumps(jdata))
