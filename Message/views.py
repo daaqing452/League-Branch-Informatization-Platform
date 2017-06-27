@@ -102,6 +102,7 @@ def message(request, mid=-1):
 	if suser is None:
 		return HttpResponseRedirect('/index/')
 
+	# 显示收件箱
 	if mid == -1:
 		rdata['read_all'] = True
 		messages = Message.objects.filter(recv_uid=suser.id)
@@ -114,8 +115,14 @@ def message(request, mid=-1):
 			if d['title'] == '': d['title'] = '（无标题）'
 			d['send_username'] = SUser.objects.get(id=message.send_uid).username
 			d['send_time'] = message.send_time.strftime("%Y-%m-%d %H:%M:%S")
-			re_messages.append(d);
+			re_messages.append(d)
 		rdata['messages'] = re_messages
+	else:
+		rdata['read_all'] = False
+		message = Message.objects.get(id=mid)
+		rdata['message'] = message
+		rdata['send_username'] = SUser.objects.get(id=message.send_uid).username
+
 	return render(request, 'message.html', rdata)
 
 @csrf_exempt 
