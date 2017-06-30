@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 import LBInformatization.settings as settings
-from SUser.views import index, department, branch, profile, add_user, delete_user
+from SUser.views import index, department, branch, profile, add_user, delete_user, handbook
 from Message.views import message, uploadFile
 
 urlpatterns = [
@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'^message/$', message),
     url(r'^message/([0-9]{1,9})/$', message),
     url(r'^uploadFile/$', uploadFile),
+    url(r'^handbook/$', handbook),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
