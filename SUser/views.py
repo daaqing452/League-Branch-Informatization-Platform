@@ -151,3 +151,8 @@ def add_user(request, username):
 	else:
 		html = username + ' already exists'
 	return HttpResponse(html)
+
+
+def handbook(request):
+	rdata, op, suser = get_request_basis(request)
+	return render(request,'handbook.html', rdata)
