@@ -35,6 +35,6 @@ urlpatterns = [
     url(r'^message/$', message),
     url(r'^message/([0-9]{1,9})/$', message),
     url(r'^uploadFile/$', uploadFile),
-    url(r'^handbook/([b,d])/([0-9]{1,9})$', handbook),
+    url(r'^handbook/([b,d])/([0-9]{1,9})/$', handbook),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

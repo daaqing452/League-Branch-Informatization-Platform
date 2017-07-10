@@ -6,6 +6,7 @@
     {% if suser.admin_school %}
     <button class="btn btn-primary" id="add_department" data-toggle="modal" data-target="#myModal" onclick="add_d()">添加院系</button>
     <br/>
+    <button class="btn btn-primary" id="review" data-toggle="modal" data-target="#myModal" onclick="review_d()">审阅院系工作手册</button>
     {% endif %}
 
     {% for department in departments %}

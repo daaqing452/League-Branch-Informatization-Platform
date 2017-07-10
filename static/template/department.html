@@ -13,9 +13,11 @@
     <br/>
     {% endfor %}
 
-    <br/>
     {% if is_admin %}
+    <br/>
     <button class="btn btn-primary"><a href="/handbook/d/{{ department.id }}" style="color:#ffffff;text-decoration:none">新建院系工作手册</a></button>
+    <br/>
+    <button class="btn btn-primary" id="review" data-toggle="modal" data-target="#myModal" onclick="review_b()">审阅团支部工作手册</button>
     {% endif %}
     
     {% endblock context %}

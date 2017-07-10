@@ -89,7 +89,7 @@ def department(request, did):
 		rdata['department'] = department = Department.objects.get(id=did)
 		rdata['branchs'] = branchs = Branch.objects.filter(did=did)
 		admin = json.loads(department.admin)
-		rdata['is_admin'] = (suser is not None) and (suser.admin_super or suser.admin_school or (suser.id in admin))
+		rdata['is_admin'] = (suser is not None) and (suser.admin_super or (suser.id in admin))
 	jdata = {}
 
 	if op == 'add_branch':
@@ -113,9 +113,8 @@ def branch(request, bid):
 	if bid != '0':
 		rdata['branch'] = branch = Branch.objects.get(id=bid)
 		rdata['department'] = department = Department.objects.get(id=branch.did)
-		admin_department = json.loads(department.admin)
-		admin_branch = json.loads(branch.admin)
-		rdata['is_admin'] = (suser is not None) and (suser.admin_super or suser.admin_school or (suser.id in admin_department) or (suser.id in admin_branch))
+		admin = json.loads(branch.admin)
+		rdata['is_admin'] = (suser is not None) and (suser.admin_super or (suser.id in admin))
 	jdata = {}
 
 	if op == 'get_branchs':

@@ -135,6 +135,11 @@ function commit(flag, param){
 			$("#myModal").modal('hide');
 			break;
 		}
+		//审阅工作手册
+		case 7:{
+			$("#myModal").modal('hide');
+			break;
+		}
 	}
 	
 }

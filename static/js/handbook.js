@@ -134,6 +134,8 @@ function submit(){
 		data: {"op": "submit", "content": JSON.stringify(HANDBOOK_content)},
 		success: function(data) {
 			var data = JSON.parse(data);
+			alert("提交成功");
+			window.location.href = '/index/';
 		}
 	})
 	//console.log(JSON.stringify(HANDBOOK_content));
