@@ -12,5 +12,10 @@
     <a href="/branch/{{ branch.id }}/">{{ branch.name }}</a>
     <br/>
     {% endfor %}
+
+    <br/>
+    {% if is_admin %}
+    <button class="btn btn-primary"><a href="/handbook/d/{{ department.id }}" style="color:#ffffff;text-decoration:none">新建院系工作手册</a></button>
+    {% endif %}
     
     {% endblock context %}

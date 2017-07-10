@@ -4,6 +4,10 @@
     <script src="{% static "js/branch.js" %}"> </script>
 
     <h3> {{ branch.name }} </h3>
-    <br/>
     
+    <br/>
+    {% if is_admin %}
+    <button class="btn btn-primary"><a href="/handbook/b/{{ branch.id }}" style="color:#ffffff;text-decoration:none">新建团支部工作手册</a></button>
+    {% endif %}
+
     {% endblock context %}
