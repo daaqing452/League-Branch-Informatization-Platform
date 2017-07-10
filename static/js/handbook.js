@@ -22,7 +22,7 @@ $(document).ready(function(){
 			$("#content").append(div);
 		}
 	}
-	$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"save()\">保存</button>");
+	$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	$("#table_0_0").show();
 	fill_content();
 });
@@ -96,7 +96,7 @@ function time_select(id){
 	$("#table_"+chapter+"_"+grade).show();
 }
 
-function save(){
+function submit(){
 	var HANDBOOK_content = new Array();
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = new Array();
@@ -128,6 +128,14 @@ function save(){
 		}
 		HANDBOOK_content.push(CHAPTER_content);
 	}
+	$.ajax({
+		url: window.location.href,
+		type: "POST",
+		data: {"op": "submit", "content": JSON.stringify(HANDBOOK_content)},
+		success: function(data) {
+			var data = JSON.parse(data);
+		}
+	})
 	//console.log(JSON.stringify(HANDBOOK_content));
 }
 
