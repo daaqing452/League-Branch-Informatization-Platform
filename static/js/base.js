@@ -59,7 +59,7 @@ function commit(flag, param){
 			/*
 				!!!
 			*/
-			var text = $("#sg_text").val();
+			var text = editor.html();
 			var attach_list = new Array();
 			for(var i = 0; i < $("div.attachment").length; i ++ ){
 				var attach = new Array();
@@ -137,6 +137,20 @@ function commit(flag, param){
 		}
 		//审阅工作手册
 		case 7:{
+			$("#myModal").modal('hide');
+			break;
+		}
+		case 8:{
+			var title = $("#news_title").val();
+			var text = editor.html();
+			var attach_list = new Array();
+			for(var i = 0; i < $("div.attachment").length; i ++ ){
+				var attach = new Array();
+				attach.push($("div.attachment").eq(i).attr("title"));
+				attach.push($("div.attachment").eq(i).attr("url"));
+				attach_list.push(attach);
+			}
+			
 			$("#myModal").modal('hide');
 			break;
 		}

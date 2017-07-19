@@ -3,15 +3,27 @@
     {% block context %}
     <script src="{% static "js/index.js" %}"> </script>
 
+    <div class = "row">
     {% if suser.admin_school %}
-    <button class="btn btn-primary" id="add_department" data-toggle="modal" data-target="#myModal" onclick="add_d()">添加院系</button>
-    <br/>
-    <button class="btn btn-primary" id="review" data-toggle="modal" data-target="#myModal" onclick="review_d()">审阅院系工作手册</button>
+    <div class="col-md-2" style="background: #F0F0F0;">
+    <ul class="nav nav-pills nav-stacked">
+        <li>
+            <a id="add_department" data-toggle="modal" data-target="#myModal" onclick="add_d()">添加院系</a>
+        </li>
+        <li>
+            <a id="review" data-toggle="modal" data-target="#myModal" onclick="review_d()">审阅院系工作手册</a>
+        </li>
+        <li>
+            <a id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</a>
+        </li>
+    </ul>
+    </div>
     {% endif %}
-
+    <div class="col-md-8">
     {% for department in departments %}
 	<a href="/department/{{ department.id }}/"> {{ department.name }} </a>
 	<br/>
     {% endfor %}
-    
+    </div>
+    </div>
     {% endblock context %}
