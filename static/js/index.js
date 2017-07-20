@@ -50,7 +50,7 @@ function release_n(){
         items : [
             'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
             'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
+            'insertunorderedlist', '|', 'emoticons', 'image']
     });
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(8)");
 }

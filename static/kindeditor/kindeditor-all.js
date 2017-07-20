@@ -3243,6 +3243,7 @@ _extend(KCmd, {
 	insertimage : function(url, title, width, height, border, align) {
 		title = _undef(title, '');
 		border = _undef(border, 0);
+
 		var html = '<img src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
@@ -7367,11 +7368,12 @@ KindEditor.plugin('image', function(K) {
 					if (formatUploadUrl) {
 						url = K.formatUrl(url, 'absolute');
 					}
+
 					if (self.afterUpload) {
 						self.afterUpload.call(self, url, data, name);
 					}
 					if (!fillDescAfterUploadImage) {
-						clickFn.call(self, url, data.title, data.width, data.height, data.border, data.align);
+						clickFn.call(self, data.real_url, data.title, data.width, data.height, data.border, data.align);
 					} else {
 						K(".ke-dialog-row #remoteUrl", div).val(url);
 						K(".ke-tabs-li", div)[0].click();
