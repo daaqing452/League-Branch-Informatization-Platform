@@ -13,3 +13,17 @@ class Message(models.Model):
 	text = models.TextField(default='')
 	attachment = models.TextField(default='[]')
 	meta = models.TextField(default='{}')
+
+class Handbook(models.Model):
+	htype = models.CharField(max_length=2, default='.')
+	review_id = models.IntegerField(default=0)
+	submit_id = models.IntegerField(default=0)
+	year = models.IntegerField(default=0)
+	content = models.TextField(default='')
+
+class News(models.Model):
+	ntype = models.CharField(max_length=2, default='.')
+	display_id = models.IntegerField(default=0)
+	year = models.IntegerField(default=0)
+	title = models.TextField(default='')
+	text = models.TextField(default='')

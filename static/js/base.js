@@ -140,17 +140,19 @@ function commit(flag, param){
 			$("#myModal").modal('hide');
 			break;
 		}
+		//发布新闻
 		case 8:{
+			var url = window.location.href;
 			var title = $("#news_title").val();
 			var text = editor.html();
-			var attach_list = new Array();
-			for(var i = 0; i < $("div.attachment").length; i ++ ){
-				var attach = new Array();
-				attach.push($("div.attachment").eq(i).attr("title"));
-				attach.push($("div.attachment").eq(i).attr("url"));
-				attach_list.push(attach);
-			}
-			
+			$.ajax({
+				url: "/news/",
+				type: "POST",
+				data: {"op": "add_news", "title": title, "text": text},
+				success: function(data) {
+					var data = JSON.parse(data);
+				}
+			});
 			$("#myModal").modal('hide');
 			break;
 		}

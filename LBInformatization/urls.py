@@ -18,8 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 import LBInformatization.settings as settings
 from SUser.views import index, department, branch, profile, add_user, delete_user
-from Message.views import message, uploadFile
-from Handbook.views import handbook
+from Message.views import message, handbook, uploadFile
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
