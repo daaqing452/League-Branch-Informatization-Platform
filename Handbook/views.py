@@ -33,12 +33,12 @@ def handbook(request, htype, id0):
 		return HttpResponse(json.dumps(jdata))
 
 	if htype == 'd':
-		department = Department.objects.get(id=hid)
+		department = Department.objects.get(id=id0)
 		branch = None
 		admin_department = json.loads(department.admin)
 		admin_branch = []
 	elif htype == 'b':
-		branch = Branch.objects.get(id=hid)
+		branch = Branch.objects.get(id=id0)
 		department = Department.objects.get(id=branch.did)
 		admin_department = []
 		admin_branch = json.loads(branch.admin)
