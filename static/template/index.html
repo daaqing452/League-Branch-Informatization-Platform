@@ -2,6 +2,7 @@
 	{% load static %}
     {% block context %}
     <script src="{% static "js/index.js" %}"> </script>
+    <script src="{% static "js/html2canvas.js" %}"> </script>
 
     <div class = "row">
     {% if suser.admin_school %}
@@ -19,7 +20,8 @@
     </ul>
     </div>
     {% endif %}
-    <div class="col-md-8">
+    <div class="col-md-8" id="pdf_area">
+    
     {% for department in departments %}
 	<a href="/department/{{ department.id }}/"> {{ department.name }} </a>
 	<br/>

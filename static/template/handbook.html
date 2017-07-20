@@ -3,18 +3,13 @@
     {% block context %}
     <script src="{% static "js/handbook.js" %}"> </script>
     <div class="row">
-        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            <button class="btn btn-default" onclick="readonly()">展示团支部手册(可读)</button>
+            <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>
+        </div>
         <div class="col-md-8" id="content">
-            <h1  class="text-primary text-center">{{ title }}</h1>
-            <ul id="nav_0" class="nav nav-tabs">
-                    <li role="presentation"><a id="grade_0" href="javascript:void(0)" onclick="time_select(0)">2017~2018学年</a></li>
-                    <li role="presentation" ><a  id="grade_1" href="javascript:void(0)" onclick="time_select(1)">2018~2019学年</a></li>
-                    <li role="presentation"><a id="grade_2" href="javascript:void(0)" onclick="time_select(2)">2019~2020学年</a></li>
-                    <li role="presentation"><a id="grade_3" href="javascript:void(0)" onclick="time_select(3)">2020~2021学年</a></li>
-            </ul>
-            <br/>
-            
-            <ul id="nav_1" class="nav nav-pills">
+            <h1  class="text-primary text-center">{{ title }}</h1>    
+            <ul id="nav_1" class="nav nav-tabs">
                 <li role="presentation"><a id="chapter_0" href="javascript:void(0)" onclick="module_select(0)">基本情况</a></li>
                 <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作计划</a></li>
                 <li role="presentation"><a id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">思想引领</a></li>
@@ -26,7 +21,7 @@
             </ul>
 
             <!--基本情况-->
-            <div type="clone" style="display: none;" id="table_0">
+            <div style="display: none;" id="table_0">
                 <h4>基本信息</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
@@ -186,7 +181,7 @@
                 </table>
             </div>
             <!--工作计划-->
-            <div type="clone" style="display: none;" id="table_1">
+            <div  style="display: none;" id="table_1">
                 <h4>全年计划</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
@@ -207,7 +202,7 @@
                 </table>
             </div>
             <!--思想引领-->
-            <div type="clone" style="display: none;" id="table_2">
+            <div  style="display: none;" id="table_2">
                 <h4>主题团日</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                          <tr>
@@ -285,7 +280,7 @@
                 </table>
             </div>
             <!--学风建设-->
-            <div type="clone" style="display: none;" id="table_3">
+            <div  style="display: none;" id="table_3">
                 <h4>主题团日</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                          <tr>
@@ -363,7 +358,7 @@
                 </table>
             </div>
             <!--体育氛围-->
-            <div type="clone" style="display: none;" id="table_4">
+            <div  style="display: none;" id="table_4">
                 <h4>主题团日</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                          <tr>
@@ -439,10 +434,9 @@
                             </td>
                         </tr>
                 </table>
-                </div>
             </div>
             <!--自定义-->
-            <div type="clone" style="display: none;" id="table_5">
+            <div  style="display: none;" id="table_5">
                 <h4>特色活动</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                          <tr>
@@ -468,10 +462,9 @@
                             </td>
                         </tr>
                 </table>
-                </div>
             </div>
             <!--工作总结-->
-            <div type="clone" style="display: none;" id="table_6">
+            <div style="display: none;" id="table_6">
                 <h4>全年工作总结</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
@@ -479,7 +472,7 @@
                         </tr>
                 </table>
             </div>
-
+        </div>
         </div>
         <div class="col-md-2"></div>
     </div>

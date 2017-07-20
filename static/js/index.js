@@ -1,7 +1,6 @@
 $(document).ready(function(){
-	
-	
 });
+
 
 
 function add_d(){
