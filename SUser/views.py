@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
 from SUser.utils import get_request_basis
-from Message.models import Message
+from Message.models import Message, News
 import datetime
 import json
 import random
@@ -81,6 +81,8 @@ def index(request):
 			message = Message.objects.create(recv_uid=recv_uid, send_uid=suser.id, group=group, mtype=mtype, send_time=datetime.datetime.now(), title='权限申请', text=text, meta=json.dumps(meta))
 		return HttpResponse(json.dumps(jdata))
 
+	news_list = News.objects.filter(display_type='i')
+	rdata['news_list'] = news_list
 	return render(request, 'index.html', rdata)
 
 def department(request, did):
@@ -106,6 +108,8 @@ def department(request, did):
 		jdata['departments'] = departments
 		return HttpResponse(json.dumps(jdata))
 
+	news_list = News.objects.filter(display_type='d', display_id=did)
+	rdata['news_list'] = news_list
 	return render(request, 'department.html', rdata)
 
 def branch(request, bid):
@@ -128,6 +132,8 @@ def branch(request, bid):
 		jdata['branchs'] = branchs
 		return HttpResponse(json.dumps(jdata))
 
+	news_list = News.objects.filter(display_type='b', display_id=bid)
+	rdata['news_list'] = news_list
 	return render(request, 'branch.html', rdata)
 
 def profile(request, sid):

@@ -142,28 +142,36 @@ function commit(flag, param){
 		}
 		//发布新闻
 		case 8:{
-			var url = window.location.href;
-			var reg_index = url.match("index");
-			var reg_department = url.match("department/\\d+/");
-			var reg_branch = url.match("branch/\\d+/");
 			var display_type = '.';
 			var display_id = -1;
-			if (reg_index != null) {
+			var url = window.location.href;
+			var reg_i = url.match("index");
+			var reg_d = url.match("department/\\d+/");
+			var reg_b = url.match("branch/\\d+/");
+			if (reg_i != null) {
 				display_type = 'i';
-			} else if 
+			} else if (reg_d != null) {
+				display_type = 'd';
+				var reg = reg_d[0];
+				display_id = parseInt(reg.substr(11, reg.length-12));
+			} else if (reg_b != null) {
+				display_type = 'b';
+				var reg = reg_b[0];
+				display_id = parseInt(reg.substr(7, reg.length-8));
+			}
 
-			var did = parseInt(reg.substr(11, reg.length-12));
-			
 			var title = $("#news_title").val();
 			var text = editor.html();
-			/*$.ajax({
+			$.ajax({
 				url: "/news/",
 				type: "POST",
-				data: {"op": "add_news", "title": title, "text": text},
+				data: {"op": "add_news", "title": title, "text": text, "display_type": display_type, "display_id": display_id},
 				success: function(data) {
 					var data = JSON.parse(data);
+					alert("发布成功");
+					window.location.reload();
 				}
-			});*/
+			});
 			$("#myModal").modal('hide');
 			break;
 		}

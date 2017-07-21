@@ -22,4 +22,14 @@
     <a id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</a>
     {% endif %}
     
+
+    <br/>
+    <br/>
+    <p>新闻</p>
+    <div>
+        {% for news in news_list %}
+        <a href="/news/{{ news.id }}/"> {{ news.title }} </a>
+        <br/>
+        {% endfor %}
+    </div>
     {% endblock context %}

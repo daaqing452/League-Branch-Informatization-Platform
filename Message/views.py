@@ -205,6 +205,16 @@ def news(request, nid=-1):
 	if op == 'add_news':
 		title = request.POST.get('title')
 		text = request.POST.get('text')
+		display_type = request.POST.get('display_type')
+		display_id = request.POST.get('display_id')
+		year = year = datetime.datetime.now().year
+		news = News.objects.create(display_type=display_type, display_id=display_id, year=year, title=title, text=text)
+		return HttpResponse(json.dumps(jdata))
+
+	news = News.objects.get(id=nid)
+	rdata['news'] = news
+	print(str(news.text))
+	return render(request, 'news.html', rdata)
 
 @csrf_exempt 
 def uploadFile(request):
