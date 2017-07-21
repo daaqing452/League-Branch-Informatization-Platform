@@ -143,16 +143,28 @@ function commit(flag, param){
 		//发布新闻
 		case 8:{
 			var url = window.location.href;
+
+			var reg_index = url.match("index");
+			console.log(reg_index[0]);
+
+			var reg_department = url.match("department/\\d+/");
+			console.log(reg_department);
+
+			var reg_branch = url.match("branch/\\d+/");
+			console.log(reg_branch)
+
+			var did = parseInt(reg.substr(11, reg.length-12));
+			
 			var title = $("#news_title").val();
 			var text = editor.html();
-			$.ajax({
+			/*$.ajax({
 				url: "/news/",
 				type: "POST",
 				data: {"op": "add_news", "title": title, "text": text},
 				success: function(data) {
 					var data = JSON.parse(data);
 				}
-			});
+			});*/
 			$("#myModal").modal('hide');
 			break;
 		}
