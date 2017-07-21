@@ -143,15 +143,14 @@ function commit(flag, param){
 		//发布新闻
 		case 8:{
 			var url = window.location.href;
-
 			var reg_index = url.match("index");
-			console.log(reg_index[0]);
-
 			var reg_department = url.match("department/\\d+/");
-			console.log(reg_department);
-
 			var reg_branch = url.match("branch/\\d+/");
-			console.log(reg_branch)
+			var display_type = '.';
+			var display_id = -1;
+			if (reg_index != null) {
+				display_type = 'i';
+			} else if 
 
 			var did = parseInt(reg.substr(11, reg.length-12));
 			
@@ -328,4 +327,27 @@ function read_message(b){
 		}
 	});
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
+}
+
+function release_n(){
+	$(".modal-dialog").width(500);
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("发布新闻");
+	$("#myModelYes").text("发布");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
+	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
+	editor = KindEditor.create('textarea[name="sg_text"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist', '|', 'emoticons', 'image']
+    });
+    $(".modal-footer").children("button").eq(1).attr("onclick","commit(8)");
 }
