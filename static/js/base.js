@@ -338,7 +338,7 @@ function read_message(b){
 }
 
 function release_n(){
-	$(".modal-dialog").width(500);
+	$(".modal-dialog").width(1000);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("发布新闻");
 	$("#myModelYes").text("发布");
