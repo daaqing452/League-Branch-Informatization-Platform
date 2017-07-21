@@ -2,10 +2,11 @@
 	{% load static %}
     {% block context %}
     <script src="{% static "js/handbook.js" %}"> </script>
-    <div class="row">
+
+    <div id="main_div" hid="{{ handbook.id }}" class="row">
         <div class="col-md-2">
-            <button class="btn btn-default" onclick="readonly()">展示团支部手册(可读)</button>
-            <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>
+            <!--<button class="btn btn-default" onclick="readonly()">展示团支部手册(可读)</button>
+            <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
         </div>
         <div class="col-md-8" id="content">
             <h1  class="text-primary text-center">{{ title }}</h1>    
@@ -478,5 +479,12 @@
     </div>
 
     
+    <script>
+    {% if readonly %}
+        load_handbook();
+    {% else %} 
+        
+    {% endif %}
+    </script>
     
     {% endblock context %}

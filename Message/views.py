@@ -124,7 +124,7 @@ def message(request, mid=-1):
 
 	return render(request, 'message.html', rdata)
 
-def handbook(request, htype, id0):
+def handbook_edit(request, htype, idd):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
@@ -141,18 +141,16 @@ def handbook(request, htype, id0):
 			for handbook in handbooks:
 				branch = Branch.objects.get(id=handbook.submit_id)
 				l.append({'hid': handbook.id, 'title': branch.name})
-
-		print('xx', len(l))
 		jdata['handbooks'] = l
 		return HttpResponse(json.dumps(jdata))
 
 	if htype == 'd':
-		department = Department.objects.get(id=id0)
+		department = Department.objects.get(id=idd)
 		branch = None
 		admin_department = json.loads(department.admin)
 		admin_branch = []
 	elif htype == 'b':
-		branch = Branch.objects.get(id=id0)
+		branch = Branch.objects.get(id=idd)
 		department = Department.objects.get(id=branch.did)
 		admin_department = []
 		admin_branch = json.loads(branch.admin)
@@ -169,9 +167,33 @@ def handbook(request, htype, id0):
 		rdata['title'] = '院系工作手册'
 	elif htype == 'b':
 		rdata['title'] = '团支部工作手册'
+	rdata['readonly'] = False
 
 	# 权限检测
 	if (suser is not None) and (suser.admin_super or (suser.id in admin_department) or (suser.id in admin_branch)):
+		return render(request,'handbook.html', rdata)
+
+def handbook_show(request, hid):
+	rdata, op, suser = get_request_basis(request)
+	jdata = {}
+
+	handbook = Handbook.objects.get(id=hid)
+	rdata['handbook'] = handbook
+	if handbook.htype == 'd':
+		hflag = True
+	elif handbook.htype == 'b':
+		hflag = False
+		department = Department.objects.get(id=hankbook.review_id)
+		admin_department = json.loads(department.admin)
+
+	if op == 'load_handbook':
+		jdata['content'] = handbook.content
+		return HttpResponse(json.dumps(jdata))
+
+	rdata['readonly'] = True
+
+	# 权限检测
+	if (suser is not None) and (suser.admin_super or (hflag and suser.admin_school) or (not hflag and suser.id in admin_department)):
 		return render(request,'handbook.html', rdata)
 
 @csrf_exempt 

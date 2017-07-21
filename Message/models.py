@@ -22,7 +22,7 @@ class Handbook(models.Model):
 	content = models.TextField(default='')
 
 class News(models.Model):
-	ntype = models.CharField(max_length=2, default='.')
+	display_type = models.CharField(max_length=2, default='.')
 	display_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
 	title = models.TextField(default='')

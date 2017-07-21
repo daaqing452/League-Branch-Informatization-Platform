@@ -8,6 +8,8 @@
     <br/>
     {% if is_admin %}
     <button class="btn btn-primary"><a href="/handbook/b/{{ branch.id }}" style="color:#ffffff;text-decoration:none">新建团支部工作手册</a></button>
+    <br/>
+    <button class="btn btn-primary" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</button>
     {% endif %}
 
     {% endblock context %}

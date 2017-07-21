@@ -9,8 +9,21 @@ $(document).ready(function(){
 	$("#chapter_0").parent().eq(0).attr("class","active");
 	$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	$("#table_0").show();
-	fill_content();
+	//fill_content();
 });
+
+function load_handbook() {
+	var hid = $("#main_div").attr("hid");
+	$.ajax({
+		url: window.location.href,
+		type: "POST",
+		data: {"op": "load_handbook", "hid": hid},
+		success: function(data) {
+			var data = JSON.parse(data);
+			readonly(data["content"]);
+		}
+	});
+}
 
 function fill_content(){
 	var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
@@ -45,8 +58,10 @@ function fill_content(){
 	}
 }
 
-function readonly(){
+function readonly(content){
 	var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
+	console.log(content);
+	//var HANDBOOK_content = content;
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
