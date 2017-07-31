@@ -2,23 +2,90 @@
 	{% load static %}
     {% block context %}
     <script src="{% static "js/branch.js" %}"> </script>
+    <div class = "row">
+        <div class = "col-md-2">
+        <div><h2 class="text-success" style="margin-top: 0px;"><span class="glyphicon glyphicon-home"></span> {{ branch.name }} </h2></div>
+        <ul class="nav nav-pills nav-stacked" id = "op_list">
+            {% if is_admin %}
+            <li class="active">
+                <a href="/handbook/b/{{ branch.id }}">新建团支部工作手册</a>
+            </li>
+            <li>
+                <a id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</a>
+            </li>
+            {% endif %}
+        </ul>
 
-    <h3> {{ branch.name }} </h3>
-    
-    <br/>
-    {% if is_admin %}
-    <a href="/handbook/b/{{ branch.id }}">新建团支部工作手册</a>
-    <br/>
-    <a id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</a>
-    {% endif %}
+        </div>
 
-    <br/>
-    <br/>
-    <p>新闻</p>
-    <div>
-        {% for news in news_list %}
-        <a href="/news/{{ news.id }}/"> {{ news.title }} </a>
-        <br/>
-        {% endfor %}
-    </div>
+        <div class="col-md-7">
+            <!-- begin of carousel -->
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="height: 400px;">
+              <!-- Indicators -->
+              <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+              </ol>
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner" role="listbox" style="height: 400px">
+                <div class="item active" style="height: 100%">
+                  <img src="/media/news_1.jpg" style="width: 100%">
+                  <div class="carousel-caption">
+                    <h3>第一页</h3>
+                    <p>这是第一页的描述文本</p>
+                  </div>
+                </div>
+                <div class="item" style="height: 100%">
+                  <img src="/media/news_2.jpg" style="width: 100%">
+                  <div class="carousel-caption">
+                    <h3>第二页</h3>
+                    <p>这是第二页的描述文本</p>
+                  </div>
+                </div>
+                <div class="item" style="height: 100%">
+                  <img src="/media/news_3.jpg" style="width: 100%">
+                  <div class="carousel-caption">
+                    <h3>第三页</h3>
+                    <p>这是第三页的描述文本</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+            <!-- end of carousel -->
+        </div>
+
+        <div class="col-md-3" >
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>近期新闻</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for news in news_list %}
+                    <tr>
+                    <td><a href="/news/{{ news.id }}/"> {{ news.title }} </a></td>
+                    <td>
+                        23:33 12/22/2017
+                    </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+
     {% endblock context %}

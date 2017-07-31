@@ -1,9 +1,15 @@
 $(document).ready(function(){
+	$('#op_list li a').click(function(){
+        $('#op_list li').removeClass('active');
+        $(this).parent().addClass('active');
+
+   })
 });
 
 
 
 function add_d(){
+	
 	$(".modal-dialog").width(250);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("添加院系");
@@ -12,6 +18,7 @@ function add_d(){
 }
 
 function review_d(){
+	
 	$(".modal-dialog").width(250);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("审阅院系工作手册");

@@ -337,6 +337,7 @@ function read_message(b){
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 }
 
+
 function release_n(){
 	$(".modal-dialog").width(1000);
 	$("#myModal_body").empty();

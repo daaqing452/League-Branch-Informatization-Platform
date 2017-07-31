@@ -1,8 +1,10 @@
 $(document).ready(function(){
-	
+	$('#op_list li a').click(function(){
+        $('#op_list li').removeClass('active');
+        $(this).parent().addClass('active');
 
+   })
 });
-
 
 function add_b(){
 	$(".modal-dialog").width(250);
