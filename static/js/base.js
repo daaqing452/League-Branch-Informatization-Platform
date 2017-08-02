@@ -175,6 +175,15 @@ function commit(flag, param){
 			$("#myModal").modal('hide');
 			break;
 		}
+		//发布图文
+		case 9:{
+			var text = editor.html();
+			var title = $("#news_title").val();
+			//图片地址 /media/XXX
+			var img_path = $(text).attr("src");
+
+			break;
+		}
 	}
 	
 }
@@ -337,6 +346,25 @@ function read_message(b){
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 }
 
+function release_a_n(){
+	$(".modal-dialog").width(500);
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("发布图文");
+	$("#myModelYes").text("发布");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
+	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
+	editor = KindEditor.create('textarea[name="sg_text"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'image']
+    });
+    $(".modal-footer").children("button").eq(1).attr("onclick","commit(9)");
+}
 
 function release_n(){
 	$(".modal-dialog").width(1000);
@@ -345,7 +373,6 @@ function release_n(){
 	$("#myModelYes").text("发布");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(3)");
 	editor = KindEditor.create('textarea[name="sg_text"]', {
         resizeType : 1,
         allowPreviewEmoticons : false,
