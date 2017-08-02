@@ -6,10 +6,10 @@
         <div class = "col-md-2">
         <div><h2 class="text-success" style="margin-top: 0px;"><span class="glyphicon glyphicon-home"></span> {{ department.name }} </h2></div>
         <ul class="nav nav-pills nav-stacked" id = "op_list">
+            {% if is_admin %}
             <li class="active">
                 <a id="add_branch" data-toggle="modal" data-target="#myModal" onclick="add_b()">添加团支部</a>   
             </li>
-            {% if is_admin %}
             <li>
                 <a href="/handbook/d/{{ department.id }}">新建院系工作手册</a>
             </li>

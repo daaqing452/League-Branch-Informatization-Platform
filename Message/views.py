@@ -213,7 +213,6 @@ def news(request, nid=-1):
 
 	news = News.objects.get(id=nid)
 	rdata['news'] = news
-	print(str(news.text))
 	return render(request, 'news.html', rdata)
 
 @csrf_exempt 

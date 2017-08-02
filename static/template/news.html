@@ -3,6 +3,6 @@
     {% block context %}
 
     <h3> {{ news.title }} </h3>
-    {{ news.text }}
+    {{ news.text | safe }}
 
     {% endblock context %}
