@@ -224,12 +224,13 @@ def news(request, nid=-1):
 		img_path = request.POST.get('img_path')
 		display_type = request.POST.get('display_type')
 		display_id = int(request.POST.get('display_id'))
+		print(display_type, display_id)
 		if display_type == 'i':
 			school = School.objects.all()[0]
 			school.slide = slide_add(school.slide, title, text, img_path)
 			school.save()
 		elif display_type == 'd':
-			department = Departent.objects.get(id=display_id)
+			department = Department.objects.get(id=display_id)
 			department.slide = slide_add(department.slide, title, text, img_path)
 			department.save()
 		elif display_type == 'b':

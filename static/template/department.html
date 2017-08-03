@@ -44,27 +44,15 @@
 
               <!-- Wrapper for slides -->
               <div class="carousel-inner" role="listbox" style="height: 400px">
-                <div class="item active" style="height: 100%">
-                  <img src="/media/news_1.jpg" style="width: 100%">
+                {% for slide in slide_list %}
+                <div class="item {% if forloop.first %} active {% endif %}" style="height: 100%">
+                  <img src="{{ slide.img_path }}" style="width: 100%">
                   <div class="carousel-caption">
-                    <h3>第一页</h3>
-                    <p>这是第一页的描述文本</p>
+                    <h3>{{ slide.title }}</h3>
+                    <!--<p>{{ slide.text }}</p>-->
                   </div>
                 </div>
-                <div class="item" style="height: 100%">
-                  <img src="/media/news_2.jpg" style="width: 100%">
-                  <div class="carousel-caption">
-                    <h3>第二页</h3>
-                    <p>这是第二页的描述文本</p>
-                  </div>
-                </div>
-                <div class="item" style="height: 100%">
-                  <img src="/media/news_3.jpg" style="width: 100%">
-                  <div class="carousel-caption">
-                    <h3>第三页</h3>
-                    <p>这是第三页的描述文本</p>
-                  </div>
-                </div>
+                {% endfor %}
               </div>
 
               <!-- Controls -->

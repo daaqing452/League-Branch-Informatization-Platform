@@ -83,8 +83,7 @@ def index(request):
 
 	news_list = News.objects.filter(display_type='i')
 	rdata['news_list'] = news_list
-	rdata['slides'] = json.loads(School.objects.all()[0].slide)
-	print(json.loads(School.objects.all()[0].slide)[1])
+	rdata['slide_list'] = json.loads(School.objects.all()[0].slide)
 	return render(request, 'index.html', rdata)
 
 def department(request, did):
@@ -112,6 +111,7 @@ def department(request, did):
 
 	news_list = News.objects.filter(display_type='d', display_id=did)
 	rdata['news_list'] = news_list
+	rdata['slide_list'] = json.loads(department.slide)
 	return render(request, 'department.html', rdata)
 
 def branch(request, bid):
@@ -136,6 +136,7 @@ def branch(request, bid):
 
 	news_list = News.objects.filter(display_type='b', display_id=bid)
 	rdata['news_list'] = news_list
+	rdata['slide_list'] = json.loads(branch.slide)
 	return render(request, 'branch.html', rdata)
 
 def profile(request, sid):
