@@ -206,7 +206,16 @@ function commit(flag, param){
 			break;
 		}
 		// 甲团-校级别
-		case 10: {
+		case 10:{
+			var title = $("#news_title").val();
+			var text = editor.html();
+			var attach_list = new Array();
+			for(var i = 0; i < $("div.attachment").length; i ++ ){
+				var attach = new Array();
+				attach.push($("div.attachment").eq(i).attr("title"));
+				attach.push($("div.attachment").eq(i).attr("url"));
+				attach_list.push(attach);
+			}
 			$("#myModal").modal('hide');
 			break;
 		}

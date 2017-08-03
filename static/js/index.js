@@ -51,9 +51,20 @@ function review_year_onchange() {
 }
 
 function jiatuan() {
-	$(".modal-dialog").width(250);
+	$(".modal-dialog").width(500);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("甲团");
-	$('#myModal_body').append("");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
+	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
+	editor = KindEditor.create('textarea[name="sg_text"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'insertfile']
+    });
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(10)");
 }
