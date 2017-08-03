@@ -55,6 +55,5 @@ function jiatuan() {
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("甲团");
 	$('#myModal_body').append("");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(7)");
-	review_year_onchange();
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(10)");
 }
