@@ -15,14 +15,14 @@ class Message(models.Model):
 	meta = models.TextField(default='{}')
 
 class Handbook(models.Model):
-	htype = models.CharField(max_length=2, default='.')
+	htype = models.CharField(max_length=1, default='.')
 	review_id = models.IntegerField(default=0)
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
 	content = models.TextField(default='')
 
 class News(models.Model):
-	display_type = models.CharField(max_length=2, default='.')
+	display_type = models.CharField(max_length=1, default='.')
 	display_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
 	title = models.TextField(default='')

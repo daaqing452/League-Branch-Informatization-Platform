@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from SUser.models import SUser, Department, Branch
+from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
 from SUser.utils import get_request_basis
 from Message.models import Message, News
@@ -83,6 +83,8 @@ def index(request):
 
 	news_list = News.objects.filter(display_type='i')
 	rdata['news_list'] = news_list
+	rdata['slides'] = json.loads(School.objects.all()[0].slide)
+	print(json.loads(School.objects.all()[0].slide)[1])
 	return render(request, 'index.html', rdata)
 
 def department(request, did):

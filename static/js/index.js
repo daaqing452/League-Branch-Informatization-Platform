@@ -49,3 +49,12 @@ function review_year_onchange() {
 		}
 	});
 }
+
+function jiatuan() {
+	$(".modal-dialog").width(250);
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("甲团");
+	$('#myModal_body').append("");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(7)");
+	review_year_onchange();
+}

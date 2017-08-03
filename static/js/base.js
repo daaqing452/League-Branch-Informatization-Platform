@@ -12,6 +12,27 @@ function check_red_spot() {
 	}
 }
 
+function getUrlInfo() {
+	var display_type = '.';
+	var display_id = -1;
+	var url = window.location.href;
+	var reg_i = url.match("index");
+	var reg_d = url.match("department/\\d+/");
+	var reg_b = url.match("branch/\\d+/");
+	if (reg_i != null) {
+		display_type = 'i';
+	} else if (reg_d != null) {
+		display_type = 'd';
+		var reg = reg_d[0];
+		display_id = parseInt(reg.substr(11, reg.length-12));
+	} else if (reg_b != null) {
+		display_type = 'b';
+		var reg = reg_b[0];
+		display_id = parseInt(reg.substr(7, reg.length-8));
+	}
+	return [display_type, display_id]
+}
+
 function commit(flag, param){
 	switch(flag){
 		//登录
@@ -142,23 +163,9 @@ function commit(flag, param){
 		}
 		//发布新闻
 		case 8:{
-			var display_type = '.';
-			var display_id = -1;
-			var url = window.location.href;
-			var reg_i = url.match("index");
-			var reg_d = url.match("department/\\d+/");
-			var reg_b = url.match("branch/\\d+/");
-			if (reg_i != null) {
-				display_type = 'i';
-			} else if (reg_d != null) {
-				display_type = 'd';
-				var reg = reg_d[0];
-				display_id = parseInt(reg.substr(11, reg.length-12));
-			} else if (reg_b != null) {
-				display_type = 'b';
-				var reg = reg_b[0];
-				display_id = parseInt(reg.substr(7, reg.length-8));
-			}
+			var tuple = getUrlInfo();
+			var display_type = tuple[0];
+			var display_id = tuple[1];
 
 			var title = $("#news_title").val();
 			var text = editor.html();
@@ -177,11 +184,30 @@ function commit(flag, param){
 		}
 		//发布图文
 		case 9:{
+			var tuple = getUrlInfo();
+			var display_type = tuple[0];
+			var display_id = tuple[1];
+
 			var text = editor.html();
 			var title = $("#news_title").val();
 			//图片地址 /media/XXX
 			var img_path = $(text).attr("src");
-
+			$.ajax({
+				url: "/news/",
+				type: "POST",
+				data: {"op": "add_slide", "title": title, "text": text, "img_path": img_path, "display_type": display_type, "display_id": display_id},
+				success: function(data) {
+					var data = JSON.parse(data);
+					alert("发布成功");
+					window.location.reload();
+				}
+			});
+			$("#myModal").modal('hide');
+			break;
+		}
+		// 甲团-校级别
+		case 10: {
+			$("#myModal").modal('hide');
 			break;
 		}
 	}
