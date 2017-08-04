@@ -27,3 +27,10 @@ class News(models.Model):
 	year = models.IntegerField(default=0)
 	title = models.TextField(default='')
 	text = models.TextField(default='')
+
+class JiatuanMaterial(models.Model):
+	htype = models.CharField(max_length=1, default='.')
+	review_id = models.IntegerField(default=0)
+	submit_id = models.IntegerField(default=0)
+	year = models.IntegerField(default=0)
+	attachment = models.TextField(default='[]')

@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
 from SUser.utils import get_request_basis
-from Message.models import Message, News
+from Message.models import Message, News, JiatuanMaterial
 import datetime
 import json
 import random
@@ -81,6 +81,31 @@ def index(request):
 			message = Message.objects.create(recv_uid=recv_uid, send_uid=suser.id, group=group, mtype=mtype, send_time=datetime.datetime.now(), title='权限申请', text=text, meta=json.dumps(meta))
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'get_departments_jiatuan':
+		year = request.POST.get('year')
+		departments = []
+		for department in Department.objects.all():
+			d = {}
+			d['did'] = department.id
+			d['name'] = department.name
+			materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
+			if len(materials) > 0:
+				attachment = json.loads(materials[0].attachment)
+				if len(attachment) > 0: d['material'] = attachment[0][1]
+			departments.append(d)
+		jdata['departments'] = departments
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'submit_minge':
+		year = request.POST.get('year')
+		minges = json.loads(request.POST.get('minges'))
+		for minge in minges:
+			department = Department.objects.get(id=minge['did'])
+			department_admin = json.loads(department.admin)
+			for everyone in department_admin:
+				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
+		return HttpResponse(json.dumps(jdata))
+
 	news_list = News.objects.filter(display_type='i')
 	rdata['news_list'] = news_list
 	rdata['slide_list'] = json.loads(School.objects.all()[0].slide)
@@ -109,6 +134,41 @@ def department(request, did):
 		jdata['departments'] = departments
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'get_branchs_jiatuan':
+		year = request.POST.get('year')
+		branchs = []
+		for branch in Branch.objects.filter(did=did):
+			d = {}
+			d['bid'] = branch.id
+			d['name'] = branch.name
+			materials = JiatuanMaterial.objects.filter(htype='b', review_id=did, submit_id=branch.id, year=year)
+			if len(materials) > 0:
+				attachment = json.loads(materials[0].attachment)
+				if len(attachment) > 0: d['material'] = attachment[0][1]
+			branchs.append(d)
+		jdata['branchs'] = branchs
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'jiatuan_inform':
+		year = request.POST.get('year')
+		jiatuans = json.loads(request.POST.get('jiatuans'))
+		for jiatuan in jiatuans:
+			branch = Branch.objects.get(id=jiatuan)
+			branch_admin = json.loads(branch.admin)
+			for everyone in branch_admin:
+				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团评选结果', text='恭喜'+branch.name+'团支部获得'+str(year)+'年甲级团支部称号！请向院系提交甲团材料。')
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'submit_jiatuan_material':
+		year = request.POST.get('year')
+		title = request.POST.get('title')
+		text = request.POST.get('text')
+		attachment = request.POST.get('attachment')
+		materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
+		if len(materials) > 0: materials[0].delete();
+		material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
+		return HttpResponse(json.dumps(jdata))
+
 	news_list = News.objects.filter(display_type='d', display_id=did)
 	rdata['news_list'] = news_list
 	rdata['slide_list'] = json.loads(department.slide)
@@ -132,6 +192,16 @@ def branch(request, bid):
 			d['name'] = branch.name
 			branchs.append(d)
 		jdata['branchs'] = branchs
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'submit_jiatuan_material':
+		year = request.POST.get('year')
+		title = request.POST.get('title')
+		text = request.POST.get('text')
+		attachment = request.POST.get('attachment')
+		materials = JiatuanMaterial.objects.filter(htype='b',review_id=department.id, submit_id=branch.id, year=year)
+		if len(materials) > 0: materials[0].delete();
+		material = JiatuanMaterial.objects.create(htype='b', review_id=department.id, submit_id=branch.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
 	news_list = News.objects.filter(display_type='b', display_id=bid)

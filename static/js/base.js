@@ -3,6 +3,8 @@ $(document).ready(function(){
 	check_red_spot();
 });
 
+years = [2017, 2016]
+
 function check_red_spot() {
 	var a = $("a[type=message]");
 	if (a.length == 0) {
@@ -205,8 +207,14 @@ function commit(flag, param){
 			$("#myModal").modal('hide');
 			break;
 		}
-		// 甲团-校级别
+		// 甲团-校级
 		case 10:{
+			submit_minge();
+			break;
+		}
+		// 甲团-院系
+		case 11:{
+			var year = $("#year").val();
 			var title = $("#news_title").val();
 			var text = editor.html();
 			var attach_list = new Array();
@@ -216,6 +224,39 @@ function commit(flag, param){
 				attach.push($("div.attachment").eq(i).attr("url"));
 				attach_list.push(attach);
 			}
+			$.ajax({
+				url: window.location.href,
+				type: "POST",
+				data: {"op": "submit_jiatuan_material", "year": year, "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
+				success: function(data) {
+					var data = JSON.parse(data);
+					alert("提交成功");
+				}
+			});
+			$("#myModal").modal('hide');
+			break;
+		}
+		// 甲团-班级
+		case 12:{
+			var year = $("#year").val();
+			var title = $("#news_title").val();
+			var text = editor.html();
+			var attach_list = new Array();
+			for(var i = 0; i < $("div.attachment").length; i ++ ){
+				var attach = new Array();
+				attach.push($("div.attachment").eq(i).attr("title"));
+				attach.push($("div.attachment").eq(i).attr("url"));
+				attach_list.push(attach);
+			}
+			$.ajax({
+				url: window.location.href,
+				type: "POST",
+				data: {"op": "submit_jiatuan_material", "year": year, "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
+				success: function(data) {
+					var data = JSON.parse(data);
+					alert("提交成功");
+				}
+			});
 			$("#myModal").modal('hide');
 			break;
 		}
