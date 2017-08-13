@@ -24,7 +24,7 @@
 
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-8">
             <!-- begin of carousel -->
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="height: 400px;">
               <!-- Indicators -->
@@ -58,9 +58,6 @@
               </a>
             </div>
             <!-- end of carousel -->
-        </div>
-
-        <div class="col-md-3" >
             <table class="table">
                 <thead>
                     <tr>
@@ -72,7 +69,7 @@
                     {% for news in news_list %}
                     <tr>
                     <td><a href="/news/{{ news.id }}/"> {{ news.title }} </a></td>
-                    <td>
+                    <td align="right">
                         23:33 12/22/2017
                     </td>
                     </tr>
@@ -81,5 +78,7 @@
                 </tbody>
             </table>
         </div>
+
+
 
     {% endblock context %}
