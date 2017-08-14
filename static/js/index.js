@@ -106,7 +106,7 @@ function jiatuan_year_onchange() {
 			div.append("<table id='minge' length='" + departments.length + "'><tr>");
 			for (var i = 0; i < departments.length; i++) {
 				var department = departments[i];
-				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' did='" + department['did'] + "'/> ";
+				var s = "<td width='150'><input type='text' id='minge-" + i + "' did='" + department['did'] + "'/> ";
 				if (department.hasOwnProperty("material")) {
 					s += "<a href='" + department["material"] + "'>" + department["name"] + "</a></td>";
 				} else {

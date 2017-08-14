@@ -8,9 +8,9 @@ years = [2017, 2016]
 function check_red_spot() {
 	var a = $("a[type=message]");
 	if (a.length == 0) {
-		$("span#red_spot").hide();
+		$("span#redspot").text("");
 	} else {
-		$("span#red_spot").show();
+		$("span#redspot").text("" + a.length);
 	}
 }
 
