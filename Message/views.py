@@ -98,6 +98,45 @@ def message(request, mid=-1):
 			message.save()
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'get_default_recver':
+		recver_list = []
+		departments = Department.objects.all()
+		is_department_admin = False
+		for department in departments:
+			if suser.admin_school:
+				recver_list.append({'type': 'd', 'id': department.id, 'name': department.name + '管理员'})
+			if suser.id in json.loads(department.admin):
+				is_department_admin = True
+				admin_did = department.id
+				recver_list.append({'type': 's', 'id': -1, 'name': '校级管理员'})
+				break
+		branchs = Branch.objects.all()
+		for branch in branchs:
+			if is_department_admin and admin_did == branch.did:
+				recver_list.append({'type': 'b', 'id': branch.id, 'name': branch.name + '管理员'})
+			if suser.id in json.loads(branch.admin):
+				department = Department.objects.get(id=branch.did)
+				recver_list.append({'type': 'd', 'id': department.id, 'name': department.name + '管理员'})
+		jdata['recver_list'] = recver_list
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'get_default_recver_sub':
+		recvers = []
+		rtype = request.POST.get('rtype')
+		rid = request.POST.get('rid')
+		if rtype == 's':
+			recvers = [rsuser.username for rsuser in SUser.objects.filter(admin_school=True)]
+		elif rtype == 'd':
+			department = Department.objects.get(id=rid)
+			recvers = [SUser.objects.get(id=rsuser_id).username for rsuser_id in json.loads(department.admin)]
+		elif rtype == 'b':
+			branch = Branch.objects.get(id=rid)
+			recvers = [SUser.objects.get(id=rsuser_id).username for rsuser_id in json.loads(branch.admin)]
+		jdata['recvers'] = recvers
+		print('sub', rtype, rid)
+		print(recvers)
+		return HttpResponse(json.dumps(jdata))
+
 	if suser is None:
 		return HttpResponseRedirect('/index/')
 

@@ -371,7 +371,8 @@ function send_message(){
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("发送新消息");
 	$("#myModelYes").text("发送");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/><br/>");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/>");
+	$("#myModal_body").append("<select id=\"default-recver\" onchange=\"default_recver_onchange()\"></select><br/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
 	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
@@ -388,6 +389,41 @@ function send_message(){
             'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
             'insertunorderedlist', '|', 'emoticons', 'image','insertfile']
     });
+    $.ajax({
+		url: "/message/",
+		type: "POST",
+		data: {"op": "get_default_recver"},
+		success: function(data) {
+			var data = JSON.parse(data);
+			var recver_list = data["recver_list"];
+			var select = $("#default-recver");
+			select.append("<option rtype='n'></option>");
+			for (var i = 0; i < recver_list.length; i++) {
+				var recver = recver_list[i];
+				select.append("<option rtype='" + recver['type'] + "' rid='" + recver['id'] + "'>" + recver["name"] + "</option>");
+			}
+		}
+	});
+}
+
+function default_recver_onchange() {
+	var option = $("#default-recver").find("option:selected");
+	var input = $("#sg_recver");
+	$.ajax({
+		url: "/message/",
+		type: "POST",
+		data: {"op": "get_default_recver_sub", "rtype": option.attr("rtype"), "rid": option.attr("rid")},
+		success: function(data) {
+			var data = JSON.parse(data);
+			var recvers = data["recvers"];
+			var text = input.val();
+			for (var i = 0; i < recvers.length; i++) {
+				text += recvers[i] + "; ";
+			}
+			console.log(text);
+			input.val(text);
+		}
+	});
 }
 
 function read_message(b){
