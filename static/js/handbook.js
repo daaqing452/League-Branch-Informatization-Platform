@@ -114,9 +114,115 @@ function module_select(id){
 
 
 
+function check_fill(already_fill,tr_class,textarea_n,content){
+	var num_pat = new RegExp("^[1-9][0-9]*$");
+	var xuehao_pat = new RegExp("^\\d{10}$");
+	var data_pat = new RegExp("^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))$");
+	if(tr_class == "jibenxinxi"){
+		if(textarea_n >= 0 && textarea_n <= 3){
+			if(content == ""){
+				return "基本信息填写有误(必填项)";
+			}
+		}
+		if(textarea_n == 0 && content != ""){
+			if(num_pat.test(content) == false){
+				return "团员人数填写有误(非正整数)";
+			}
+		}
+	}
+	if(tr_class == "jiangchengqingkuang"){
+		if(textarea_n == 0){
+			var clist = content.split("\n");
+			if(clist.length == 1 && clist[0] == ""){
+				//no input
+			}
+			else{
+				for(var i = 0; i < clist.length; i++){
+					var each_c = clist[i];
+					if(data_pat.test(each_c) == false){
+						return "奖惩情况填写有误(日期格式)";
+					}
+				}
+			}	
+		}
+	}
+	if(tr_class == "huamingce" || tr_class == "shenqingrutuan"){
+		if(textarea_n >= 0 && textarea_n <= 7 && already_fill){
+			if(content == ""){
+				return "团员信息填写有误(必填项)";
+			}
+		}
+		if(textarea_n == 0 && content != ""){
+			if(xuehao_pat.test(content) == false){
+				return "团员信息学号填写有误";
+			}
+		}
+		if(textarea_n == 5 || textarea_n == 6){
+			if(content != "" && data_pat.test(content) == false){
+				return  "团员信息填写有误(日期格式)";
+			}
+		}
+		if(textarea_n == 2){
+			if(content != "" && content != "男" && content != "女"){
+				return "团员信息填写有误(性别)";
+			}
+		}
+	}
+	if(tr_class == "jiaonatuanfei"){
+		if(textarea_n >= 0 && textarea_n <= 5 && already_fill){
+			if(content == ""){
+				return "交纳团费填写有误(必填项)";
+			}
+		}
+		if(textarea_n == 0 && content != ""){
+			if(num_pat.test(content)){
+				var num = parseFloat(content);
+				if(num <= 0 || num > 12){
+					return "交纳团费填写有误(月份)";
+				}
+			}
+			else{
+				return "交纳团费填写有误(月份)";
+			}
+		}
+		if(textarea_n >= 1 && textarea_n <= 5 && content != ""){
+			if(num_pat.test(content) == false){
+				return "交纳团费填写有误(数字)";
+			}
+		}
+	}
+	if(tr_class == "tuiyourudang"){
+		if(textarea_n >= 0 && textarea_n <= 2 && already_fill){
+			if(content == ""){
+				return "推优入党填写有误(必填项)";
+			}
+		}
+		if(textarea_n == 0 && content != ""){
+			if(xuehao_pat.test(content) == false){
+				return "推优入党学号填写有误";
+			}
+		}
+		if(textarea_n >= 2 && textarea_n <= 4 && content != ""){
+			if(data_pat.test(content) == false){
+				return  "推优入党信息填写有误(日期格式)";
+			}
+		}
+	}
+	return true;
+}
+
+function is_in_array(arr,value){
+    for(var i = 0; i < arr.length; i++){
+        if(value === arr[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
 function submit(){
 	var HANDBOOK_content = new Array();
-	
+	wrong_messages = new Array();
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = new Array();
 		var div = $("#table_"+i);
@@ -129,11 +235,26 @@ function submit(){
 				var TR_content = new Array();
 				var tr = table.find("tr").eq(m);
 				var textarea_num = tr.find("textarea").length;
+				var already_fill = false;
 				if(textarea_num == 0){
 					continue;
 				}
 				else{
 					for(var n = 0; n < textarea_num; n++){
+						if(tr.find("textarea").eq(n).val() != ""){
+							already_fill = true;
+							break;
+						}
+					}
+					for(var n = 0; n < textarea_num; n++){
+						tr.find("textarea").eq(n).css("background","");
+						var false_message = check_fill(already_fill,tr.attr("class"),n,tr.find("textarea").eq(n).val());
+						if(false_message != true){
+							if(is_in_array(wrong_messages,false_message) == false){
+								wrong_messages.push(false_message);
+							}
+							tr.find("textarea").eq(n).css("background","#FF9933");
+						}
 						TR_content.push(tr.find("textarea").eq(n).val());
 					}
 				}
@@ -143,18 +264,22 @@ function submit(){
 		}
 		HANDBOOK_content.push(CHAPTER_content);
 	}
-	
+	if(wrong_messages.length != 0){
+		alert(wrong_messages);
+	}
+	else{
+		$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op": "submit", "content": JSON.stringify(HANDBOOK_content)},
+			success: function(data) {
+				var data = JSON.parse(data);
+				alert("提交成功");
+				window.location.href = '/index/';
+			}
+		})	
+	}
 
-	$.ajax({
-		url: window.location.href,
-		type: "POST",
-		data: {"op": "submit", "content": JSON.stringify(HANDBOOK_content)},
-		success: function(data) {
-			var data = JSON.parse(data);
-			alert("提交成功");
-			window.location.href = '/index/';
-		}
-	})
 	//console.log(JSON.stringify(HANDBOOK_content));
 }
 
@@ -165,16 +290,10 @@ function addOption(b){
 	var current_index = current_row.rowIndex;
 	var op_table = b.parentNode.parentNode.parentNode;
 	var new_row = op_table.insertRow(current_index+1);
-
-	var HTMLContent = "<tr class=\""+row_type+"\">";
-	var num = $(b).parents("tr").eq(0).children("td").length-1;
-	for(var i = 0; i < num; i ++){
-		HTMLContent += td_html;
-		
-	}
-	HTMLContent += add_del_html;
-	HTMLContent += "</tr>";
-	new_row.innerHTML = HTMLContent;
+	
+	var tr_html = $(b).parents("tr").eq(0).html();
+	new_row.innerHTML = tr_html;
+	$(new_row).attr("class",row_type);
 }
 
 function delOption(b){

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 	{% load static %}
     {% block context %}
-
-    <h3> {{ news.title }} </h3>
-    {{ news.text | safe }}
-
+    <div style="width: 60%;margin:0 auto;">
+	    <div style="text-align: center"><h3>{{ news.title }} </h3></div>
+	    <hr>
+	    {{ news.text | safe }}
+    </div>
     {% endblock context %}
