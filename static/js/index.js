@@ -43,7 +43,7 @@ function review_year_onchange() {
 			var handbooks = data['handbooks'];
 			for (var i in handbooks) {
 				var handbook = handbooks[i];
-				div.append("<a href='/handbook/" + handbook['hid'] + "/'>" + handbook['title'] + "</a>");
+				div.append("<a href='/handbook/" + handbook['hid'] + "/'>" + handbook['title'] + "</a><br/>");
 			}
 		}
 	});

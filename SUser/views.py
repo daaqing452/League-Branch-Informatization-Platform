@@ -117,7 +117,7 @@ def department(request, did):
 		rdata['department'] = department = Department.objects.get(id=did)
 		rdata['branchs'] = branchs = Branch.objects.filter(did=did)
 		admin = json.loads(department.admin)
-		rdata['is_admin'] = (suser is not None) and (suser.admin_super or (suser.id in admin))
+		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in admin))
 	jdata = {}
 
 	if op == 'add_branch':
@@ -169,10 +169,13 @@ def department(request, did):
 		material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
-	news_list = News.objects.filter(display_type='d', display_id=did)
-	rdata['news_list'] = news_list
-	rdata['slide_list'] = json.loads(department.slide)
-	return render(request, 'department.html', rdata)
+	if (department is not None) and (suser is not None):
+		news_list = News.objects.filter(display_type='d', display_id=did)
+		rdata['news_list'] = news_list
+		rdata['slide_list'] = json.loads(department.slide)
+		return render(request, 'department.html', rdata)
+	else:
+		return HttpResponseRedirect('/index/')
 
 def branch(request, bid):
 	rdata, op, suser = get_request_basis(request)
@@ -180,7 +183,7 @@ def branch(request, bid):
 		rdata['branch'] = branch = Branch.objects.get(id=bid)
 		rdata['department'] = department = Department.objects.get(id=branch.did)
 		admin = json.loads(branch.admin)
-		rdata['is_admin'] = (suser is not None) and (suser.admin_super or (suser.id in admin))
+		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in admin))
 	jdata = {}
 
 	if op == 'get_branchs':
@@ -204,10 +207,22 @@ def branch(request, bid):
 		material = JiatuanMaterial.objects.create(htype='b', review_id=department.id, submit_id=branch.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
-	news_list = News.objects.filter(display_type='b', display_id=bid)
-	rdata['news_list'] = news_list
-	rdata['slide_list'] = json.loads(branch.slide)
-	return render(request, 'branch.html', rdata)
+	if (branch is not None) and (suser is not None):
+		branchs = Branch.objects.filter(did=department.id)
+		inner = suser.id in json.loads(department.admin)
+		for inner_branch in branchs:
+			if inner: break
+			if suser.id in json.loads(inner_branch.admin): inner = True
+			if suser.id in json.loads(inner_branch.member): inner = True
+		if inner or suser.admin_school:
+			news_list = News.objects.filter(display_type='b', display_id=bid)
+			rdata['news_list'] = news_list
+			rdata['slide_list'] = json.loads(branch.slide)
+			return render(request, 'branch.html', rdata)
+		else:
+			return HttpResponseRedirect('/index/')
+	else:
+		return HttpResponseRedirect('/index/')
 
 def profile(request, sid):
 	rdata, op, suser = get_request_basis(request)

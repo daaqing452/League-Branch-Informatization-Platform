@@ -372,7 +372,7 @@ function send_message(){
 	$("#myModalLabel").text("发送新消息");
 	$("#myModelYes").text("发送");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_recver\" type=\"text\" placeholder=\"收件人（用分号隔开）\"/>");
-	$("#myModal_body").append("<select id=\"default-recver\" onchange=\"default_recver_onchange()\"></select><br/><br/>");
+	$("#myModal_body").append("<select id=\"default-recver\" class=\"form-control\" onchange=\"default_recver_onchange()\"></select><br/><br/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"sg_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	//$("#myModal_body").append("<textarea class=\"form-control\" id=\"sg_text\" style=\"height:300px\" placeholder=\"正文\"/><br/>");
 	$("#myModal_body").append("<textarea   name=\"sg_text\" id=\"sg_text\"></textarea><br/>");
@@ -484,7 +484,7 @@ function release_n(){
 	$("#myModalLabel").text("发布新闻");
 	$("#myModelYes").text("发布");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
-	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
+	$("#myModal_body").append("<textarea name=\"sg_text\" id=\"news_text\"></textarea><br/>");
 	editor = KindEditor.create('textarea[name="sg_text"]', {
         resizeType : 1,
         allowPreviewEmoticons : false,
