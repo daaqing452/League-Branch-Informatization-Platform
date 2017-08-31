@@ -205,7 +205,7 @@ def branch(request, bid):
 		material = JiatuanMaterial.objects.create(htype='b', review_id=department.id, submit_id=branch.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
-	if (branch is not None) and (suser is not None) and rdata['self_department'].id == department.id:
+	if (branch is not None) and (suser is not None) and (suser.admin_school or ((rdata['self_department'] is not None) and (rdata['self_department'].id == department.id)):
 		news_list = News.objects.filter(display_type='b', display_id=bid)
 		rdata['news_list'] = news_list
 		rdata['slide_list'] = json.loads(branch.slide)
