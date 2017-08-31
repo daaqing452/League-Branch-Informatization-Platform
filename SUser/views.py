@@ -116,8 +116,7 @@ def department(request, did):
 	if did != '0':
 		rdata['department'] = department = Department.objects.get(id=did)
 		rdata['branchs'] = branchs = Branch.objects.filter(did=did)
-		admin = json.loads(department.admin)
-		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in admin))
+		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in json.loads(department.admin)))
 	jdata = {}
 
 	if op == 'add_branch':
@@ -182,8 +181,7 @@ def branch(request, bid):
 	if bid != '0':
 		rdata['branch'] = branch = Branch.objects.get(id=bid)
 		rdata['department'] = department = Department.objects.get(id=branch.did)
-		admin = json.loads(branch.admin)
-		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in admin))
+		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in json.loads(branch.admin)))
 	jdata = {}
 
 	if op == 'get_branchs':
@@ -207,20 +205,11 @@ def branch(request, bid):
 		material = JiatuanMaterial.objects.create(htype='b', review_id=department.id, submit_id=branch.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
-	if (branch is not None) and (suser is not None):
-		branchs = Branch.objects.filter(did=department.id)
-		inner = suser.id in json.loads(department.admin)
-		for inner_branch in branchs:
-			if inner: break
-			if suser.id in json.loads(inner_branch.admin): inner = True
-			if suser.id in json.loads(inner_branch.member): inner = True
-		if inner or suser.admin_school:
-			news_list = News.objects.filter(display_type='b', display_id=bid)
-			rdata['news_list'] = news_list
-			rdata['slide_list'] = json.loads(branch.slide)
-			return render(request, 'branch.html', rdata)
-		else:
-			return HttpResponseRedirect('/index/')
+	if (branch is not None) and (suser is not None) and rdata['self_department'].id == department.id:
+		news_list = News.objects.filter(display_type='b', display_id=bid)
+		rdata['news_list'] = news_list
+		rdata['slide_list'] = json.loads(branch.slide)
+		return render(request, 'branch.html', rdata)
 	else:
 		return HttpResponseRedirect('/index/')
 
