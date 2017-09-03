@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <script src="{% static "js/jiatuan.js" %}"> </script>
+
+    <div class="row">
+        <div class="col-md-2">
+            <!--<button class="btn btn-default" onclick="readonly()">展示团支部手册(可读)</button>
+            <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
+        </div>
+        <div class="col-md-8" id="content">
+            <h1  class="text-primary text-center">甲团申请</h1>    
+
+         
+
+            <!--基本情况-->
+            <div style="display: none;" id="table_0">
+                <h4>基本信息</h4>
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                        <tr>
+                            <td>团支部名称</td>
+                            <td>团支部书记姓名</td>
+                        </tr>
+                        <tr class="jibenxinxi">
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;"  ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        </tr>
+                </table>
+
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                    <tr>
+                        <td></td>
+                        <td>男生人数</td>
+                        <td>女生人数</td>
+                        <td>总人数</td>
+                    </tr>
+                    <tr class="renshu">
+                        <td>团员人数</td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                    </tr>
+                    <tr class="renshu">
+                        <td>党员人数</td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                    </tr>
+                    <tr class="renshu">
+                        <td>申请入党人数</td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                    </tr>
+                    <tr class="renshu">
+                        <td>班级人数</td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                    </tr>
+                </table>
+
+                
+
+                <h4>基本情况</h4>
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                        <tr class="jibenqingkuang">
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                        </tr>
+                </table>
+
+                <h4>基本要求</h4>
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                        <tr class="jibenyaoqiu">
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                        </tr>
+                </table>
+
+                <h4>支部事业与文化</h4>
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                        <tr class="zhibushiyeyuwenhua">
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                        </tr>
+                </table>
+            </div>
+            
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    
+    {% endblock context %}

@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 import LBInformatization.settings as settings
 from SUser.views import index, department, branch, profile, add_user, delete_user
-from Message.views import message, handbook_edit, handbook_show, news, uploadFile
+from Message.views import message, handbook_edit, handbook_show, news, uploadFile, jiatuan
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^handbook/([b,d])/([0-9]{1,9})/$', handbook_edit),
     url(r'^handbook/([0-9]{1,9})/$', handbook_show),
     url(r'^news/$', news),
+    url(r'^jiatuan/$', jiatuan),
     url(r'^news/([0-9]{1,9})/$', news),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

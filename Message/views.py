@@ -237,6 +237,9 @@ def handbook_show(request, hid):
 	if (suser is not None) and (suser.admin_super or (hflag and suser.admin_school) or (not hflag and suser.id in admin_department)):
 		return render(request,'handbook.html', rdata)
 
+def jiatuan(request):
+	return render(request, 'jiatuan.html')
+
 def news(request, nid=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
