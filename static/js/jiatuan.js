@@ -11,28 +11,7 @@ $(document).ready(function(){
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	$("#table_0").show();
 	if (!readonly) year_onchange();
-	editor1 = KindEditor.create('textarea[name="sg_text"]', {
-        resizeType : 1,
-        allowPreviewEmoticons : false,
-        allowImageRemote : false,
-        useContextmenu : false,
-        uploadJson : '/uploadFile/',
-        width : '100%',
-        items : [
-            'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist']
-    });
-    editor2 = KindEditor.create('textarea[name="photo"]', {
-        resizeType : 1,
-        allowPreviewEmoticons : false,
-        allowImageRemote : false,
-        useContextmenu : false,
-        uploadJson : '/uploadFile/',
-        width : '100%',
-        items : [
-            'image']
-    });
+	
     
     
 });
@@ -69,6 +48,28 @@ function year_onchange() {
 }
 
 function fill_content(content){
+	editor1 = KindEditor.create('textarea[name="sg_text"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist']
+    });
+    editor2 = KindEditor.create('textarea[name="photo"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'image']
+    });
 	if (!content) content = '[[[["1","2"]],[["3","4",""],["","",""],["","",""],["","",""]],[[""]],[[""]],[[""]]],["爱中国"],["/media/20170904122418-ctr_heat_map_page.png","/media/20170904122425-duration_heat_map_row.png"]]';
 	var JIATUAN_content = JSON.parse(content);
 	var SHENQING_content = JIATUAN_content[0];
@@ -145,6 +146,9 @@ function read_only(content){
 	KindEditor.remove('textarea[name="photo"]');
 	$("#photo_text").hide();
 	$(".attachment").remove();
+	$("#case_text").val(JIATUAN_content[1][0]);
+	$("#case_text").attr("disabled", "disabled");
+	$("#case_text").attr("readonly", "readonly");
 	var PIC_content = JIATUAN_content[2];
 	for(var i = 0; i < PIC_content.length; i++){
 		var url = PIC_content[i];
