@@ -34,6 +34,7 @@ $(document).ready(function(){
             'image']
     });
     
+    
 });
 
 function load_jiatuan() {
@@ -101,7 +102,6 @@ function fill_content(content){
 	var ANLI_content = JIATUAN_content[1];
 	var PIC_content = JIATUAN_content[2];
 	editor1.html(ANLI_content[0]);
-	console.log(PIC_content);
 	for(var i = 0; i < PIC_content.length; i++){
 		var url = PIC_content[i];
 		$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
@@ -110,12 +110,13 @@ function fill_content(content){
 }
 
 function read_only(content){
-	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
+	if (!content) content = '[[[["1","2"]],[["3","4",""],["","",""],["","",""],["","",""]],[[""]],[[""]],[[""]]],["爱中国"],["/media/20170904122418-ctr_heat_map_page.png","/media/20170904122425-duration_heat_map_row.png"]]';
 	var JIATUAN_content = JSON.parse(content);
+	var SHENQING_content = JIATUAN_content[0];
 	var div = $("#table_0");
 	var table_num = div.find("table").length;
 	for(var k = 0; k < table_num; k++){
-		var TABLE_content = JIATUAN_content[k]
+		var TABLE_content = SHENQING_content[k]
 		var table = div.find("table").eq(k);
 		var tr_num = table.find("tr").length;
 		var real_num = tr_num;
@@ -139,6 +140,15 @@ function read_only(content){
 				tr.find("textarea").eq(n).attr("readonly", "readonly");
 			}
 		}
+	}
+	KindEditor.remove('textarea[name="sg_text"]');
+	KindEditor.remove('textarea[name="photo"]');
+	$("#photo_text").hide();
+	$(".attachment").remove();
+	var PIC_content = JIATUAN_content[2];
+	for(var i = 0; i < PIC_content.length; i++){
+		var url = PIC_content[i];
+		$("#table_2").append('<img src=\"'+url + '\" title=\"'+url.slice(22)+'\"></img>');
 	}
 	
 }
