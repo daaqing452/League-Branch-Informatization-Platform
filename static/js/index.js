@@ -107,11 +107,22 @@ function jiatuan_year_onchange() {
 			div.append("<table id='minge' length='" + departments.length + "'><tr>");
 			for (var i = 0; i < departments.length; i++) {
 				var department = departments[i];
-				var s = "<td width='150'><input type='text' id='minge-" + i + "' did='" + department['did'] + "'/> ";
-				if (department.hasOwnProperty("material")) {
-					s += "<a href='" + department["material"] + "'>" + department["name"] + "</a></td>";
-				} else {
-					s += department["name"] + "</td>";
+				var s = "<td width='180' style='padding-bottom:20px'>"
+				s += "<input style='width:20px' type='text' id='minge-" + i + "' did='" + department['did'] + "'/>";
+				s += department["name"] + "<br/>";
+				if (department.hasOwnProperty("jiatuans")) {
+					var jiatuans = department['jiatuans'];
+					for (var j = 0; j < jiatuans.length; j++) {
+						var jiatuan = jiatuans[j];
+						s += "<div style=\"font-size:5px\">" + jiatuan["name"] + " ";
+						s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
+						if (jiatuan.hasOwnProperty("handbook")) {
+							s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
+						} else {
+							s += "工作手册";
+						}
+						s += "</div>";
+					}
 				}
 				div.append(s);
 				if ((i + 1) % 5 == 0) {

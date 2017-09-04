@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
 from SUser.utils import get_request_basis
-from Message.models import Message, News, JiatuanMaterial
+from Message.models import Message, News, Handbook, JiatuanMaterial
 import datetime
 import json
 import random
@@ -83,17 +83,28 @@ def index(request):
 
 	if op == 'get_departments_jiatuan':
 		year = request.POST.get('year')
+		jiatuan_dict = {}
+		for material in JiatuanMaterial.objects.filter(year=year):
+			branch = Branch.objects.get(id=material.submit_id)
+			department = Department.objects.get(id=branch.did)
+			if not department.id in jiatuan_dict: jiatuan_dict[department.id] = []
+			d = {}
+			d['name'] = branch.name
+			d['material'] = '/jiatuan/' + str(material.id) + '/'
+			handbooks = Handbook.objects.filter(htype='b', year=year, submit_id=branch.id)
+			if len(handbooks) > 0:
+				d['handbook'] = '/handbook/' + str(handbooks[0].id) + '/'
+			jiatuan_dict[department.id].append(d)
 		departments = []
 		for department in Department.objects.all():
 			d = {}
 			d['did'] = department.id
 			d['name'] = department.name
-			materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
-			if len(materials) > 0:
-				attachment = json.loads(materials[0].attachment)
-				if len(attachment) > 0: d['material'] = attachment[0][1]
+			if department.id in jiatuan_dict:
+				d['jiatuans'] = jiatuan_dict[department.id]
 			departments.append(d)
 		jdata['departments'] = departments
+		print(jdata)
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'submit_minge':
@@ -140,10 +151,11 @@ def department(request, did):
 			d = {}
 			d['bid'] = branch.id
 			d['name'] = branch.name
-			materials = JiatuanMaterial.objects.filter(htype='b', review_id=did, submit_id=branch.id, year=year)
+			materials = JiatuanMaterial.objects.filter(submit_id=branch.id, year=year)
 			if len(materials) > 0:
-				attachment = json.loads(materials[0].attachment)
-				if len(attachment) > 0: d['material'] = attachment[0][1]
+				# attachment = json.loads(materials[0].attachment)
+				# if len(attachment) > 0: d['material'] = attachment[0][1]
+				d['material'] = '/jiatuan/' + str(materials[0].id) + '/'
 			branchs.append(d)
 		jdata['branchs'] = branchs
 		return HttpResponse(json.dumps(jdata))
