@@ -7,7 +7,7 @@ var grade;
 
 $(document).ready(function(){
 	$("#chapter_0").parent().eq(0).attr("class","active");
-	$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
+	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	$("#table_0").show();
 	//fill_content();
 });
@@ -60,7 +60,7 @@ function fill_content(){
 
 function readonly(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
-	console.log(content);
+	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = HANDBOOK_content[i];

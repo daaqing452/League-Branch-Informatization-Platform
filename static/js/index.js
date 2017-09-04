@@ -88,6 +88,7 @@ function submit_minge() {
 		success: function(data) {
 			var data = JSON.parse(data);
 			alert("分配成功");
+			$("#myModal").modal('hide');
 		}
 	});
 }

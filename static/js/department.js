@@ -28,7 +28,6 @@ function review_b(){
 
 function review_year_onchange() {
 	var year = $("#year").val();
-	alert(year);
 	var div = $("#handbook_url");
 	div.empty();
 	var url = window.location.href;
