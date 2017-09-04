@@ -9,7 +9,8 @@ $(document).ready(function(){
 	$("#chapter_0").parent().eq(0).attr("class","active");
 	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	$("#table_0").show();
-	//fill_content();
+	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
+	year_onchange();
 });
 
 function load_handbook() {
@@ -20,13 +21,36 @@ function load_handbook() {
 		data: {"op": "load_handbook", "hid": hid},
 		success: function(data) {
 			var data = JSON.parse(data);
-			readonly(data["content"]);
+			if (readonly) {
+				read_only(data["content"]);
+			} else {
+				fill_content(data["content"]);
+			}
 		}
 	});
 }
 
-function fill_content(){
-	var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
+function year_onchange() {
+	var year = $("#year").val();
+	$.ajax({
+		url: window.location.href,
+		type: "POST",
+		data: {"op": "load_handbook", "year": year},
+		success: function(data) {
+			var data = JSON.parse(data);
+			fill_content(data['content']);
+			if (data['submitted']) {
+				$("#button_save").attr({"disabled":"disabled"});
+			} else {
+				$("#button_save").removeAttr("disabled");
+			}
+		}
+	})
+}
+
+function fill_content(content){
+	if (content == null) content = '[[[["","","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
+	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
@@ -58,7 +82,7 @@ function fill_content(){
 	}
 }
 
-function readonly(content){
+function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
@@ -220,7 +244,7 @@ function is_in_array(arr,value){
     return false;
 }
 
-function submit(){
+function submit(subtype){
 	var HANDBOOK_content = new Array();
 	wrong_messages = new Array();
 	for(var i = 0; i < 7; i++){
@@ -264,18 +288,23 @@ function submit(){
 		}
 		HANDBOOK_content.push(CHAPTER_content);
 	}
-	if(wrong_messages.length != 0){
+	if(wrong_messages.length != 0 && subtype == 1){
 		alert(wrong_messages);
 	}
 	else{
+		var year = $("#year").val();
 		$.ajax({
 			url: window.location.href,
 			type: "POST",
-			data: {"op": "submit", "content": JSON.stringify(HANDBOOK_content)},
+			data: {"op": "submit", "year": year, "subtype": subtype, "content": JSON.stringify(HANDBOOK_content)},
 			success: function(data) {
 				var data = JSON.parse(data);
-				alert("提交成功");
-				window.location.href = '/index/';
+				if (subtype == 0) {
+					alert("暂存成功");
+				} else if (subtype == 1) {
+					alert("提交成功");
+					window.location.href = '/index/';
+				}
 			}
 		})	
 	}

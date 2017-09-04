@@ -11,11 +11,12 @@
         <div class="col-md-10" id="content">
             <h1  class="text-primary text-center">{{ title }}</h1> 
             <h4>年份</h4>
-            <select style="width: 200px;">
-                <option value ="none">请选择年份</option>
-                <option value ="dayi">大一</option>
-                <option value ="daer">大二</option>
+            {% if readonly %}
+            {{ handbook.year }}
+            {% else %}
+            <select id="year" style="width: 200px;" onchange="year_onchange()" >
             </select>
+            {% endif %}
             <br/>
             <br/>   
             <ul id="nav_1" class="nav nav-tabs">
@@ -486,8 +487,8 @@
             </div>
             {% if readonly %}
             {% else %}
-            <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit()">提交</button>
-            <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="save()">暂存</button>
+            <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>
+            <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="submit(0)">暂存</button>
             {% endif %}
         </div>
         </div>
@@ -497,9 +498,10 @@
     
     <script>
     {% if readonly %}
+        var readonly = true;
         load_handbook();
-    {% else %} 
-        
+    {% else %}
+        var readonly = false;
     {% endif %}
     </script>
     

@@ -20,6 +20,7 @@ class Handbook(models.Model):
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
 	content = models.TextField(default='')
+	submitted = models.BooleanField(default=False)
 
 class News(models.Model):
 	display_type = models.CharField(max_length=1, default='.')

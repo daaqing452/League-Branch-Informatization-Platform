@@ -170,13 +170,13 @@ def handbook_edit(request, htype, idd):
 	if op == 'get_handbook_list':
 		year = int(request.POST.get('year'))
 		if htype == 'd':
-			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=0)
+			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=0, submitted=True)
 			l = []
 			for handbook in handbooks:
 				department = Department.objects.get(id=handbook.submit_id)
 				l.append({'hid': handbook.id, 'title': department.name})
 		if htype == 'b':
-			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=request.POST.get('did'))
+			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=request.POST.get('did'), submitted=True)
 			l = []
 			for handbook in handbooks:
 				branch = Branch.objects.get(id=handbook.submit_id)
@@ -195,13 +195,42 @@ def handbook_edit(request, htype, idd):
 		admin_department = []
 		admin_branch = json.loads(branch.admin)
 
+	if op == 'load_handbook':
+		year = int(request.POST.get('year'))
+		if htype == 'd':
+			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=department.id)
+		elif htype == 'b':
+			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=branch.id)
+		jdata['content'] = None
+		jdata['submitted'] = False
+		if len(handbooks) > 0:
+			jdata['content'] = handbooks[0].content
+			jdata['submitted'] = handbooks[0].submitted
+		return HttpResponse(json.dumps(jdata))
+
 	if op == 'submit':
 		content = request.POST.get('content')
-		year = datetime.datetime.now().year
+		subtype = int(request.POST.get('subtype'))
+		# year = datetime.datetime.now().year
+		year = int(request.POST.get('year'))
 		if htype == 'd':
-			Handbook.objects.create(htype=htype, year=year, review_id=0, submit_id=department.id, content=content)
+			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=department.id)
+			if len(handbooks) == 0:
+				handbook = Handbook.objects.create(htype=htype, year=year, review_id=0, submit_id=department.id)
+			else:
+				handbook = handbooks[0]
+			handbook.content = content
+			handbook.submitted = subtype
+			handbook.save()
 		elif htype == 'b':
-			Handbook.objects.create(htype=htype, year=year, review_id=department.id, submit_id=branch.id, content=content)
+			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=branch.id)
+			if len(handbooks) == 0:
+				handbook = Handbook.objects.create(htype=htype, year=year, review_id=department.id, submit_id=branch.id)
+			else:
+				handbook = handbooks[0]
+			handbook.content = content
+			handbook.submitted = subtype
+			handbook.save()
 		return HttpResponse(json.dumps(jdata))
 
 	if htype == 'd':
