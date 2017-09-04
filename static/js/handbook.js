@@ -273,6 +273,7 @@ function submit(subtype){
 					for(var n = 0; n < textarea_num; n++){
 						tr.find("textarea").eq(n).css("background","");
 						var false_message = check_fill(already_fill,tr.attr("class"),n,tr.find("textarea").eq(n).val());
+						if (subtype == 0) false_message = true;
 						if(false_message != true){
 							if(is_in_array(wrong_messages,false_message) == false){
 								wrong_messages.push(false_message);
@@ -288,7 +289,7 @@ function submit(subtype){
 		}
 		HANDBOOK_content.push(CHAPTER_content);
 	}
-	if(wrong_messages.length != 0 && subtype == 1){
+	if(wrong_messages.length != 0){
 		alert(wrong_messages);
 	}
 	else{

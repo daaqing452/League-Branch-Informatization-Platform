@@ -251,10 +251,14 @@ def handbook_show(request, hid):
 	rdata['handbook'] = handbook
 	if handbook.htype == 'd':
 		hflag = True
+		department = Department.objects.get(id=handbook.submit_id)
+		rdata['title'] = department.name + " 院系工作手册"
 	elif handbook.htype == 'b':
 		hflag = False
 		department = Department.objects.get(id=handbook.review_id)
 		admin_department = json.loads(department.admin)
+		branch = Branch.objects.get(id=handbook.submit_id)
+		rdata['title'] = branch.name + " 团支部工作手册"
 
 	if op == 'load_handbook':
 		jdata['content'] = handbook.content
