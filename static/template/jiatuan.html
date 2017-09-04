@@ -101,12 +101,16 @@
 
             <div style="display: none;" id="table_1">
                 <h4>支部工作案例</h4>
+                <textarea  name="sg_text" id="case_text" style="height: 300px;"></textarea>
+                
             </div>
 
             <div style="display: none;" id="table_2">
-                <h4>活动照片</h4>
+                <h4>活动照片(上传三张)</h4>
+                <textarea  name="photo" id="photo_text"></textarea>
+                
             </div>
-
+            <br/>
             {% if readonly %}
             {% else %}
             <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>

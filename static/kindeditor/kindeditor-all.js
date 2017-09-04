@@ -7481,6 +7481,7 @@ KindEditor.plugin('image', function(K) {
 					} else {
 						self.exec('insertimage', url, title, width, height, border, align);
 					}
+					$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 					setTimeout(function() {
 						self.hideDialog().focus();
 					}, 0);

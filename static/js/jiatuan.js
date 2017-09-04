@@ -11,6 +11,29 @@ $(document).ready(function(){
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	$("#table_0").show();
 	if (!readonly) year_onchange();
+	editor1 = KindEditor.create('textarea[name="sg_text"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist']
+    });
+    editor2 = KindEditor.create('textarea[name="photo"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageRemote : false,
+        useContextmenu : false,
+        uploadJson : '/uploadFile/',
+        width : '100%',
+        items : [
+            'image']
+    });
+    
 });
 
 function load_jiatuan() {
@@ -45,12 +68,13 @@ function year_onchange() {
 }
 
 function fill_content(content){
-	if (!content) content = '[[["0","2"]],[["1","2","3"],["6","7","8"],["9","10","11"],["22","33","33"]],[["3"]],[["4"]],[["5"]]]';
+	if (!content) content = '[[[["1","2"]],[["3","4",""],["","",""],["","",""],["","",""]],[[""]],[[""]],[[""]]],["爱中国"],["/media/20170904122418-ctr_heat_map_page.png","/media/20170904122425-duration_heat_map_row.png"]]';
 	var JIATUAN_content = JSON.parse(content);
+	var SHENQING_content = JIATUAN_content[0];
 	var div = $("#table_0");
 	var table_num = div.find("table").length;
 	for(var k = 0; k < table_num; k++){
-		var TABLE_content = JIATUAN_content[k]
+		var TABLE_content = SHENQING_content[k]
 		var table = div.find("table").eq(k);
 		var tr_num = table.find("tr").length;
 		var real_num = tr_num;
@@ -70,8 +94,17 @@ function fill_content(content){
 			var tr = table.find("tr").eq(start_num+m);
 			for(var n = 0; n < textarea_num; n++){
 				tr.find("textarea").eq(n).val(TR_content[n]);
+				tr.find("textarea").eq(n).css("background","");
 			}
 		}
+	}
+	var ANLI_content = JIATUAN_content[1];
+	var PIC_content = JIATUAN_content[2];
+	editor1.html(ANLI_content[0]);
+	console.log(PIC_content);
+	for(var i = 0; i < PIC_content.length; i++){
+		var url = PIC_content[i];
+		$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 	}
 	
 }
@@ -110,7 +143,22 @@ function read_only(content){
 	
 }
 
+function all_hind(){
+	for(var i = 0; i < 3; i++){
+		$("#table_"+i).hide();
+	}
+}
 
+function module_select(id){
+	var length = $("#nav_2").children("li").length;
+	chapter = id;
+	for(var i = 0; i < length; i++){
+		$("#chapter_"+i).parent().eq(0).attr("class","");
+	}
+	$("#chapter_"+id).parent().eq(0).attr("class","active");
+	all_hind();
+	$("#table_"+chapter).show();
+}
 
 
 
@@ -168,6 +216,7 @@ function is_in_array(arr,value){
 
 function submit(subtype){
 	var JIATUAN_content = new Array();
+	var SHENQING_content = new Array();
 	wrong_messages = new Array();
 	var div = $("#table_"+0);
 	var table_num = div.find("table").length;
@@ -199,13 +248,29 @@ function submit(subtype){
 			}
 			TABLE_content.push(TR_content);
 		}
-		JIATUAN_content.push(TABLE_content);
+		SHENQING_content.push(TABLE_content);
 	}
+
+	var ANLI_content = new Array();
+	ANLI_content.push(editor1.html());
 	
+	var PIC_content = new Array();
+
+	for(var i = 0; i < $("div.attachment").length; i ++ ){
+		PIC_content.push($("div.attachment").eq(i).attr("url"));
+	}
+
+	JIATUAN_content.push(SHENQING_content);
+	JIATUAN_content.push(ANLI_content);
+	JIATUAN_content.push(PIC_content);
+
+	console.log(JSON.stringify(JIATUAN_content));
+
 	if(wrong_messages.length != 0){
 		alert(wrong_messages);
 	}
 	else{
+		
 		var year = $("#year").val();
 		$.ajax({
 			url: window.location.href,
