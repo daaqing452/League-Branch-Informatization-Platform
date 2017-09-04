@@ -9,16 +9,19 @@
             <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
         </div>
         <div class="col-md-8" id="content">
-            <h1  class="text-primary text-center">甲团材料</h1>    
+            <h1 class="text-primary text-center">{{ title }}</h1>   
+            <h4>年份</h4>
+            {% if readonly %}
+            {{ handbook.year }}
+            {% else %}
+            <select id="year" style="width: 200px;" onchange="year_onchange()" >
+            </select>
+            {% endif %}
+            <br/>
+            <br/>
 
-            
             <!--基本情况-->
             <div style="display: none;" id="table_0">
-                <h4>年份</h4>
-                <select style="width: 200px;">
-                </select>
-                <br/>
-                <br/>
                 <h4>基本信息</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
@@ -88,6 +91,11 @@
                 </table>
             </div>
             
+            {% if readonly %}
+            {% else %}
+            <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>
+            <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="submit(0)">暂存</button>
+            {% endif %}
         </div>
         <div class="col-md-2"></div>
     </div>

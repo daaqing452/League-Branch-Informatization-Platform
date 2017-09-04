@@ -270,7 +270,17 @@ def handbook_show(request, hid):
 	if (suser is not None) and (suser.admin_super or (hflag and suser.admin_school) or (not hflag and suser.id in admin_department)):
 		return render(request,'handbook.html', rdata)
 
-def jiatuan(request):
+def jiatuan_edit(request, htype, idd):
+	rdata, op, suser = get_request_basis(request)
+	jdata = {}
+
+	rdata['title'] = '甲团材料'
+	rdata['readonly'] = False
+	return render(request, 'jiatuan.html')
+
+def jiatuan_show(request, jid):
+	rdata, op, suser = get_request_basis(request)
+	jdata = {}
 	return render(request, 'jiatuan.html')
 
 def news(request, nid=-1):

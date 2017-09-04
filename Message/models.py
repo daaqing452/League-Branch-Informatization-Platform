@@ -34,4 +34,6 @@ class JiatuanMaterial(models.Model):
 	review_id = models.IntegerField(default=0)
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
+	content = models.TextField(default='')
+	submitted = models.BooleanField(default=False)
 	attachment = models.TextField(default='[]')
