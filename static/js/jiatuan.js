@@ -9,12 +9,43 @@ $(document).ready(function(){
 	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	$("#table_0").show();
+	if (!readonly) year_onchange();
 });
 
+function load_jiatuan() {
+	var jid = $("#main_div").attr("jid");
+	$.ajax({
+		url: window.location.href,
+		type: "POST",
+		data: {"op": "load_jiatuan", "jid": jid},
+		success: function(data) {
+			var data = JSON.parse(data);
+			read_only(data["content"]);
+		}
+	});
+}
 
+function year_onchange() {
+	var year = $("#year").val();
+	$.ajax({
+		url: window.location.href,
+		type: "POST",
+		data: {"op": "load_jiatuan", "year": year},
+		success: function(data) {
+			var data = JSON.parse(data);
+			fill_content(data['content']);
+			if (data['submitted']) {
+				$("#button_save").attr({"disabled":"disabled"});
+			} else {
+				$("#button_save").removeAttr("disabled");
+			}
+		}
+	})
+}
 
-function fill_content(){
-	var JIATUAN_content = JSON.parse('[[["0","2"]],[["1","2","3"],["6","7","8"],["9","10","11"],["22","33","33"]],[["3"]],[["4"]],[["5"]]]');
+function fill_content(content){
+	if (!content) content = '[[["0","2"]],[["1","2","3"],["6","7","8"],["9","10","11"],["22","33","33"]],[["3"]],[["4"]],[["5"]]]';
+	var JIATUAN_content = JSON.parse(content);
 	var div = $("#table_0");
 	var table_num = div.find("table").length;
 	for(var k = 0; k < table_num; k++){
@@ -44,9 +75,8 @@ function fill_content(){
 	
 }
 
-function readonly(content){
+function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
-	console.log(content);
 	var JIATUAN_content = JSON.parse(content);
 	var div = $("#table_0");
 	var table_num = div.find("table").length;
@@ -135,7 +165,7 @@ function is_in_array(arr,value){
     return false;
 }
 
-function submit(){
+function submit(subtype){
 	var JIATUAN_content = new Array();
 	wrong_messages = new Array();
 	var div = $("#table_"+0);
@@ -156,6 +186,7 @@ function submit(){
 				for(var n = 0; n < textarea_num; n++){
 					tr.find("textarea").eq(n).css("background","");
 					var false_message = check_fill(tr.attr("class"),n,tr.find("textarea").eq(n).val());
+					if (subtype == 0) false_message = true;
 					if(false_message != true){
 						if(is_in_array(wrong_messages,false_message) == false){
 							wrong_messages.push(false_message);
@@ -174,7 +205,21 @@ function submit(){
 		alert(wrong_messages);
 	}
 	else{
-		
+		var year = $("#year").val();
+		$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op": "submit", "year": year, "subtype": subtype, "content": JSON.stringify(JIATUAN_content)},
+			success: function(data) {
+				var data = JSON.parse(data);
+				if (subtype == 0) {
+					alert("暂存成功");
+				} else if (subtype == 1) {
+					alert("提交成功");
+					window.location.href = '/index/';
+				}
+			}
+		});
 	}
 
 	console.log(JSON.stringify(JIATUAN_content));

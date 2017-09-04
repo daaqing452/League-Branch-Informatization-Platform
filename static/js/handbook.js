@@ -10,7 +10,7 @@ $(document).ready(function(){
 	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	$("#table_0").show();
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
-	year_onchange();
+	if (!readonly) year_onchange();
 });
 
 function load_handbook() {
@@ -21,11 +21,7 @@ function load_handbook() {
 		data: {"op": "load_handbook", "hid": hid},
 		success: function(data) {
 			var data = JSON.parse(data);
-			if (readonly) {
-				read_only(data["content"]);
-			} else {
-				fill_content(data["content"]);
-			}
+			read_only(data["content"]);
 		}
 	});
 }
@@ -49,7 +45,7 @@ function year_onchange() {
 }
 
 function fill_content(content){
-	if (content == null) content = '[[[["","","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
+	if (!content) content = '[[[["","","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
 	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
@@ -308,7 +304,7 @@ function submit(subtype){
 					window.location.href = '/index/';
 				}
 			}
-		})	
+		});
 	}
 
 	//console.log(JSON.stringify(HANDBOOK_content));

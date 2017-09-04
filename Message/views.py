@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.utils import get_request_basis
-from Message.models import Message, Handbook, News
+from Message.models import Message, Handbook, News, JiatuanMaterial
 import datetime
 import json
 import time
@@ -274,14 +274,57 @@ def jiatuan_edit(request, bid):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
+	branch = Branch.objects.get(id=bid)
+
+	if op == 'load_jiatuan':
+		year = int(request.POST.get('year'))
+		jiatuans = JiatuanMaterial.objects.filter(year=year, submit_id=branch.id)
+		jdata['content'] = None
+		jdata['submitted'] = False
+		if len(jiatuans) > 0:
+			jdata['content'] = jiatuans[0].content
+			jdata['submitted'] = jiatuans[0].submitted
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'submit':
+		content = request.POST.get('content')
+		subtype = int(request.POST.get('subtype'))
+		year = int(request.POST.get('year'))
+		jiatuans = JiatuanMaterial.objects.filter(year=year, submit_id=branch.id)
+		if len(jiatuans) == 0:
+			jiatuan = JiatuanMaterial.objects.create(year=year, submit_id=branch.id)
+		else:
+			jiatuan = jiatuans[0]
+		jiatuan.content = content
+		jiatuan.submitted = subtype
+		jiatuan.save()
+		return HttpResponse(json.dumps(jdata))
+
 	rdata['title'] = '甲团材料'
 	rdata['readonly'] = False
-	return render(request, 'jiatuan.html', rdata)
+
+	# 权限检测
+	if (suser is not None) and (suser.admin_super or (suser.id in json.loads(branch.admin))):
+		return render(request,'jiatuan.html', rdata)
 
 def jiatuan_show(request, jid):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
-	return render(request, 'jiatuan.html', rdata)
+
+	jiatuan = JiatuanMaterial.objects.get(id=jid)
+	branch = Branch.objects.get(id=jiatuan.submit_id)
+	department = Department.objects.get(id=branch.did)
+	rdata['jiatuan'] = jiatuan
+
+	if op == 'load_jiatuan':
+		jdata['content'] = jiatuan.content
+		return HttpResponse(json.dumps(jdata))
+
+	rdata['readonly'] = True
+
+	# 权限检测
+	if (suser is not None) and (suser.admin_school or (suser.id in json.loads(department.admin)) or (suser.id in json.loads(branch.admin))):
+		return render(request, 'jiatuan.html', rdata)
 
 def news(request, nid=-1):
 	rdata, op, suser = get_request_basis(request)
