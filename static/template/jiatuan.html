@@ -20,6 +20,14 @@
             <br/>
             <br/>
 
+            <ul id="nav_2" class="nav nav-tabs">
+                <li role="presentation"><a id="chapter_0" href="javascript:void(0)" onclick="module_select(0)">甲团申请</a></li>
+                <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作案例</a></li>
+                <li role="presentation"><a id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">活动照片</a></li>
+
+            </ul>
+
+            <br/>
             <!--基本情况-->
             <div style="display: none;" id="table_0">
                 <h4>基本信息</h4>
@@ -89,6 +97,14 @@
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
                         </tr>
                 </table>
+            </div>
+
+            <div style="display: none;" id="table_1">
+                <h4>支部工作案例</h4>
+            </div>
+
+            <div style="display: none;" id="table_2">
+                <h4>活动照片</h4>
             </div>
 
             {% if readonly %}

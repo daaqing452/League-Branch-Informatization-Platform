@@ -6,6 +6,7 @@ var chapter;
 var grade;
 
 $(document).ready(function(){
+	$("#chapter_0").parent().eq(0).attr("class","active");
 	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	$("#table_0").show();
