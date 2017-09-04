@@ -3,7 +3,7 @@
     {% block context %}
     <script src="{% static "js/jiatuan.js" %}"> </script>
 
-    <div class="row">
+    <div id="main_div" jid="{{ jiatuan.id }}" class="row">
         <div class="col-md-2">
             <!--<button class="btn btn-default" onclick="readonly()">展示团支部手册(可读)</button>
             <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
@@ -116,5 +116,13 @@
         <div class="col-md-2"></div>
     </div>
 
-    
+    <script>
+    {% if readonly %}
+        var readonly = true;
+        load_jiatuan();
+    {% else %}
+        var readonly = false;
+    {% endif %}
+    </script>
+
     {% endblock context %}
