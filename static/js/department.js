@@ -58,7 +58,7 @@ function jiatuan() {
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='jiatuan_inform()'>通知甲团</button></div>");
 	jiatuan_year_onchange();
-	$("#myModal_body").append("<hr/>");
+	/*$("#myModal_body").append("<hr/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
 	$("#myModelYes").text("提交");
@@ -71,7 +71,7 @@ function jiatuan() {
         width : '100%',
         items : [
             'insertfile']
-    });
+    });*/
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(11)");
 }
 

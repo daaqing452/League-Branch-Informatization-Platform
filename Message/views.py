@@ -318,8 +318,10 @@ def jiatuan_show(request, jid):
 
 	if op == 'load_jiatuan':
 		jdata['content'] = jiatuan.content
+		jdata['year'] = jiatuan.year
 		return HttpResponse(json.dumps(jdata))
 
+	rdata['title'] = branch.name + ' 甲团材料'
 	rdata['readonly'] = True
 
 	# 权限检测
