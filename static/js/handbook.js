@@ -76,6 +76,7 @@ function fill_content(content){
 				var tr = table.find("tr").eq(start_num+m);
 				for(var n = 0; n < textarea_num; n++){
 					tr.find("textarea").eq(n).val(TR_content[n]);
+					tr.find("textarea").eq(n).css("background","");
 				}
 			}
 		}
