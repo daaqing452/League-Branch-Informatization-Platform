@@ -45,7 +45,7 @@ function year_onchange() {
 }
 
 function fill_content(content){
-	if (!content) content = '[[[["","","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
+	if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
 	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 7; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
@@ -57,22 +57,51 @@ function fill_content(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
-			if(table.find("tr").eq(0).find("textarea").length == 0){
-				start_num = 1;
-				real_num -= 1;
-			}
+			if(i == 2 || i == 3 || i ==4){
+				if(TABLE_content.length / 2 >1){
+					var tr_pre = table.find("tr").eq(0).clone(); 
+					var tr_cur = table.find("tr").eq(1).clone();
+					var tr_next = table.find("tr").eq(2).clone();
+					for(var clone_num = 0; clone_num < TABLE_content.length / 2 -1; clone_num++){
+						tr_pre.appendTo(table); 
+						tr_cur.appendTo(table); 
+						tr_next.appendTo(table); 
+					}
+					
+				}
+				var content_cnt = 0;
+				for(var m = 0; m < table.find("tr").length; m++){
+					var tr = table.find("tr").eq(m);
+					if(tr.find("textarea").length != 0){
 
-			if(real_num < TABLE_content.length){
-				var tr = table.find("tr").eq(start_num).clone();   
- 				tr.appendTo(table); 
+						var TR_content = TABLE_content[content_cnt];
+						var textarea_num = TR_content.length;
+						content_cnt += 1;
+						for(var n = 0; n < textarea_num; n++){
+							tr.find("textarea").eq(n).val(TR_content[n]);
+							tr.find("textarea").eq(n).css("background","");
+						}
+					}
+				}
 			}
-			for(var m = 0; m < TABLE_content.length; m++){
-				var TR_content = TABLE_content[m];
-				var textarea_num = TR_content.length;
-				var tr = table.find("tr").eq(start_num+m);
-				for(var n = 0; n < textarea_num; n++){
-					tr.find("textarea").eq(n).val(TR_content[n]);
-					tr.find("textarea").eq(n).css("background","");
+			else{
+				if(table.find("tr").eq(0).find("textarea").length == 0){
+					start_num = 1;
+					real_num -= 1;
+				}
+
+				if(real_num < TABLE_content.length){
+					var tr = table.find("tr").eq(start_num).clone();   
+	 				tr.appendTo(table); 
+				}
+				for(var m = 0; m < TABLE_content.length; m++){
+					var TR_content = TABLE_content[m];
+					var textarea_num = TR_content.length;
+					var tr = table.find("tr").eq(start_num+m);
+					for(var n = 0; n < textarea_num; n++){
+						tr.find("textarea").eq(n).val(TR_content[n]);
+						tr.find("textarea").eq(n).css("background","");
+					}
 				}
 			}
 		}
@@ -93,25 +122,57 @@ function read_only(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
-			if(table.find("tr").eq(0).find("textarea").length == 0){
-				start_num = 1;
-				real_num -= 1;
-			}
+			if(i == 2 || i == 3 || i ==4){
+				if(TABLE_content.length / 2 >1){
+					var tr_pre = table.find("tr").eq(0).clone(); 
+					var tr_cur = table.find("tr").eq(1).clone();
+					var tr_next = table.find("tr").eq(2).clone();
+					for(var clone_num = 0; clone_num < TABLE_content.length / 2 -1; clone_num++){
+						tr_pre.appendTo(table); 
+						tr_cur.appendTo(table); 
+						tr_next.appendTo(table); 
+					}
+					
+				}
+				var content_cnt = 0;
+				for(var m = 0; m < table.find("tr").length; m++){
+					var tr = table.find("tr").eq(m);
+					if(tr.find("textarea").length != 0){
 
-			if(real_num < TABLE_content.length){
-				var tr = table.find("tr").eq(start_num).clone();   
- 				tr.appendTo(table); 
-			}
-			for(var m = 0; m < TABLE_content.length; m++){
-				var TR_content = TABLE_content[m];
-				var textarea_num = TR_content.length;
-				var tr = table.find("tr").eq(start_num+m);
-				for(var n = 0; n < textarea_num; n++){
-					tr.find("textarea").eq(n).val(TR_content[n]);
-					tr.find("textarea").eq(n).attr("disabled", "disabled");
-					tr.find("textarea").eq(n).attr("readonly", "readonly");
+						var TR_content = TABLE_content[content_cnt];
+						var textarea_num = TR_content.length;;
+						content_cnt += 1;
+						for(var n = 0; n < textarea_num; n++){
+							tr.find("textarea").eq(n).val(TR_content[n]);
+							tr.find("textarea").eq(n).attr("disabled", "disabled");
+							tr.find("textarea").eq(n).attr("readonly", "readonly");
+						}
+					}
 				}
 			}
+			else{
+				if(table.find("tr").eq(0).find("textarea").length == 0){
+					start_num = 1;
+					real_num -= 1;
+				}
+
+				if(real_num < TABLE_content.length){
+					var tr = table.find("tr").eq(start_num).clone();   
+	 				tr.appendTo(table); 
+				}
+				for(var m = 0; m < TABLE_content.length; m++){
+					var TR_content = TABLE_content[m];
+					var textarea_num = TR_content.length;
+					var tr = table.find("tr").eq(start_num+m);
+					for(var n = 0; n < textarea_num; n++){
+						tr.find("textarea").eq(n).val(TR_content[n]);
+						tr.find("textarea").eq(n).attr("disabled", "disabled");
+						tr.find("textarea").eq(n).attr("readonly", "readonly");
+					}
+				}
+
+			}
+			
 		}
 	}
 }
@@ -135,10 +196,21 @@ function module_select(id){
 
 
 
-function check_fill(already_fill,tr_class,textarea_n,content){
+function check_fill(tr,already_fill,tr_class,textarea_n,content){
 	var num_pat = new RegExp("^[1-9][0-9]*$");
+	var shishu_pat = new RegExp("^\\d+(\\.\\d+)?$");
 	var xuehao_pat = new RegExp("^\\d{10}$");
 	var data_pat = new RegExp("^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))$");
+	if(tr.find("td").eq(textarea_n).attr("class")=="canyurenshu"){
+		if(content!="" && num_pat.test(content) == false){
+			return "参与人数填写有误(非正整数)";
+		}
+	}
+	if(tr.find("td").eq(textarea_n).attr("class")=="huodongshijian"){
+		if(content!="" && data_pat.test(content) == false){
+			return "活动时间填写有误(日期格式)";
+		}
+	}
 	if(tr_class == "jibenxinxi"){
 		if(textarea_n >= 0 && textarea_n <= 3){
 			if(content == ""){
@@ -168,6 +240,11 @@ function check_fill(already_fill,tr_class,textarea_n,content){
 		}
 	}
 	if(tr_class == "huamingce" || tr_class == "shenqingrutuan"){
+		if(textarea_n >= 0 && textarea_n <= 7 && tr_class == "huamingce"){
+			if(content == ""){
+				return "团员信息填写有误(必填项)";
+			}
+		}
 		if(textarea_n >= 0 && textarea_n <= 7 && already_fill){
 			if(content == ""){
 				return "团员信息填写有误(必填项)";
@@ -190,7 +267,7 @@ function check_fill(already_fill,tr_class,textarea_n,content){
 		}
 	}
 	if(tr_class == "jiaonatuanfei"){
-		if(textarea_n >= 0 && textarea_n <= 5 && already_fill){
+		if(textarea_n >= 0 && textarea_n <= 5){
 			if(content == ""){
 				return "交纳团费填写有误(必填项)";
 			}
@@ -206,11 +283,24 @@ function check_fill(already_fill,tr_class,textarea_n,content){
 				return "交纳团费填写有误(月份)";
 			}
 		}
-		if(textarea_n >= 1 && textarea_n <= 5 && content != ""){
+		if(textarea_n >= 1 && textarea_n <= 3 && content != ""){
 			if(num_pat.test(content) == false){
 				return "交纳团费填写有误(数字)";
 			}
+			if(textarea_n == 2 && (tr.find("textarea").eq(1).val() < tr.find("textarea").eq(2).val())){
+				return "交纳团费填写有误(大于支部人数)";
+			}
+			if(textarea_n == 3 && (tr.find("textarea").eq(1).val() < tr.find("textarea").eq(3).val())){
+				return "交纳团费填写有误(大于支部人数)";
+			}
 		}
+		if(textarea_n >= 4 && textarea_n <= 5 && content != ""){
+			if(shishu_pat.test(content) == false){
+				return "交纳团费填写有误(数字)";
+			}
+		}
+
+
 	}
 	if(tr_class == "tuiyourudang"){
 		if(textarea_n >= 0 && textarea_n <= 2 && already_fill){
@@ -227,9 +317,30 @@ function check_fill(already_fill,tr_class,textarea_n,content){
 			if(data_pat.test(content) == false){
 				return  "推优入党信息填写有误(日期格式)";
 			}
+			if(textarea_n == 3 && date_seq(tr.find("textarea").eq(2).val(),tr.find("textarea").eq(3).val()) == false){
+				return "推优入党信息填写有误(时间顺序)";
+			}
+			if(textarea_n == 4 && date_seq(tr.find("textarea").eq(3).val(),tr.find("textarea").eq(4).val()) == false){
+				return "推优入党信息填写有误(时间顺序)";
+			}
+		}
+
+	}
+	if(tr_class == "quannianjihua" || tr_class == "chunjijihua" || tr_class=="qiujijihua"){
+		if(content == ""){
+			return "计划填写有误(必填项)";
 		}
 	}
 	return true;
+}
+
+function date_seq(date1, date2){
+	if(date1 < date2){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 function is_in_array(arr,value){
@@ -269,13 +380,13 @@ function submit(subtype){
 					}
 					for(var n = 0; n < textarea_num; n++){
 						tr.find("textarea").eq(n).css("background","");
-						var false_message = check_fill(already_fill,tr.attr("class"),n,tr.find("textarea").eq(n).val());
+						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,tr.find("textarea").eq(n).val());
 						if (subtype == 0) false_message = true;
 						if(false_message != true){
 							if(is_in_array(wrong_messages,false_message) == false){
 								wrong_messages.push(false_message);
 							}
-							tr.find("textarea").eq(n).css("background","#FF9933");
+							tr.find("textarea").eq(n).css("background","#CCCCCC");
 						}
 						TR_content.push(tr.find("textarea").eq(n).val());
 					}
@@ -286,6 +397,8 @@ function submit(subtype){
 		}
 		HANDBOOK_content.push(CHAPTER_content);
 	}
+	
+	
 	if(wrong_messages.length != 0){
 		alert(wrong_messages);
 	}
@@ -323,6 +436,19 @@ function addOption(b){
 	$(new_row).attr("class",row_type);
 }
 
+function addOption_2(b){
+	var $b = $(b);
+	var $this_table = $b.parents("table").eq(0);	
+	var current_index = b.parentNode.parentNode.rowIndex;
+	var pre_html = $this_table.find("tr").eq(current_index-1).html();
+	var current_html = $this_table.find("tr").eq(current_index).html();
+	var next_html = $this_table.find("tr").eq(current_index+1).html();
+	$this_table.append("<tr>"+pre_html+"</tr>");
+	$this_table.append("<tr>"+current_html+"</tr>");
+	$this_table.append("<tr>"+next_html+"</tr>");
+}
+
+
 function delOption(b){
 	var current_row = b.parentNode.parentNode;
 	var current_index = current_row.rowIndex;
@@ -333,5 +459,18 @@ function delOption(b){
 		return;
 	}
 	op_table.deleteRow(current_index);
+}
 
+function delOption_2(b){
+	var current_row = b.parentNode.parentNode;
+	var current_index = current_row.rowIndex;
+	var op_table = b.parentNode.parentNode.parentNode;
+	if(current_index == 1 && op_table.rows.length == 3)
+	{
+		alert("至少一条记录！");
+		return;
+	}
+	op_table.deleteRow(current_index+1);
+	op_table.deleteRow(current_index);
+	op_table.deleteRow(current_index-1);
 }

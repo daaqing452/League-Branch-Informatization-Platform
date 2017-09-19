@@ -176,8 +176,8 @@ function module_select(id){
 
 
 
-function check_fill(tr_class,textarea_n,content){
-	var num_pat = new RegExp("^[1-9][0-9]*$");
+function check_fill(tr,tr_class,textarea_n,content){
+	var num_pat = new RegExp("^[0-9][0-9]*$");
 	var xuehao_pat = new RegExp("^\\d{10}$");
 	var data_pat = new RegExp("^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))$");
 	if(tr_class == "jibenxinxi"){
@@ -212,6 +212,9 @@ function check_fill(tr_class,textarea_n,content){
 			if(num_pat.test(content) == false){
 				return "人数填写有误(非正整数)";
 			}
+		}
+		if(textarea_n == 2){
+			tr.find("textarea").eq(2).val(Number(tr.find("textarea").eq(0).val())+Number(tr.find("textarea").eq(1).val()));
 		}
 
 	}
@@ -249,13 +252,14 @@ function submit(subtype){
 			else{
 				for(var n = 0; n < textarea_num; n++){
 					tr.find("textarea").eq(n).css("background","");
-					var false_message = check_fill(tr.attr("class"),n,tr.find("textarea").eq(n).val());
+					var false_message = check_fill(tr,tr.attr("class"),n,tr.find("textarea").eq(n).val());
 					if (subtype == 0) false_message = true;
 					if(false_message != true){
 						if(is_in_array(wrong_messages,false_message) == false){
 							wrong_messages.push(false_message);
 						}
-						tr.find("textarea").eq(n).css("background","#FF9933");
+						tr.find("textarea").eq(n).css("background","#CCCC99");
+
 					}
 					TR_content.push(tr.find("textarea").eq(n).val());
 				}
@@ -279,7 +283,7 @@ function submit(subtype){
 	JIATUAN_content.push(PIC_content);
 
 	console.log(JSON.stringify(JIATUAN_content));
-
+	/*
 	if(wrong_messages.length != 0){
 		alert(wrong_messages);
 	}
@@ -303,4 +307,5 @@ function submit(subtype){
 	}
 
 	console.log(JSON.stringify(JIATUAN_content));
+	*/
 }
