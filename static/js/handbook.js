@@ -45,9 +45,9 @@ function year_onchange() {
 }
 
 function fill_content(content){
-	if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
+	//if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
 	var HANDBOOK_content = JSON.parse(content);
-	for(var i = 0; i < 7; i++){
+	for(var i = 0; i < 8; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -57,7 +57,7 @@ function fill_content(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
-			if(i == 2 || i == 3 || i ==4){
+			if(i == 3 || i == 4 || i ==5 || i == 6){
 				if(TABLE_content.length / 2 >1){
 					var tr_pre = table.find("tr").eq(0).clone(); 
 					var tr_cur = table.find("tr").eq(1).clone();
@@ -112,7 +112,7 @@ function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
-	for(var i = 0; i < 7; i++){
+	for(var i = 0; i < 8; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -122,7 +122,7 @@ function read_only(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
-			if(i == 2 || i == 3 || i ==4){
+			if(i == 3 || i == 4 || i ==5 || i == 6){
 				if(TABLE_content.length / 2 >1){
 					var tr_pre = table.find("tr").eq(0).clone(); 
 					var tr_cur = table.find("tr").eq(1).clone();
@@ -178,7 +178,7 @@ function read_only(content){
 }
 
 function all_hind(){
-	for(var i = 0; i < 7; i++){
+	for(var i = 0; i < 8; i++){
 		$("#table_"+i).hide();
 	}
 }
@@ -331,6 +331,11 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 			return "计划填写有误(必填项)";
 		}
 	}
+	if(tr_class == "zhibushiyejihua" || tr_class == "zhibushiyemubiao" || tr_class=="zhibushiyeyuqichengguo"){
+		if(content == ""){
+			return "计划填写有误(必填项)";
+		}
+	}
 	return true;
 }
 
@@ -355,7 +360,7 @@ function is_in_array(arr,value){
 function submit(subtype){
 	var HANDBOOK_content = new Array();
 	wrong_messages = new Array();
-	for(var i = 0; i < 7; i++){
+	for(var i = 0; i < 8; i++){
 		var CHAPTER_content = new Array();
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -400,7 +405,11 @@ function submit(subtype){
 	
 	
 	if(wrong_messages.length != 0){
-		alert(wrong_messages);
+		wrong_messages_br = "";
+		for(var i = 0; i < wrong_messages.length; i++){
+			wrong_messages_br += wrong_messages[i]+"\n";
+		}
+		alert(wrong_messages_br);
 	}
 	else{
 		var year = $("#year").val();

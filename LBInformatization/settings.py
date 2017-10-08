@@ -26,7 +26,7 @@ SECRET_KEY = 'u$y1nl#5y(!*x$_d=3qnvhnw8g$&j#_t(yz=ro62(8(bm&knql'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['166.111.17.54','127.0.0.1']
 
 
 # Application definition
@@ -75,6 +75,18 @@ WSGI_APPLICATION = 'LBInformatization.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bantuan2',
+        'USER': 'bantuan',
+        'PASSWORD': 'LaoWangZuiShuai233',
+        'HOST': 'localhost',
+        'OPTIONS': {'charset': 'utf8mb4'},
+    }
+}
+"""
 
 DATABASES = {
     'default': {
@@ -86,6 +98,7 @@ DATABASES = {
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
+
 
 
 # Password validation

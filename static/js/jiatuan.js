@@ -282,10 +282,14 @@ function submit(subtype){
 	JIATUAN_content.push(ANLI_content);
 	JIATUAN_content.push(PIC_content);
 
-	console.log(JSON.stringify(JIATUAN_content));
-	/*
+	//console.log(JSON.stringify(JIATUAN_content));
+	
 	if(wrong_messages.length != 0){
-		alert(wrong_messages);
+		wrong_messages_br = "";
+		for(var i = 0; i < wrong_messages.length; i++){
+			wrong_messages_br += wrong_messages[i]+"\n";
+		}
+		alert(wrong_messages_br);
 	}
 	else{
 		
@@ -306,6 +310,6 @@ function submit(subtype){
 		});
 	}
 
-	console.log(JSON.stringify(JIATUAN_content));
-	*/
+	
+	
 }
