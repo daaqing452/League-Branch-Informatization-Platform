@@ -118,14 +118,12 @@ def index(request):
 				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
 		return HttpResponse(json.dumps(jdata))
 
-	# 导入管理员名单
+	# 导入院系管理员名单
 	f = request.FILES.get('upload', None)
 	if not f is None:
 		f_path = upload_file(f)
-		print(f_path)
 		f = codecs.open(f_path, 'r', 'gbk')
 		line_no = -1
-		info = ''
 		while True:
 			line_no += 1
 			try:
@@ -259,6 +257,40 @@ def branch(request, bid):
 		if len(materials) > 0: materials[0].delete();
 		material = JiatuanMaterial.objects.create(htype='b', review_id=department.id, submit_id=branch.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
+
+	# 导入班级成员名单
+	f = request.FILES.get('upload', None)
+	if not f is None:
+		f_path = upload_file(f)
+		f = codecs.open(f_path, 'r', 'gbk')
+		line_no = -1
+		member = json.loads(branch.member)
+		while True:
+			line_no += 1
+			try:
+				line = f.readline()
+			except:
+				print('第' + str(line_no + 1) + '行读入失败')
+				continue
+			if len(line) == 0: break
+			if line[-2:] == '\r\n': line = line[:-2]
+			if line[-1:] == '\n': line = line[:-1]
+			username = line
+			susers = SUser.objects.filter(username=username)
+			if len(susers) == 0:
+				password = username
+				user = User.objects.create_user(username=username, password=password)
+				suser = SUser.objects.create(username=username, uid=user.id)
+			else:
+				suser = susers[0]
+			if not suser.id in member:
+				member.append(suser.id)
+			else:
+				print('第' + str(line_no + 1) + '行重复')
+		f.close()
+		branch.member = json.dumps(member)
+		branch.save()
+		# 会丧失其他数据导致跳到index
 
 	if (branch is not None) and (suser is not None) and (suser.admin_school or ((rdata['self_department'] is not None) and (rdata['self_department'].id == department.id))):
 		news_list = News.objects.filter(display_type='b', display_id=bid)

@@ -138,12 +138,12 @@ function jiatuan_year_onchange() {
 
 function load_admin() {
 	$("#myModal_body").empty();
-	$("#myModalLabel").text("导入校级管理员名单");
+	$("#myModalLabel").text("导入院系管理员名单");
 	$('#myModal_body').append("\
 		<form enctype='multipart/form-data' action='/index/' method='post' style=‘margin:0px;display:inline;’> \
 			<input type='file' class='btn btn-sm' name='upload' style='margin:0px;display:inline;'> \
 			<input type='submit' value='上传名单' class='btn btn-info btn-sm' > \
 		</form> \
 	");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(13)");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
 }
