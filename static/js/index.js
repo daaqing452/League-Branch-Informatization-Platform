@@ -56,6 +56,8 @@ function jiatuan() {
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
+	$("#myModal_body").append("设置截止时间");
+	$("#myModal_body").append("<hr/>")
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	//$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='submit_minge()'>分配名额</button></div>");
 	jiatuan_year_onchange();
@@ -132,4 +134,16 @@ function jiatuan_year_onchange() {
 			div.append("</tr></table>");
 		}
 	});
+}
+
+function load_admin() {
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("导入校级管理员名单");
+	$('#myModal_body').append("\
+		<form enctype='multipart/form-data' action='/index/' method='post' style=‘margin:0px;display:inline;’> \
+			<input type='file' class='btn btn-sm' name='upload' style='margin:0px;display:inline;'> \
+			<input type='submit' value='上传名单' class='btn btn-info btn-sm' > \
+		</form> \
+	");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit(13)");
 }

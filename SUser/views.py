@@ -7,8 +7,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
-from SUser.utils import get_request_basis
+from SUser.utils import get_request_basis, upload_file
 from Message.models import Message, News, Handbook, JiatuanMaterial
+import codecs
 import datetime
 import json
 import random
@@ -116,6 +117,41 @@ def index(request):
 			for everyone in department_admin:
 				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
 		return HttpResponse(json.dumps(jdata))
+
+	# 导入管理员名单
+	f = request.FILES.get('upload', None)
+	if not f is None:
+		f_path = upload_file(f)
+		print(f_path)
+		f = codecs.open(f_path, 'r', 'gbk')
+		line_no = -1
+		info = ''
+		while True:
+			line_no += 1
+			try:
+				line = f.readline()
+			except:
+				info += '第' + str(line_no) + '行读入失败'
+				print('第' + str(line_no) + '行读入失败')
+				continue
+			if len(line) == 0: break
+			if line[-2:] == '\r\n': line = line[:-2]
+			if line[-1:] == '\n': line = line[:-1]
+			try:
+				username = int(line)
+				susers = SUser.objects.filter(username=username)
+				if len(susers) == 0:
+					password = username
+					user = User.objects.create_user(username=username, password=password)
+					suser = SUser.objects.create(username=username, uid=user.id)
+				else:
+					suser = susers[0]
+				suser.admin_school = True
+				suser.save()
+			except:
+				info += '第' + str(line_no) + '行导入失败'
+				print('第' + str(line_no) + '行导入失败')
+		f.close()
 
 	news_list = News.objects.filter(display_type='i')
 	rdata['news_list'] = news_list

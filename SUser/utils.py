@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from SUser.models import SUser, Department, Branch
 from Message.models import Message
 import json
+import time
 
 def get_request_basis(request):
 	rdata = {}
@@ -54,3 +55,12 @@ def get_request_basis(request):
 				rdata['self_department'] = Department.objects.get(id=branch.did)
 		
 	return rdata, op, suser
+
+
+def upload_file(raw):
+	f_path = 'media/' + time.strftime('%Y%m%d%H%M%S') + '-' + raw.name
+	f = open(f_path, 'wb')
+	for chunk in raw.chunks():
+		f.write(chunk)
+	f.close()
+	return f_path

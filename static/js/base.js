@@ -420,7 +420,6 @@ function default_recver_onchange() {
 			for (var i = 0; i < recvers.length; i++) {
 				text += recvers[i] + "; ";
 			}
-			console.log(text);
 			input.val(text);
 		}
 	});
@@ -443,7 +442,7 @@ function read_message(b){
 				+"<span>发送时间：" + data["send_time"] + "</span><br/><br/>";
 			HTMLContent += "<span>" + data["text"] + "</span><br/><br/>";
 			if (mtype >= 2 && mtype <= 5) {
-				$("#myModelYes").hide();
+				//$("#myModelYes").hide();
 				HTMLContent += "<button class='btn btn-default' onclick='commit(4,0)'>不同意</button>&nbsp;<button class='btn btn-primary' onclick='commit(4,1)'>同意</button><br/><br/>";
 			}
 			attachment = JSON.parse(data["attachment"]);
