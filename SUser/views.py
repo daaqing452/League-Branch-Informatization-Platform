@@ -131,26 +131,33 @@ def index(request):
 			try:
 				line = f.readline()
 			except:
-				info += '第' + str(line_no) + '行读入失败'
-				print('第' + str(line_no) + '行读入失败')
+				print('第' + str(line_no + 1) + '行读入失败')
 				continue
 			if len(line) == 0: break
 			if line[-2:] == '\r\n': line = line[:-2]
 			if line[-1:] == '\n': line = line[:-1]
-			try:
-				username = int(line)
-				susers = SUser.objects.filter(username=username)
-				if len(susers) == 0:
-					password = username
-					user = User.objects.create_user(username=username, password=password)
-					suser = SUser.objects.create(username=username, uid=user.id)
+			arr = line.split(',')
+			username = arr[0]
+			department_name = arr[1]
+			susers = SUser.objects.filter(username=username)
+			if len(susers) == 0:
+				password = username
+				user = User.objects.create_user(username=username, password=password)
+				suser = SUser.objects.create(username=username, uid=user.id)
+			else:
+				suser = susers[0]
+			departments = Department.objects.filter(name=department_name)
+			if len(departments) == 0:
+				print('第' + str(line_no + 1) + '行导入失败')
+			else:
+				department = departments[0]
+				admin = json.loads(department.admin)
+				if not suser.id in admin:
+					admin.append(suser.id)
 				else:
-					suser = susers[0]
-				suser.admin_school = True
-				suser.save()
-			except:
-				info += '第' + str(line_no) + '行导入失败'
-				print('第' + str(line_no) + '行导入失败')
+					print('第' + str(line_no + 1) + '行重复')
+				department.admin = json.dumps(admin)
+				department.save()
 		f.close()
 
 	news_list = News.objects.filter(display_type='i')
