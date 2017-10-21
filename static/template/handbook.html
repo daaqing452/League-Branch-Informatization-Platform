@@ -38,28 +38,29 @@
                 <h4>基本信息</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td></td>
-                            <td>团员人数</td>
-                            <td>支部书记</td>
-                            <td>组织委员</td>
-                            <td>宣传委员</td>
-                            <td>备注</td>
+                            <td align="center">团员人数</td>
+                            <td align="center">支部书记</td>
+                            <td align="center">组织委员</td>
+                            <td align="center">宣传委员</td>
+                            <td align="center">备注</td>
+                            <td align="center">新增委员</td>
                         </tr>
                         <tr class="jibenxinxi">
-                            <td type="jibenxinxi_title"></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;"></textarea></td>
+                            <td align="center">
+                                <span class="glyphicon glyphicon-plus" onclick="addOption_3(this)"></span></span>
                         </tr>
                 </table>
                 <h4>奖惩情况</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
                             <td style="width: 10%"></td>
-                            <td style="width: 20%">时间</td>
-                            <td>内容</td>
+                            <td style="width: 20%" align="center">时间</td>
+                            <td align="center">内容</td>
                         </tr>
                         <tr class="jiangchengqingkuang">
                             <td style="width: 10%">团支部</td>
@@ -199,19 +200,19 @@
                 <h4>全年计划</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="quannianjihua">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="quannianjihua_bianji"></textarea></td>
                         </tr>
                 </table>
                 <h4>春季学期计划</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="chunjijihua">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="chunjixueqijihua_bianji"></textarea></td>
                         </tr>
                 </table>
                 <h4>秋季学期计划</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="qiujijihua">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="qiujixueqijihua_bianji"></textarea></td>
                         </tr>
                 </table>
             </div>
@@ -221,19 +222,19 @@
                 <h4>支部事业简介</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyejianjie">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyejianjie_bianji"></textarea></td>
                         </tr>
                 </table>
                 <h4>支部事业目标</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyemubiao">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyemubiao_bianji"></textarea></td>
                         </tr>
                 </table>
                 <h4>预期成果</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyeyuqichengguo">
-                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyeyuqichengguo_bianji"></textarea></td>
                         </tr>
                 </table>
             </div>
@@ -554,7 +555,7 @@
                 <h4>全年工作总结</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="quanniangongzuozongjie_bianji"></textarea></td>
                         </tr>
                 </table>
             </div>

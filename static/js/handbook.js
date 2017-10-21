@@ -1,6 +1,11 @@
 var td_html = "<td><textarea style=\"width: 100%; height: 31px; overflow: auto; resize: none;\"></textarea></td>";
 var add_del_html = "<td align=\"center\"><span class=\"glyphicon glyphicon-plus\" onclick=\"addOption(this)\"></span><span class=\"glyphicon glyphicon-minus\" onclick=\"delOption(this)\"></span></td>"
-
+var weiyuan_html = '<tr>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;"  placeholder=\"委员职能\"></textarea></td>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;" placeholder=\"委员姓名\"></textarea></td>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;" placeholder=\"备注\"></textarea></td>'+
+					'<td></td><td></td>'+
+					'<td align=\"center\"><span class=\"glyphicon glyphicon-minus\" onclick=\"delOption(this)\"></td></tr>';
 
 var chapter;
 var grade;
@@ -11,7 +16,30 @@ $(document).ready(function(){
 	$("#table_0").show();
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	if (!readonly) year_onchange();
+	
 });
+
+var options = {  
+resizeType : 1,
+filterMode : true,  
+allowImageUpload : false,  
+allowFlashUpload : false,  
+allowMediaUpload : false,  
+allowFileManager : false,  
+afterBlur: function(){this.sync();},
+items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',  
+'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',  
+'insertunorderedlist'],  
+
+};  
+var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qiujixueqijihua_bianji","zhibushiyejianjie_bianji","zhibushiyemubiao_bianji",
+					"zhibushiyeyuqichengguo_bianji","quanniangongzuozongjie_bianji");
+var editor = new Array();  
+KindEditor.ready(function(K) {  
+	for(var i = 0; i < bianji_list.length; i++){
+		editor[i] = K.create('textarea[name="'+bianji_list[i]+'"]',options);
+	}
+});  
 
 function load_handbook() {
 	var hid = $("#main_div").attr("hid");
@@ -46,6 +74,7 @@ function year_onchange() {
 
 function fill_content(content){
 	//if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
+	//content = '[[[["1","2","3","4","5"],["11","22","33"],["44","55","66"]],[["",""],["",""],["",""],["",""]],[["1","2","","","","","","",""],["3","4","","","","","","",""],["5","6","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[["","12<span style=\'color:#E53333;\'>31</span>2"]],[["",""]],[["",""]]],[[["","<ol>\\n\\t<li>\\n\\t\\t我爱<span style=\'background-color:#E56600;\'>中</span>国\\n\\t</li>\\n\\t<li>\\n\\t\\t2222\\n\\t</li>\\n</ol>"]],[["",""]],[["",""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["11","","","","",""],[""],["22","","","","",""],[""],["33","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["1","","","","",""],[""],["2","","","","",""],[""]]],[[["","我爱<em>我家啊啊啊</em>"]]]]';
 	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 8; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
@@ -57,12 +86,14 @@ function fill_content(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
+			
 			if(i == 3 || i == 4 || i ==5 || i == 6){
+				
 				if(TABLE_content.length / 2 >1){
-					var tr_pre = table.find("tr").eq(0).clone(); 
-					var tr_cur = table.find("tr").eq(1).clone();
-					var tr_next = table.find("tr").eq(2).clone();
-					for(var clone_num = 0; clone_num < TABLE_content.length / 2 -1; clone_num++){
+					for(var clone_num = 0; clone_num < TABLE_content.length / 2 - 1; clone_num++){
+						var tr_pre = table.find("tr").eq(0).clone(); 
+						var tr_cur = table.find("tr").eq(1).clone();
+						var tr_next = table.find("tr").eq(2).clone();
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
 						tr_next.appendTo(table); 
@@ -90,17 +121,36 @@ function fill_content(content){
 					real_num -= 1;
 				}
 
-				if(real_num < TABLE_content.length){
-					var tr = table.find("tr").eq(start_num).clone();   
-	 				tr.appendTo(table); 
+				for(var clone_num = real_num; clone_num < TABLE_content.length; clone_num++){
+					if(i == 0 && k == 0){
+						var tr = weiyuan_html;
+						table.append(tr);
+					}
+					else{
+						var tr = table.find("tr").eq(start_num).clone();
+						tr.appendTo(table);
+					}
+					
+					
 				}
+				
 				for(var m = 0; m < TABLE_content.length; m++){
 					var TR_content = TABLE_content[m];
 					var textarea_num = TR_content.length;
 					var tr = table.find("tr").eq(start_num+m);
 					for(var n = 0; n < textarea_num; n++){
-						tr.find("textarea").eq(n).val(TR_content[n]);
-						tr.find("textarea").eq(n).css("background","");
+						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
+							var textarea_name = tr.find("textarea").eq(n).prop("name");
+							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
+							
+							//editor[0].readonly(true);
+							//editor[0].cssData = 'body {background-color: #CCCCCC;}';
+							//KindEditor.options.cssData = 'body {background-color: #CCCCCC;}';
+						}
+						else{
+							tr.find("textarea").eq(n).val(TR_content[n]);
+							tr.find("textarea").eq(n).css("background","");
+						}
 					}
 				}
 			}
@@ -124,10 +174,10 @@ function read_only(content){
 			var start_num = 0;
 			if(i == 3 || i == 4 || i ==5 || i == 6){
 				if(TABLE_content.length / 2 >1){
-					var tr_pre = table.find("tr").eq(0).clone(); 
-					var tr_cur = table.find("tr").eq(1).clone();
-					var tr_next = table.find("tr").eq(2).clone();
 					for(var clone_num = 0; clone_num < TABLE_content.length / 2 -1; clone_num++){
+						var tr_pre = table.find("tr").eq(0).clone(); 
+						var tr_cur = table.find("tr").eq(1).clone();
+						var tr_next = table.find("tr").eq(2).clone();
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
 						tr_next.appendTo(table); 
@@ -156,18 +206,34 @@ function read_only(content){
 					real_num -= 1;
 				}
 
-				if(real_num < TABLE_content.length){
-					var tr = table.find("tr").eq(start_num).clone();   
-	 				tr.appendTo(table); 
+				for(var clone_num = real_num; clone_num < TABLE_content.length; clone_num++){
+					if(i == 0 && k == 0){
+						var tr = weiyuan_html;
+						table.append(tr);
+					}
+					else{
+						var tr = table.find("tr").eq(start_num).clone();
+						tr.appendTo(table);
+					}	
 				}
+
 				for(var m = 0; m < TABLE_content.length; m++){
 					var TR_content = TABLE_content[m];
 					var textarea_num = TR_content.length;
 					var tr = table.find("tr").eq(start_num+m);
 					for(var n = 0; n < textarea_num; n++){
-						tr.find("textarea").eq(n).val(TR_content[n]);
-						tr.find("textarea").eq(n).attr("disabled", "disabled");
-						tr.find("textarea").eq(n).attr("readonly", "readonly");
+						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
+							var textarea_name = tr.find("textarea").eq(n).prop("name");
+							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
+							var editor_index = bianji_list.indexOf(textarea_name);
+							editor[editor_index].readonly(true);
+							//KindEditor.readonly('textarea[name="'+textarea_name+'"]',true);
+						}
+						else{
+							tr.find("textarea").eq(n).val(TR_content[n]);
+							tr.find("textarea").eq(n).attr("disabled", "disabled");
+							tr.find("textarea").eq(n).attr("readonly", "readonly");
+						}
 					}
 				}
 
@@ -385,7 +451,12 @@ function submit(subtype){
 					}
 					for(var n = 0; n < textarea_num; n++){
 						tr.find("textarea").eq(n).css("background","");
-						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,tr.find("textarea").eq(n).val());
+						//var textarea_content = "";
+						//if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
+						//	var textarea_content = 
+						//}
+						var textarea_content = tr.find("textarea").eq(n).val();
+						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
 						if (subtype == 0) false_message = true;
 						if(false_message != true){
 							if(is_in_array(wrong_messages,false_message) == false){
@@ -393,7 +464,7 @@ function submit(subtype){
 							}
 							tr.find("textarea").eq(n).css("background","#CCCCCC");
 						}
-						TR_content.push(tr.find("textarea").eq(n).val());
+						TR_content.push(textarea_content);
 					}
 				}
 				TABLE_content.push(TR_content);
@@ -428,7 +499,7 @@ function submit(subtype){
 			}
 		});
 	}
-
+	
 	//console.log(JSON.stringify(HANDBOOK_content));
 }
 
@@ -457,6 +528,18 @@ function addOption_2(b){
 	$this_table.append("<tr>"+next_html+"</tr>");
 }
 
+function addOption_3(b){
+	var $b = $(b);
+	var current_row = b.parentNode.parentNode;
+	var row_type = current_row.getAttribute("class");
+	var current_index = current_row.rowIndex;
+	var op_table = b.parentNode.parentNode.parentNode;
+	var new_row = op_table.insertRow(current_index+1);
+
+	var tr_html = weiyuan_html;
+	new_row.innerHTML = tr_html;
+	$(new_row).attr("class","tianjiaweiyuan");
+}
 
 function delOption(b){
 	var current_row = b.parentNode.parentNode;
