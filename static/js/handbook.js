@@ -30,14 +30,17 @@ afterBlur: function(){this.sync();},
 items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',  
 'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',  
 'insertunorderedlist'],  
-
 };  
+
+
+
 var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qiujixueqijihua_bianji","zhibushiyejianjie_bianji","zhibushiyemubiao_bianji",
 					"zhibushiyeyuqichengguo_bianji","quanniangongzuozongjie_bianji");
 var editor = new Array();  
 KindEditor.ready(function(K) {  
 	for(var i = 0; i < bianji_list.length; i++){
 		editor[i] = K.create('textarea[name="'+bianji_list[i]+'"]',options);
+	
 	}
 });  
 
@@ -142,10 +145,9 @@ function fill_content(content){
 						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
 							var textarea_name = tr.find("textarea").eq(n).prop("name");
 							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
+							var editor_index = bianji_list.indexOf(textarea_name);
+							editor[editor_index].edit.doc.body.style.backgroundColor = '';
 							
-							//editor[0].readonly(true);
-							//editor[0].cssData = 'body {background-color: #CCCCCC;}';
-							//KindEditor.options.cssData = 'body {background-color: #CCCCCC;}';
 						}
 						else{
 							tr.find("textarea").eq(n).val(TR_content[n]);
@@ -227,7 +229,6 @@ function read_only(content){
 							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
 							var editor_index = bianji_list.indexOf(textarea_name);
 							editor[editor_index].readonly(true);
-							//KindEditor.readonly('textarea[name="'+textarea_name+'"]',true);
 						}
 						else{
 							tr.find("textarea").eq(n).val(TR_content[n]);
@@ -397,7 +398,7 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 			return "计划填写有误(必填项)";
 		}
 	}
-	if(tr_class == "zhibushiyejihua" || tr_class == "zhibushiyemubiao" || tr_class=="zhibushiyeyuqichengguo"){
+	if(tr_class == "zhibushiyejianjie" || tr_class == "zhibushiyemubiao" || tr_class=="zhibushiyeyuqichengguo"){
 		if(content == ""){
 			return "计划填写有误(必填项)";
 		}
@@ -450,19 +451,33 @@ function submit(subtype){
 						}
 					}
 					for(var n = 0; n < textarea_num; n++){
-						tr.find("textarea").eq(n).css("background","");
-						//var textarea_content = "";
-						//if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
-						//	var textarea_content = 
-						//}
-						var textarea_content = tr.find("textarea").eq(n).val();
+						var textarea_content = "";
+						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
+							var textarea_name = tr.find("textarea").eq(n).prop("name");
+							var editor_index = bianji_list.indexOf(textarea_name);
+							editor[editor_index].edit.doc.body.style.backgroundColor = '';
+							textarea_content = editor[editor_index].html();
+						}
+						else{
+							tr.find("textarea").eq(n).css("background","");
+							textarea_content = tr.find("textarea").eq(n).val();
+						}
+						
 						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
 						if (subtype == 0) false_message = true;
 						if(false_message != true){
 							if(is_in_array(wrong_messages,false_message) == false){
 								wrong_messages.push(false_message);
 							}
-							tr.find("textarea").eq(n).css("background","#CCCCCC");
+							if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
+								var textarea_name = tr.find("textarea").eq(n).prop("name");
+								var editor_index = bianji_list.indexOf(textarea_name);
+								editor[editor_index].edit.doc.body.style.backgroundColor = '#CCCCCC';
+							}
+							else{
+								tr.find("textarea").eq(n).css("background","#CCCCCC");
+							}
+							
 						}
 						TR_content.push(textarea_content);
 					}
@@ -500,7 +515,7 @@ function submit(subtype){
 		});
 	}
 	
-	//console.log(JSON.stringify(HANDBOOK_content));
+	console.log(JSON.stringify(HANDBOOK_content));
 }
 
 function addOption(b){
