@@ -515,7 +515,7 @@ function submit(subtype){
 		});
 	}
 	
-	console.log(JSON.stringify(HANDBOOK_content));
+	//console.log(JSON.stringify(HANDBOOK_content));
 }
 
 function addOption(b){
