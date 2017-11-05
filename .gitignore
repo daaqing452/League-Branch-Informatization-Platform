@@ -1,0 +1,8 @@
+.DS_Store
+/media/*
+/SUser/.DS_Store
+/Message/.DS_Store
+/static/.DS_Store
+/static/js/.DS_Store
+/static/template/.DS_Store
+
