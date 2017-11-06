@@ -581,3 +581,17 @@ function delOption_2(b){
 	op_table.deleteRow(current_index);
 	op_table.deleteRow(current_index-1);
 }
+
+function export() {
+	$.ajax({
+		url: window.location.href,
+		type: 'POST',
+		data: {'op': 'export'},
+		success: function(data) {
+			var data = JSON.parse(data);
+			export_path = '/' + data['export_path'];
+			$('a#download').attr('href', export_path);
+			document.getElementById("download").click();
+		}
+	});
+}

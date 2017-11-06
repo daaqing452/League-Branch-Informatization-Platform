@@ -264,6 +264,10 @@ def handbook_show(request, hid):
 		jdata['content'] = handbook.content
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'export':
+		xxx
+		return HttpResponse(json.dumps(jdata))
+
 	rdata['readonly'] = True
 
 	# 权限检测

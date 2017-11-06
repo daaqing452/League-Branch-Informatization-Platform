@@ -560,6 +560,8 @@
                 </table>
             </div>
             {% if readonly %}
+            <button id="button_export" class="btn btn-primary" style="float: right; width: 100px;" onclick="exportt()">导出</button>
+            <a id="download"></a>
             {% else %}
             <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>
             <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="submit(0)">暂存</button>
