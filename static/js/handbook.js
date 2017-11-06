@@ -76,6 +76,7 @@ function year_onchange() {
 }
 
 function fill_content(content){
+	//console.log(content)
 	//if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
 	//content = '[[[["1","2","3","4","5"],["11","22","33"],["44","55","66"]],[["",""],["",""],["",""],["",""]],[["1","2","","","","","","",""],["3","4","","","","","","",""],["5","6","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[["","12<span style=\'color:#E53333;\'>31</span>2"]],[["",""]],[["",""]]],[[["","<ol>\\n\\t<li>\\n\\t\\t我爱<span style=\'background-color:#E56600;\'>中</span>国\\n\\t</li>\\n\\t<li>\\n\\t\\t2222\\n\\t</li>\\n</ol>"]],[["",""]],[["",""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["11","","","","",""],[""],["22","","","","",""],[""],["33","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["1","","","","",""],[""],["2","","","","",""],[""]]],[[["","我爱<em>我家啊啊啊</em>"]]]]';
 	var HANDBOOK_content = JSON.parse(content);
@@ -395,12 +396,14 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 	}
 	if(tr_class == "quannianjihua" || tr_class == "chunjijihua" || tr_class=="qiujijihua"){
 		if(content == ""){
+			//console.log(content);
 			return "计划填写有误(必填项)";
 		}
 	}
 	if(tr_class == "zhibushiyejianjie" || tr_class == "zhibushiyemubiao" || tr_class=="zhibushiyeyuqichengguo"){
 		if(content == ""){
-			return "计划填写有误(必填项)";
+			//console.log(content);
+			return "支部事业填写有误(必填项)";
 		}
 	}
 	return true;
@@ -443,6 +446,34 @@ function submit(subtype){
 				if(textarea_num == 0){
 					continue;
 				}
+				var keditor_flag = false;
+				var tr_class = tr.attr("class");
+
+				for(var it = 0; it < bianji_list.length; it++){
+					if(bianji_list[it].indexOf(tr_class) >= 0){
+						keditor_flag = true;
+					}
+				} 
+
+				if(keditor_flag){
+					var textarea_name = tr.find("textarea").eq(1).prop("name");
+					var editor_index = bianji_list.indexOf(textarea_name);
+					editor[editor_index].edit.doc.body.style.backgroundColor = '';
+					var textarea_content = editor[editor_index].html();
+					//console.log(tr.attr("class")+" "+textarea_content);
+					var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
+					if (subtype == 0) false_message = true;
+					if(false_message != true){
+						if(is_in_array(wrong_messages,false_message) == false){
+							wrong_messages.push(false_message);
+						}
+						var textarea_name = tr.find("textarea").eq(1).prop("name");
+						var editor_index = bianji_list.indexOf(textarea_name);
+						editor[editor_index].edit.doc.body.style.backgroundColor = '#CCCCCC';	
+					}
+					TR_content.push(textarea_content);
+					
+				}
 				else{
 					for(var n = 0; n < textarea_num; n++){
 						if(tr.find("textarea").eq(n).val() != ""){
@@ -451,32 +482,17 @@ function submit(subtype){
 						}
 					}
 					for(var n = 0; n < textarea_num; n++){
-						var textarea_content = "";
-						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
-							var textarea_name = tr.find("textarea").eq(n).prop("name");
-							var editor_index = bianji_list.indexOf(textarea_name);
-							editor[editor_index].edit.doc.body.style.backgroundColor = '';
-							textarea_content = editor[editor_index].html();
-						}
-						else{
-							tr.find("textarea").eq(n).css("background","");
-							textarea_content = tr.find("textarea").eq(n).val();
-						}
 						
+						tr.find("textarea").eq(n).css("background","");
+						var textarea_content = tr.find("textarea").eq(n).val();
 						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
 						if (subtype == 0) false_message = true;
 						if(false_message != true){
 							if(is_in_array(wrong_messages,false_message) == false){
 								wrong_messages.push(false_message);
 							}
-							if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
-								var textarea_name = tr.find("textarea").eq(n).prop("name");
-								var editor_index = bianji_list.indexOf(textarea_name);
-								editor[editor_index].edit.doc.body.style.backgroundColor = '#CCCCCC';
-							}
-							else{
-								tr.find("textarea").eq(n).css("background","#CCCCCC");
-							}
+							tr.find("textarea").eq(n).css("background","#CCCCCC");
+							
 							
 						}
 						TR_content.push(textarea_content);
@@ -489,7 +505,7 @@ function submit(subtype){
 		HANDBOOK_content.push(CHAPTER_content);
 	}
 	
-	
+	console.log(JSON.stringify(HANDBOOK_content));
 	if(wrong_messages.length != 0){
 		wrong_messages_br = "";
 		for(var i = 0; i < wrong_messages.length; i++){
@@ -515,7 +531,7 @@ function submit(subtype){
 		});
 	}
 	
-	//console.log(JSON.stringify(HANDBOOK_content));
+	
 }
 
 function addOption(b){
