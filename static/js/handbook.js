@@ -142,19 +142,26 @@ function fill_content(content){
 					var TR_content = TABLE_content[m];
 					var textarea_num = TR_content.length;
 					var tr = table.find("tr").eq(start_num+m);
-					for(var n = 0; n < textarea_num; n++){
-						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
-							var textarea_name = tr.find("textarea").eq(n).prop("name");
-							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
-							var editor_index = bianji_list.indexOf(textarea_name);
-							editor[editor_index].edit.doc.body.style.backgroundColor = '';
-							
+					var keditor_flag = false;
+					var tr_class = tr.attr("class");
+					for(var it = 0; it < bianji_list.length; it++){
+						if(bianji_list[it].indexOf(tr_class) >= 0){
+							keditor_flag = true;
 						}
-						else{
+					} 
+					if(keditor_flag){
+						var textarea_name = tr.find("textarea").eq(1).prop("name");
+						KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[0]);
+						var editor_index = bianji_list.indexOf(textarea_name);
+						editor[editor_index].edit.doc.body.style.backgroundColor = '';
+					}
+					else{
+						for(var n = 0; n < textarea_num; n++){
 							tr.find("textarea").eq(n).val(TR_content[n]);
 							tr.find("textarea").eq(n).css("background","");
 						}
 					}
+					
 				}
 			}
 		}
