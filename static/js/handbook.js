@@ -224,14 +224,21 @@ function read_only(content){
 					var TR_content = TABLE_content[m];
 					var textarea_num = TR_content.length;
 					var tr = table.find("tr").eq(start_num+m);
-					for(var n = 0; n < textarea_num; n++){
-						if(tr.find("textarea").eq(n).prop("name").indexOf("_bianji") >= 0){
-							var textarea_name = tr.find("textarea").eq(n).prop("name");
-							KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[n]);
-							var editor_index = bianji_list.indexOf(textarea_name);
-							editor[editor_index].readonly(true);
+					var keditor_flag = false;
+					var tr_class = tr.attr("class");
+					for(var it = 0; it < bianji_list.length; it++){
+						if(bianji_list[it].indexOf(tr_class) >= 0){
+							keditor_flag = true;
 						}
-						else{
+					} 
+					if(keditor_flag){
+						var textarea_name = tr.find("textarea").eq(1).prop("name");
+						KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[0]);
+						var editor_index = bianji_list.indexOf(textarea_name);
+						editor[editor_index].readonly(true);
+					}
+					else{
+						for(var n = 0; n < textarea_num; n++){
 							tr.find("textarea").eq(n).val(TR_content[n]);
 							tr.find("textarea").eq(n).attr("disabled", "disabled");
 							tr.find("textarea").eq(n).attr("readonly", "readonly");
@@ -535,6 +542,9 @@ function submit(subtype){
 }
 
 function addOption(b){
+	if(readonly){
+		return;
+	}
 	var $b = $(b);
 	var current_row = b.parentNode.parentNode;
 	var row_type = current_row.getAttribute("class");
@@ -548,6 +558,9 @@ function addOption(b){
 }
 
 function addOption_2(b){
+	if(readonly){
+		return;
+	}
 	var $b = $(b);
 	var $this_table = $b.parents("table").eq(0);	
 	var current_index = b.parentNode.parentNode.rowIndex;
@@ -560,6 +573,9 @@ function addOption_2(b){
 }
 
 function addOption_3(b){
+	if(readonly){
+		return;
+	}
 	var $b = $(b);
 	var current_row = b.parentNode.parentNode;
 	var row_type = current_row.getAttribute("class");
@@ -573,6 +589,9 @@ function addOption_3(b){
 }
 
 function delOption(b){
+	if(readonly){
+		return;
+	}
 	var current_row = b.parentNode.parentNode;
 	var current_index = current_row.rowIndex;
 	var op_table = b.parentNode.parentNode.parentNode;
@@ -585,6 +604,9 @@ function delOption(b){
 }
 
 function delOption_2(b){
+	if(readonly){
+		return;
+	}
 	var current_row = b.parentNode.parentNode;
 	var current_index = current_row.rowIndex;
 	var op_table = b.parentNode.parentNode.parentNode;
