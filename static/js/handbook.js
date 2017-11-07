@@ -283,6 +283,7 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 	var shishu_pat = new RegExp("^\\d+(\\.\\d+)?$");
 	var xuehao_pat = new RegExp("^\\d{10}$");
 	var data_pat = new RegExp("^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))$");
+	var data_pat_jiangchengqingkuang = new RegExp("^([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-((0[13578]|1[02])|(0[469]|11)|(02))$"); 
 	if(tr.find("td").eq(textarea_n).attr("class")=="canyurenshu"){
 		if(content!="" && num_pat.test(content) == false){
 			return "参与人数填写有误(非正整数)";
@@ -305,16 +306,17 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 			}
 		}
 	}
-	if(tr_class == "jiangchengqingkuang"){
+
+	if(tr_class != undefined && tr_class.indexOf("jiangchengqingkuang")>=0){
 		if(textarea_n == 0){
 			var clist = content.split("\n");
-			if(clist.length == 1 && clist[0] == ""){
+			if(clist[0] == ""){
 				//no input
 			}
 			else{
 				for(var i = 0; i < clist.length; i++){
 					var each_c = clist[i];
-					if(data_pat.test(each_c) == false){
+					if(data_pat_jiangchengqingkuang.test(each_c) == false){
 						return "奖惩情况填写有误(日期格式)";
 					}
 				}
@@ -598,6 +600,25 @@ function addOption_3(b){
 function delOption(b){
 	if(readonly){
 		return;
+	}
+	var $b = $(b);
+	
+	if($b.parents("table").eq(0).attr("name") == "jiangchengqingkuang"){
+		
+		var duixiang_cnt = 0;
+		var this_class = $b.parents("tr").eq(0).attr("class");
+		
+		var tr_object = $b.parents("table").eq(0).find("tr");
+		var tr_length = tr_object.length;
+		for(var i = 0; i < tr_length; i ++){
+			if(tr_object.eq(i).attr("class") == this_class){
+				duixiang_cnt += 1;
+			}
+		}
+		
+		if(duixiang_cnt <= 1){
+			return;
+		}
 	}
 	var current_row = b.parentNode.parentNode;
 	var current_index = current_row.rowIndex;
