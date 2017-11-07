@@ -10,6 +10,17 @@ import datetime
 import json
 import time
 
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+import reportlab.pdfbase.ttfonts
+from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
+
+reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heilight', '/System/Library/Fonts/STHeiti Light.ttc'))
+reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heimedium', '/System/Library/Fonts/STHeiti Medium.ttc'))
+
+
+
 # m_type
 #   0: 预留
 #   1: 用户发送
@@ -265,6 +276,75 @@ def handbook_show(request, hid):
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'export':
+		def makeTitle(s, fontSize=10, face="heilight"):
+			return Paragraph('<para fontSize=' + str(fontSize) + ' align=center><br/><br/><font face="' + face + '">' + s + '</font><br/><br/></para>', normalStyle)
+
+		def makeTable(t, colw):
+			for i in range(len(t)):
+				for j in range(len(t[i])):
+					if len(t[i][j]) > colw[j] / 8:
+						t[i][j] = Paragraph('<font face="heilight" fontSize=8>' + t[i][j] + '</font>', normalStyle)
+			return Table(t, colWidths=colw, style=tableStyle)
+
+		h = json.loads(handbook.content)
+		styleSheet = getSampleStyleSheet()
+		normalStyle = styleSheet['Normal']
+		tableStyle = TableStyle([
+			('FONTNAME',(0,0),(-1,-1),'heilight'),
+			('FONTSIZE',(0,0),(-1,-1),8),
+			('ALIGN',(0,0),(-1,-1),'CENTER'),
+			('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+			('GRID',(0,0),(-1,-1),0.5,colors.black)
+			])
+		pdf = []
+		# 大标题
+		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + str(handbook.year) + '-' + str(handbook.year+1) + '学年' + branch.name + '团支部工作手册</font><br/><br/></para>', normalStyle))
+		# 基本情况
+		pdf.append(makeTitle('基本情况', 15, "heimedium"))
+		# 基本信息
+		pdf.append(makeTitle('基本信息'))
+		table = [['团员人数', '团支部书记', '组织委员', '宣传委员', '备注'], h[0][0][0]]
+		pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
+		if len(h[0][0]) > 1:
+			pdf.append(makeTitle('其他委员'))
+			table = [['委员职能', '委员姓名', '备注']]
+			table.extend(h[0][0][1:])
+			pdf.append(makeTable(table, [150, 150, 200]))
+		# 奖惩情况
+		pdf.append(makeTitle('奖惩情况'))
+		table = [['', '时间', '内容'], ['团支部'], ['班级'], ['党课学习小组'], ['个人']]
+		for i in range(4):
+			table[i + 1].extend(h[0][1][i])
+		pdf.append(makeTable(table, [150, 150, 200]))
+		# 团员花名册
+		pdf.append(makeTitle('团员花名册'))
+		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table.extend(h[0][2])
+		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		# 申请入团名单
+		pdf.append(makeTitle('申请入团名单'))
+		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table.extend(h[0][3])
+		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		# 交纳团费情况
+		pdf.append(makeTitle('交纳团费情况'))
+		table = [['月份', '支部人数', '应交人数', '实交人数', '应交金额', '实交金额', '备注']]
+		table.extend(h[0][4])
+		pdf.append(makeTable(table, [50, 50, 50, 50, 100, 100, 100]))
+		# 推优入党名单
+		pdf.append(makeTitle('推优入党名单'))
+		table = [['学号', '姓名', '提交申请书时间', '入党时间', '转正时间']]
+		table.extend(h[0][5])
+		pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
+		# 工作计划
+		pdf.append(makeTitle('工作计划', 15, "heimedium"))
+		# 全年计划
+		pdf.append(makeTitle('全年计划'))
+		pdf.append(makeTable(h[1][0], [500]))
+
+		doc = SimpleDocTemplate('media/a.pdf')
+		doc.build(pdf)
+
 		xxx
 		return HttpResponse(json.dumps(jdata))
 

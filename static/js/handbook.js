@@ -598,7 +598,7 @@ function delOption_2(b){
 	op_table.deleteRow(current_index-1);
 }
 
-function export() {
+function exportt() {
 	$.ajax({
 		url: window.location.href,
 		type: 'POST',
