@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.utils import get_request_basis
 from Message.models import Message, Handbook, News, JiatuanMaterial
+import copy
 import datetime
 import json
 import re
@@ -321,10 +322,25 @@ def handbook_show(request, hid):
 			pdf.append(makeTable(table, [150, 150, 200]))
 		# 	奖惩情况
 		pdf.append(makeTitle('奖惩情况'))
-		table = [['', '时间', '内容'], ['团支部'], ['班级'], ['党课学习小组'], ['个人']]
-		for i in range(4):
-			table[i + 1].extend(h[0][1][i])
-		pdf.append(makeTable(table, [150, 150, 200]))
+		table = [['', '时间', '内容']]
+		# ['团支部'], ['班级'], ['党课学习小组'], ['个人']
+		h01 = h[0][1]
+		i = 0
+		n = len(h01)
+		tbstyle = [
+			('FONTNAME',(0,0),(-1,-1),'heilight'),
+			('FONTSIZE',(0,0),(-1,-1),8),
+			('ALIGN',(0,0),(-1,-1),'CENTER'),
+			('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+			('GRID',(0,0),(-1,-1),0.5,colors.black)
+			]
+		while i < n:
+			j = i + 1
+			while j < n and h01[i][0] == h01[j][0]: j += 1
+			table.extend(h01[i:j])
+			tbstyle.append(('SPAN',(0,i+1),(0,j)))
+			i = j
+		pdf.append(makeTable(table, [100, 100, 300], TableStyle(tbstyle)))
 		# 	团员花名册
 		pdf.append(makeTitle('团员花名册'))
 		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
