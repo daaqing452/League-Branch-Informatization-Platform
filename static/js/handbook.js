@@ -755,12 +755,16 @@ function exportt() {
 	$.ajax({
 		url: window.location.href,
 		type: 'POST',
-		data: {'op': 'export'},
+		data: {'op': 'export', 'year': $("#year").val()},
 		success: function(data) {
 			var data = JSON.parse(data);
-			export_path = '/' + data['export_path'];
-			$('a#download').attr('href', export_path);
-			document.getElementById("download").click();
+			if (data['result'] == 'OK') {
+				export_path = '/' + data['export_path'];
+				$('a#download').attr('href', export_path);
+				document.getElementById("download").click();
+			} else {
+				alert(data['result']);
+			}
 		}
 	});
 }
