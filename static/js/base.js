@@ -49,7 +49,13 @@ function commit(flag, param){
 					var data = JSON.parse(data);
 					var result = data['result'];
 					if (result == "成功") {
-						window.location.reload();
+						if (data['self_admin_department']) {
+							window.location.href = data['self_department'];
+						} else if (data['self_branch'] != null) {
+							window.location.href = data['self_branch'];
+						} else {
+							window.location.reload();
+						}
 					} else {
 						alert(result);
 					}

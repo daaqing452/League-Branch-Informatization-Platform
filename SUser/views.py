@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
-from SUser.utils import get_request_basis, upload_file
+from SUser.utils import get_request_basis, get_request_basis_identity, upload_file
 from Message.models import Message, News, Handbook, JiatuanMaterial
 import codecs
 import datetime
@@ -37,6 +37,8 @@ def index(request):
 			user = auth.authenticate(username=username, password=password)
 			if user is not None:
 				auth.login(request, user)
+				suser = SUser.objects.filter(username=user.username)[0]
+				get_request_basis_identity(jdata, suser, False)
 				jdata['result'] = '成功'
 			else:
 				jdata['result'] = '密码错误'

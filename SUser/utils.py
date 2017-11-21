@@ -5,6 +5,34 @@ from Message.models import Message
 import json
 import time
 
+def get_request_basis_identity(rdata, suser, unserial=True):
+	# 个人归属
+	rdata['self_department'] = None
+	rdata['self_admin_department'] = False
+	rdata['self_branch'] = None
+	rdata['self_admin_branch'] = False
+	if suser is not None:
+		for department in Department.objects.all():
+			if suser.id in json.loads(department.admin):
+				rdata['self_admin_department'] = True
+				if unserial:
+					rdata['self_department'] = department
+				else:
+					rdata['self_department'] = '/department/' + str(department.id) + '/'
+				break
+		for branch in Branch.objects.all():
+			branch_admin = False
+			if suser.id in json.loads(branch.admin):
+				rdata['self_admin_branch'] = True
+				branch_admin = True
+			if suser.id in json.loads(branch.member) or branch_admin:
+				if unserial:
+					rdata['self_branch'] = branch
+					rdata['self_department'] = Department.objects.get(id=branch.did)
+				else:
+					rdata['self_branch'] = '/branch/' + str(branch.id) + '/'
+				break
+
 def get_request_basis(request):
 	rdata = {}
 	op = request.POST.get('op', '')
@@ -16,7 +44,7 @@ def get_request_basis(request):
 		rdata['suser'] = suser
 	rdata['login'] = suser is not None
 
-	# 院系
+	# 所有院系
 	departments = Department.objects.all()
 	d0 = []
 	for department in departments:
@@ -33,27 +61,7 @@ def get_request_basis(request):
 	rdata['unread_messages'] = messages
 	rdata['unread_messages_length'] = len(messages)
 
-	# 个人归属
-	rdata['self_department'] = None
-	rdata['self_admin_department'] = False
-	rdata['self_branch'] = None
-	rdata['self_admin_branch'] = False
-	if suser is not None:
-		for department in Department.objects.all():
-			if suser.id in json.loads(department.admin):
-				rdata['self_admin_department'] = True
-				rdata['self_department'] = department
-				break
-		for branch in Branch.objects.all():
-			if suser.id in json.loads(branch.admin):
-				rdata['self_admin_branch'] = True
-				rdata['self_branch'] = branch
-				rdata['self_department'] = Department.objects.get(id=branch.did)
-				break
-			if suser.id in json.loads(branch.member):
-				rdata['self_branch'] = branch
-				rdata['self_department'] = Department.objects.get(id=branch.did)
-		
+	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
 
 

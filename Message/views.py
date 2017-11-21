@@ -6,7 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import SUser, School, Department, Branch
 from SUser.utils import get_request_basis
 from Message.models import Message, Handbook, News, JiatuanMaterial
-import copy
 import datetime
 import json
 import re
@@ -19,8 +18,8 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
 
 import reportlab.pdfbase.ttfonts
-reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heilight', '/System/Library/Fonts/STHeiti Light.ttc'))
-reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heimedium', '/System/Library/Fonts/STHeiti Medium.ttc'))
+reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heilight', 'static/font/STHeiti Light.ttc'))
+reportlab.pdfbase.pdfmetrics.registerFont(reportlab.pdfbase.ttfonts.TTFont('heimedium', 'static/font/STHeiti Medium.ttc'))
 
 
 
