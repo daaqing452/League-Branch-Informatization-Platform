@@ -81,8 +81,10 @@
                 <button id="release_news" class="btn" data-toggle="modal" data-target="#myModal" style="width: 14.3%;background-color: #663300;color: #fff;" onclick="release_n()">发布新闻</button>
                 <button id="release_a_new" class="btn" data-toggle="modal" data-target="#myModal" style="width: 14.3%;background-color: #666666;color: #fff;"  onclick="release_a_n()">发布图文</button>
                 <button id="jiatuan" class="btn" data-toggle="modal" data-target="#myModal" style="width: 14.3%;background-color: #999999;color: #fff;" onclick="jiatuan()">甲团</button>
+                <button class="btn" style="width: 14.3%;background-color: #336600;color: #fff;float:right" id="load_branch" data-toggle="modal" data-target="#myModal" onclick="load_branch()">导入团支部</button>
             {% endif %}
               
         </div>
     </div>
+    <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
     {% endblock context %}
