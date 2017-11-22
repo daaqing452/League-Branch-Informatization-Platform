@@ -30,6 +30,12 @@ class News(models.Model):
 	title = models.TextField(default='')
 	text = models.TextField(default='')
 
+class Slide(models.Model):
+	display_type = models.CharField(max_length=1, default='.')
+	display_id = models.IntegerField(default=0)
+	title = models.TextField(default='')
+	img_path = models.TextField(default='')
+
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)

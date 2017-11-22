@@ -21,7 +21,7 @@
                       
                     <tfoot>
                         <tr>
-                          <td style="float:right"> <a href='/news_list/d/{{ department.id }}/'> 更多 > </a> </td>
+                          <td style="float:right"> <a href='/news_list/d/{{ department.id }}/'> 显示更多 </a> </td>
                         </tr>
                     </tfoot>
 
@@ -33,9 +33,9 @@
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" >
                   <!-- Indicators -->
                   <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    {% for slide in slide_list %}
+                    <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %} ></li>
+                    {% endfor %}
                   </ol>
 
                   <!-- Wrapper for slides -->
@@ -45,7 +45,6 @@
                       <img src="{{ slide.img_path }}" style="width: 100%">
                       <div class="carousel-caption">
                         <h3>{{ slide.title }}</h3>
-                        <!--<p>{{ slide.text }}</p>-->
                       </div>
                     </div>
                     {% endfor %}
@@ -69,7 +68,6 @@
     <div class = "row">
         <div style="width: 90%;margin:0 auto;">
             <div class="btn-group" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
-            {% if is_admin %}
                 <button id="dLabel" class="btn btn-danger" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 12.5%;">
                     <span class="glyphicon glyphicon-home"></span> {{ department.name }}
                     <span class="caret"></span>
@@ -81,6 +79,8 @@
                     </li>
                     {% endfor %}
                   </ul>
+                  
+            {% if is_admin %}
                 <button class="btn" id="add_branch" data-toggle="modal" data-target="#myModal" style="width: 12.5%;background-color: #999999;color: #fff;" onclick="add_b()">添加团支部</button>   
                 <button class="btn" style="width: 12.5%;background-color: #CCCC99;color: #fff;" onclick="window.location.href='/handbook/d/{{ department.id }}'">新建院系手册</button>
                 <button class="btn"  id="review" data-toggle="modal" data-target="#myModal" style="width: 12.5%;background-color: #CC9966;color: #fff;" onclick="review_b()">审阅支部手册</button>

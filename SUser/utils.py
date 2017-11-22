@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
-from SUser.models import SUser, Department, Branch
+from SUser.models import *
 from Message.models import Message
 import json
 import time
@@ -64,7 +64,6 @@ def get_request_basis(request):
 	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
 
-
 def upload_file(raw):
 	f_path = 'media/' + time.strftime('%Y%m%d%H%M%S') + '-' + raw.name
 	f = open(f_path, 'wb')
@@ -72,3 +71,39 @@ def upload_file(raw):
 		f.write(chunk)
 	f.close()
 	return f_path
+
+def permission(suser, ptype, rw, par=None):
+	login = (suser is not None)
+	if ptype == 'i':
+		# permission(suser, 'i', 'r')
+		# permission(suser, 'i', 'w')
+		if rw == 'r':
+			return True
+		elif rw == 'w':
+			return login and suser.admin_school
+		else:
+			print('permission error')
+			return False
+	elif ptype == 'd':
+		# permission(suser, 'd', 'r', department)
+		# permission(suser, 'd', 'w', department)
+		if rw == 'r':
+			return login
+		elif rw == 'w':
+			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
+		else:
+			print('permission error')
+			return False
+	elif ptype == 'b':
+		# permission(suser, 'b', 'r', [my_department, visit_department])
+		# permission(suser, 'b', 'w', branch)
+		if rw == 'r':
+			return login and (suser.admin_school or ((par[0] is not None) and (par[1] is not None) and (par[0].id == par[1].id)))
+		if rw == 'w':
+			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
+		else:
+			print('permission error')
+			return False
+	else:
+		print('permission error')
+		return False

@@ -195,7 +195,6 @@ function commit(flag, param){
 			var tuple = getUrlInfo();
 			var display_type = tuple[0];
 			var display_id = tuple[1];
-
 			var text = editor.html();
 			var title = $("#news_title").val();
 			//图片地址 /media/XXX

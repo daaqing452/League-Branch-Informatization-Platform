@@ -21,7 +21,7 @@
 
                     <tfoot>
                         <tr>
-                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}'> 更多 > </a> </td>
+                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}'> 显示更多 </a> </td>
                         </tr>
                     </tfoot>
 
@@ -33,9 +33,9 @@
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" >
                   <!-- Indicators -->
                   <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    {% for slide in slide_list %}
+                    <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %} ></li>
+                    {% endfor %}
                   </ol>
 
                   <!-- Wrapper for slides -->

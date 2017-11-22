@@ -31,14 +31,16 @@ urlpatterns = [
     url(r'^au/([a-z0-9]{1,20})/$', add_user),
     url(r'^du/([a-z0-9]{1,20})/$', delete_user),
 
+    url(r'^uploadFile/$', uploadFile),
+
     url(r'^message/$', message),
     url(r'^message/([0-9]{1,9})/$', message),
-    url(r'^uploadFile/$', uploadFile),
     url(r'^handbook/([b,d])/([0-9]{1,9})/$', handbook_edit),
     url(r'^handbook/([0-9]{1,9})/$', handbook_show),
+    url(r'^news/$', news),
     url(r'^news/([0-9]{1,9})/$', news),
-    url(r'^news_list/([b,d])/([0-9]{1,9})/$', news_list),
     url(r'^news_list/([i])/$', news_list),
+    url(r'^news_list/([b,d])/([0-9]{1,9})/$', news_list),
     url(r'^jiatuan/b/([0-9]{1,9})/$', jiatuan_edit),
     url(r'^jiatuan/([0-9]{1,9})/$', jiatuan_show),
     

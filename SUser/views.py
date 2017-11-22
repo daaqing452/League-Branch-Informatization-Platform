@@ -5,16 +5,18 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from SUser.models import SUser, School, Department, Branch
 from SUser.auth_tsinghua import auth_tsinghua
-from SUser.utils import get_request_basis, get_request_basis_identity, upload_file
-from Message.models import Message, News, Handbook, JiatuanMaterial
+from SUser.models import *
+from SUser.utils import *
+from Message.models import *
 import codecs
 import datetime
 import json
 import random
 
-NEW_SHOW_INDEX = 8
+NEWS_SHOW_NUM = 8
+SLIDE_SHOW_NUM = 3
+
 
 @csrf_exempt 
 def index(request):
@@ -162,17 +164,20 @@ def index(request):
 				department.save()
 		f.close()
 
-	news_list = News.objects.filter(display_type='i')
-	rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
-	rdata['slide_list'] = json.loads(School.objects.all()[0].slide)
-	return render(request, 'index.html', rdata)
+	rdata['is_admin'] = permission(suser, 'i', 'w')
+	if permission(suser, 'i', 'r'):
+		news_list = News.objects.filter(display_type='i')
+		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='i')
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
+		return render(request, 'index.html', rdata)
 
 def department(request, did):
 	rdata, op, suser = get_request_basis(request)
 	if did != '0':
 		rdata['department'] = department = Department.objects.get(id=did)
 		rdata['branchs'] = branchs = Branch.objects.filter(did=did)
-		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in json.loads(department.admin)))
+		rdata['is_admin'] = is_admin = permission(suser, 'd', 'w', department)
 	jdata = {}
 
 	if op == 'add_branch':
@@ -249,10 +254,11 @@ def department(request, did):
 				print('第' + str(line_no + 1) + '行重复')
 		f.close()
 
-	if (department is not None) and (suser is not None):
+	if (department is not None) and permission(suser, 'd', 'r', department):
 		news_list = News.objects.filter(display_type='d', display_id=did)
-		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
-		rdata['slide_list'] = json.loads(department.slide)
+		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='d', display_id=did)
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
 		return render(request, 'department.html', rdata)
 	else:
 		return HttpResponseRedirect('/index/')
@@ -262,7 +268,7 @@ def branch(request, bid):
 	if bid != '0':
 		rdata['branch'] = branch = Branch.objects.get(id=bid)
 		rdata['department'] = department = Department.objects.get(id=branch.did)
-		rdata['is_admin'] = is_admin = (suser is not None) and (suser.admin_super or (suser.id in json.loads(branch.admin)))
+		rdata['is_admin'] = is_admin = permission(suser, 'b', 'w', branch)
 	jdata = {}
 
 	if op == 'get_branchs':
@@ -320,10 +326,11 @@ def branch(request, bid):
 		branch.save()
 		# 会丧失其他数据导致跳到index
 
-	if (branch is not None) and (suser is not None) and (suser.admin_school or ((rdata['self_department'] is not None) and (rdata['self_department'].id == department.id))):
+	if (branch is not None) and permission(suser, 'b', 'r', [rdata['self_department'], department]):
 		news_list = News.objects.filter(display_type='b', display_id=bid)
-		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
-		rdata['slide_list'] = json.loads(branch.slide)
+		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='b', display_id=bid)
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
 		return render(request, 'branch.html', rdata)
 	else:
 		return HttpResponseRedirect('/index/')

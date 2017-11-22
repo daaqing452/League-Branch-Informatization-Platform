@@ -3,9 +3,9 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from SUser.models import SUser, School, Department, Branch
+from SUser.models import SUser, Department, Branch
 from SUser.utils import get_request_basis
-from Message.models import Message, Handbook, News, JiatuanMaterial
+from Message.models import Message, Handbook, News, Slide, JiatuanMaterial
 import datetime
 import json
 import re
@@ -373,32 +373,8 @@ def news(request, nid=-1):
 		news = News.objects.create(display_type=display_type, display_id=display_id, post_time=datetime.datetime.now(), title=title, text=text)
 		return HttpResponse(json.dumps(jdata))
 
-	def slide_add(slide, title, text, img_path):
-		slide = json.loads(slide)
-		slide.append({'title': title, 'text': text, 'img_path': img_path})
-		if len(slide) > 3:
-			slide = slide[1:]
-		return json.dumps(slide)
-
 	if op == 'add_slide':
-		title = request.POST.get('title')
-		text = request.POST.get('text')
-		img_path = request.POST.get('img_path')
-		display_type = request.POST.get('display_type')
-		display_id = int(request.POST.get('display_id'))
-		print(display_type, display_id)
-		if display_type == 'i':
-			school = School.objects.all()[0]
-			school.slide = slide_add(school.slide, title, text, img_path)
-			school.save()
-		elif display_type == 'd':
-			department = Department.objects.get(id=display_id)
-			department.slide = slide_add(department.slide, title, text, img_path)
-			department.save()
-		elif display_type == 'b':
-			branch = Branch.objects.get(id=display_id)
-			branch.slide = slide_add(branch.slide, title, text, img_path)
-			branch.save()
+		Slide.objects.create(display_type=request.POST.get('display_type'), display_id=int(request.POST.get('display_id')), title=request.POST.get('title'), img_path=request.POST.get('img_path'))
 		return HttpResponse(json.dumps(jdata))
 
 	news = News.objects.get(id=nid)
@@ -412,6 +388,8 @@ def news_list(request, dtype, idd=-1):
 	if dtype == 'i':
 		news_list = News.objects.filter(display_type='i')
 		rdata['title'] = '学校新闻'
+		rdata['can_read']
+		rdata['can_delete'] = (suser is not None)
 	elif dtype == 'd':
 		news_list = News.objects.filter(display_type=dtype, display_id=idd)
 		department = Department.objects.filter(id=idd)[0]
