@@ -14,6 +14,8 @@ import datetime
 import json
 import random
 
+NEW_SHOW_INDEX = 8
+
 @csrf_exempt 
 def index(request):
 	rdata, op, suser = get_request_basis(request)
@@ -161,7 +163,7 @@ def index(request):
 		f.close()
 
 	news_list = News.objects.filter(display_type='i')
-	rdata['news_list'] = news_list
+	rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
 	rdata['slide_list'] = json.loads(School.objects.all()[0].slide)
 	return render(request, 'index.html', rdata)
 
@@ -249,7 +251,7 @@ def department(request, did):
 
 	if (department is not None) and (suser is not None):
 		news_list = News.objects.filter(display_type='d', display_id=did)
-		rdata['news_list'] = news_list
+		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
 		rdata['slide_list'] = json.loads(department.slide)
 		return render(request, 'department.html', rdata)
 	else:
@@ -320,7 +322,7 @@ def branch(request, bid):
 
 	if (branch is not None) and (suser is not None) and (suser.admin_school or ((rdata['self_department'] is not None) and (rdata['self_department'].id == department.id))):
 		news_list = News.objects.filter(display_type='b', display_id=bid)
-		rdata['news_list'] = news_list
+		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEW_SHOW_INDEX)]
 		rdata['slide_list'] = json.loads(branch.slide)
 		return render(request, 'branch.html', rdata)
 	else:

@@ -370,7 +370,7 @@ def news(request, nid=-1):
 		display_type = request.POST.get('display_type')
 		display_id = request.POST.get('display_id')
 		year = year = datetime.datetime.now().year
-		news = News.objects.create(display_type=display_type, display_id=display_id, year=year, title=title, text=text)
+		news = News.objects.create(display_type=display_type, display_id=display_id, post_time=datetime.datetime.now(), title=title, text=text)
 		return HttpResponse(json.dumps(jdata))
 
 	def slide_add(slide, title, text, img_path):
@@ -404,6 +404,33 @@ def news(request, nid=-1):
 	news = News.objects.get(id=nid)
 	rdata['news'] = news
 	return render(request, 'news.html', rdata)
+
+def news_list(request, dtype, idd=-1):
+	rdata, op, suser = get_request_basis(request)
+	jdata = {}
+
+	if dtype == 'i':
+		news_list = News.objects.filter(display_type='i')
+		rdata['title'] = '学校新闻'
+	elif dtype == 'd':
+		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		department = Department.objects.filter(id=idd)[0]
+		rdata['title'] = department.name + '新闻'
+	elif dtype == 'b':
+		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		branch = Branch.objects.filter(id=idd)[0]
+		rdata['title'] = branch.name + '新闻'
+	else:
+		print("新闻列表错误")
+	rdata['news_list'] = news_list = list(reversed(news_list))
+
+	if op == 'delete':
+		nid = int(request.POST.get('nid'))
+		News.objects.filter(id=nid).delete()
+		return HttpResponse(json.dumps(jdata))
+
+	return render(request, 'news_list.html', rdata)
+
 
 def export(handbook, branch):
 	styleSheet = getSampleStyleSheet()
