@@ -34,7 +34,7 @@
                   <!-- Indicators -->
                   <ol class="carousel-indicators">
                     {% for slide in slide_list %}
-                    <li data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %} ></li>
+                    <li sid={{ slide.id }} data-target="#carousel-example-generic" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="active" {% endif %} ></li>
                     {% endfor %}
                   </ol>
 
@@ -59,6 +59,11 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                   </a>
+                  {% if is_admin %}
+                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="delete_slide()"></span>
+                  </a>
+                  {% endif %}
                 </div>
                 <!-- end of carousel -->  
                 </div>

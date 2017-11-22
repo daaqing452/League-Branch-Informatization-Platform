@@ -503,3 +503,18 @@ function release_n(){
     });
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(8)");
 }
+
+function delete_slide() {
+	if (confirm("确认删除？")) {
+		var sid = $("li.active").attr("sid");
+		$.ajax({
+			url: "/news/",
+			type: "POST",
+			data: {"op": "delete_slide", "sid": sid},
+			success: function(data) {
+				var data = JSON.parse(data);
+				window.location.reload();
+			}
+		});
+	}
+}
