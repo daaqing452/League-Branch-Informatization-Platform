@@ -8,6 +8,7 @@ from SUser.utils import get_request_basis, permission
 from Message.models import  *
 import datetime
 import json
+import os
 import re
 import time
 
@@ -377,6 +378,12 @@ def news(request, nid=-1):
 		Slide.objects.create(display_type=request.POST.get('display_type'), display_id=int(request.POST.get('display_id')), title=request.POST.get('title'), img_path=request.POST.get('img_path'))
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'delete_slide':
+		slide = Slide.objects.get(id=int(request.POST.get("sid")))
+		os.remove(slide.img_path[1:])
+		slide.delete()
+		return HttpResponse(json.dumps(jdata))
+
 	news = News.objects.get(id=nid)
 	rdata['news'] = news
 	return render(request, 'news.html', rdata)
@@ -409,8 +416,7 @@ def news_list(request, dtype, idd=-1):
 	rdata['news_list'] = news_list = list(reversed(news_list))
 
 	if op == 'delete':
-		nid = int(request.POST.get('nid'))
-		News.objects.filter(id=nid).delete()
+		News.objects.filter(id=int(request.POST.get('nid'))).delete()
 		return HttpResponse(json.dumps(jdata))
 
 	if readable:
