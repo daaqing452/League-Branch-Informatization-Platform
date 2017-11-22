@@ -7,6 +7,13 @@ var weiyuan_html = '<tr>'+
 					'<td></td><td></td>'+
 					'<td align=\"center\"><span class=\"glyphicon glyphicon-minus\" onclick=\"delOption(this)\"></td></tr>';
 
+var weiyuan_html_without_edit = '<tr>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;"  placeholder=\"委员职能\"></textarea></td>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;" placeholder=\"委员姓名\"></textarea></td>'+
+					'<td><textarea style="width: 100%; overflow: auto; resize: none;" placeholder=\"备注\"></textarea></td>'+
+					'<td></td><td></td></tr>';
+
+
 var huodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
 var chapter;
 var grade;
@@ -305,9 +312,18 @@ function read_only(content){
 					real_num -= 1;
 				}
 
+				if(i == 0){
+					table.find("tr").eq(0).children("td").last().remove();
+					table.find("tr").eq(start_num).children("td").last().remove();
+					if(table.attr("name") == "jiangchengqingkuang"){
+						table.find("tr").eq(2).children("td").last().remove();
+						table.find("tr").eq(3).children("td").last().remove();
+						table.find("tr").eq(4).children("td").last().remove();
+					}
+				}
 				for(var clone_num = real_num; clone_num < TABLE_content.length; clone_num++){
 					if(i == 0 && k == 0){
-						var tr = weiyuan_html;
+						var tr = weiyuan_html_without_edit;
 						table.append(tr);
 					}
 					else{
