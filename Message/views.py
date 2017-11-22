@@ -3,9 +3,9 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from SUser.models import SUser, Department, Branch
-from SUser.utils import get_request_basis
-from Message.models import Message, Handbook, News, Slide, JiatuanMaterial
+from SUser.models import *
+from SUser.utils import get_request_basis, permission
+from Message.models import  *
 import datetime
 import json
 import re
@@ -385,19 +385,25 @@ def news_list(request, dtype, idd=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
+	readable = False
 	if dtype == 'i':
 		news_list = News.objects.filter(display_type='i')
 		rdata['title'] = '学校新闻'
-		rdata['can_read']
-		rdata['can_delete'] = (suser is not None)
+		readable = permission(suser, 'ir')
+		rdata['is_admin'] = permission(suser, 'iw')
 	elif dtype == 'd':
 		news_list = News.objects.filter(display_type=dtype, display_id=idd)
 		department = Department.objects.filter(id=idd)[0]
 		rdata['title'] = department.name + '新闻'
+		readable = permission(suser, 'dr', department)
+		rdata['is_admin'] = permission(suser, 'dw', department)
 	elif dtype == 'b':
 		news_list = News.objects.filter(display_type=dtype, display_id=idd)
-		branch = Branch.objects.filter(id=idd)[0]
+		branch = Branch.objects.get(id=idd)
+		department = Department.objects.get(id=branch.did)
 		rdata['title'] = branch.name + '新闻'
+		readable = permission(suser, 'br', [rdata['self_department'], department])
+		rdata['is_admin'] = permission(suser, 'bw', branch)
 	else:
 		print("新闻列表错误")
 	rdata['news_list'] = news_list = list(reversed(news_list))
@@ -407,7 +413,10 @@ def news_list(request, dtype, idd=-1):
 		News.objects.filter(id=nid).delete()
 		return HttpResponse(json.dumps(jdata))
 
-	return render(request, 'news_list.html', rdata)
+	if readable:
+		return render(request, 'news_list.html', rdata)
+	else:
+		return HttpResponseRedirect('/index/')
 
 
 def export(handbook, branch):

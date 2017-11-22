@@ -164,8 +164,8 @@ def index(request):
 				department.save()
 		f.close()
 
-	rdata['is_admin'] = permission(suser, 'i', 'w')
-	if permission(suser, 'i', 'r'):
+	rdata['is_admin'] = permission(suser, 'iw')
+	if permission(suser, 'ir'):
 		news_list = News.objects.filter(display_type='i')
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
 		slide_list = Slide.objects.filter(display_type='i')
@@ -177,7 +177,7 @@ def department(request, did):
 	if did != '0':
 		rdata['department'] = department = Department.objects.get(id=did)
 		rdata['branchs'] = branchs = Branch.objects.filter(did=did)
-		rdata['is_admin'] = is_admin = permission(suser, 'd', 'w', department)
+		rdata['is_admin'] = is_admin = permission(suser, 'dw', department)
 	jdata = {}
 
 	if op == 'add_branch':
@@ -254,7 +254,7 @@ def department(request, did):
 				print('第' + str(line_no + 1) + '行重复')
 		f.close()
 
-	if (department is not None) and permission(suser, 'd', 'r', department):
+	if (department is not None) and permission(suser, 'dr', department):
 		news_list = News.objects.filter(display_type='d', display_id=did)
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
 		slide_list = Slide.objects.filter(display_type='d', display_id=did)
@@ -268,7 +268,7 @@ def branch(request, bid):
 	if bid != '0':
 		rdata['branch'] = branch = Branch.objects.get(id=bid)
 		rdata['department'] = department = Department.objects.get(id=branch.did)
-		rdata['is_admin'] = is_admin = permission(suser, 'b', 'w', branch)
+		rdata['is_admin'] = is_admin = permission(suser, 'bw', branch)
 	jdata = {}
 
 	if op == 'get_branchs':
@@ -326,7 +326,7 @@ def branch(request, bid):
 		branch.save()
 		# 会丧失其他数据导致跳到index
 
-	if (branch is not None) and permission(suser, 'b', 'r', [rdata['self_department'], department]):
+	if (branch is not None) and permission(suser, 'br', [rdata['self_department'], department]):
 		news_list = News.objects.filter(display_type='b', display_id=bid)
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
 		slide_list = Slide.objects.filter(display_type='b', display_id=bid)

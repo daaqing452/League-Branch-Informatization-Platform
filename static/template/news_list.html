@@ -13,9 +13,9 @@
 		    	</div>
 		    	<div style="color:#aaaaaa; font-size:1px; float:right">
 		    		<span> {{ news.post_time | date:"Y-m-d H:i:s" }}</span>
-		    		{%  %}
+		    		{% if is_admin %}
 		    		<span nid={{ news.id }} class="glyphicon glyphicon-remove" onclick="deletee(this)"> </span>
-		    		{%  %}
+		    		{% endif %}
 		    	</div>
 		    </li>
 		    <hr>

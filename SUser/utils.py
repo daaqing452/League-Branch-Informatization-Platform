@@ -72,34 +72,34 @@ def upload_file(raw):
 	f.close()
 	return f_path
 
-def permission(suser, ptype, rw, par=None):
+def permission(suser, opt, par=None):
 	login = (suser is not None)
-	if ptype == 'i':
-		# permission(suser, 'i', 'r')
-		# permission(suser, 'i', 'w')
-		if rw == 'r':
+	if opt[0] == 'i':
+		# permission(suser, 'ir')
+		# permission(suser, 'iw')
+		if opt[1] == 'r':
 			return True
-		elif rw == 'w':
+		elif opt[1] == 'w':
 			return login and suser.admin_school
 		else:
 			print('permission error')
 			return False
-	elif ptype == 'd':
-		# permission(suser, 'd', 'r', department)
-		# permission(suser, 'd', 'w', department)
-		if rw == 'r':
+	elif opt[0] == 'd':
+		# permission(suser, 'dr', department)
+		# permission(suser, 'dw', department)
+		if opt[1] == 'r':
 			return login
-		elif rw == 'w':
+		elif opt[1] == 'w':
 			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
 		else:
 			print('permission error')
 			return False
-	elif ptype == 'b':
-		# permission(suser, 'b', 'r', [my_department, visit_department])
-		# permission(suser, 'b', 'w', branch)
-		if rw == 'r':
+	elif opt[0] == 'b':
+		# permission(suser, 'br', [my_department, visit_department])
+		# permission(suser, 'bw', branch)
+		if opt[1] == 'r':
 			return login and (suser.admin_school or ((par[0] is not None) and (par[1] is not None) and (par[0].id == par[1].id)))
-		if rw == 'w':
+		if opt[1] == 'w':
 			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
 		else:
 			print('permission error')
