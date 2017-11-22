@@ -102,6 +102,7 @@ function fill_content(content){
 					for(var clone_num = 0; clone_num < TABLE_content.length / 2 - 1; clone_num++){
 						var tr_pre = table.find("tr").eq(0).clone(); 
 						var tr_cur = table.find("tr").eq(1).clone();
+
 						//var tr_next = table.find("tr").eq(2).clone();
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
@@ -233,10 +234,15 @@ function read_only(content){
 			var real_num = tr_num;
 			var start_num = 0;
 			if(i >= 3 && i <= 6){
+				table.find("tr").eq(0).children("td").last().remove();
+				table.find("tr").eq(1).children("td").last().remove();
 				if(TABLE_content.length / 2 >1){
 					for(var clone_num = 0; clone_num < TABLE_content.length / 2 - 1; clone_num++){
 						var tr_pre = table.find("tr").eq(0).clone(); 
 						var tr_cur = table.find("tr").eq(1).clone();
+						//console.log(tr_cur.children("td").last().attr("align"));
+						//console.log(tr_cur.html());
+						
 						//var tr_next = table.find("tr").eq(2).clone();
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
