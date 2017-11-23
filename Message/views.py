@@ -217,6 +217,7 @@ def handbook_edit(request, htype, idd):
 			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=branch.id)
 		jdata['content'] = None
 		jdata['submitted'] = False
+		jdata['htype'] = htype
 		if len(handbooks) > 0:
 			jdata['content'] = handbooks[0].content
 			jdata['submitted'] = handbooks[0].submitted
@@ -290,6 +291,7 @@ def handbook_show(request, hid):
 	if op == 'load_handbook':
 		print(request.POST.get('year'))
 		jdata['content'] = handbook.content
+		jdata['htype'] = handbook.htype
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'export':
