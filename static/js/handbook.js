@@ -17,11 +17,19 @@ var weiyuan_html_without_edit = '<tr>'+
 var huodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
 var chapter;
 var grade;
+var dorb = 0;
 
 $(document).ready(function(){
-	$("#chapter_0").parent().eq(0).attr("class","active");
-	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
-	$("#table_0").show();
+	if(dorb == 0){
+		$("#nav_1").show();
+		$("#chapter_0").parent().eq(0).attr("class","active");
+		$("#table_0").show();
+	}
+	else{
+		$("#nav_2").show();
+		$("#chapter_8").parent().eq(0).attr("class","active");
+		$("#table_8").show();
+	}
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	if (!readonly) year_onchange();
 	
@@ -46,7 +54,8 @@ var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qi
 					"zhibushiyeyuqichengguo_bianji","quanniangongzuozongjie_bianji",
 					"huodongneirong_bianji_0","huodongneirong_bianji_1","huodongneirong_bianji_2","huodongneirong_bianji_3",
 					"huodongneirong_bianji_4","huodongneirong_bianji_5","huodongneirong_bianji_6","huodongneirong_bianji_7",
-					"huodongneirong_bianji_8","huodongneirong_bianji_9");
+					"huodongneirong_bianji_8","huodongneirong_bianji_9","dengjipinggufangan_bianji",
+					"shishixize_bianji","dengjipinggulingdao_bianji","chujijiajituanzhibu_bianji");
 var editor = new Array();  
 KindEditor.ready(function(K) {  
 	for(var i = 0; i < bianji_list.length; i++){
@@ -365,13 +374,14 @@ function read_only(content){
 }
 
 function all_hind(){
-	for(var i = 0; i < 8; i++){
+	var length = $("#nav_1").children("li").length + $("#nav_2").children("li").length;
+	for(var i = 0; i < length; i++){
 		$("#table_"+i).hide();
 	}
 }
 
 function module_select(id){
-	var length = $("#nav_1").children("li").length;
+	var length = $("#nav_1").children("li").length + $("#nav_2").children("li").length;
 	chapter = id;
 	for(var i = 0; i < length; i++){
 		$("#chapter_"+i).parent().eq(0).attr("class","");
