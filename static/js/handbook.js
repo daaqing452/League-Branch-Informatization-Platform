@@ -62,8 +62,8 @@ function load_handbook() {
 		data: {"op": "load_handbook", "hid": hid},
 		success: function(data) {
 			var data = JSON.parse(data);
+			htype = data["htype"];
 			read_only(data["content"]);
-			
 			if(htype == "b"){
 				$("#nav_1").show();
 				$("#chapter_0").parent().eq(0).attr("class","active");
@@ -256,6 +256,9 @@ function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
+	if(content == null){
+		return;
+	}
 	for(var i = 0; i < 12; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
