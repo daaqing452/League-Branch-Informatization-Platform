@@ -1,7 +1,10 @@
 .DS_Store
 /media/*
+/LBInformatization/*.pyc
 /SUser/.DS_Store
+/SUser/migrations/
 /Message/.DS_Store
+/Message/migrations/
 /static/.DS_Store
 /static/js/.DS_Store
 /static/template/.DS_Store
