@@ -17,11 +17,9 @@ var weiyuan_html_without_edit = '<tr>'+
 var huodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
 var chapter;
 var grade;
+var htype = "b";
 
 $(document).ready(function(){
-	$("#chapter_0").parent().eq(0).attr("class","active");
-	//$("#content").append("<button class=\"btn btn-primary\" style=\"float: right; width: 100px;\" onclick=\"submit()\">提交</button>");
-	$("#table_0").show();
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	if (!readonly) year_onchange();
 	
@@ -46,7 +44,8 @@ var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qi
 					"zhibushiyeyuqichengguo_bianji","quanniangongzuozongjie_bianji",
 					"huodongneirong_bianji_0","huodongneirong_bianji_1","huodongneirong_bianji_2","huodongneirong_bianji_3",
 					"huodongneirong_bianji_4","huodongneirong_bianji_5","huodongneirong_bianji_6","huodongneirong_bianji_7",
-					"huodongneirong_bianji_8","huodongneirong_bianji_9");
+					"huodongneirong_bianji_8","huodongneirong_bianji_9","dengjipinggufangan_bianji",
+					"shishixize_bianji","dengjipinggulingdao_bianji","chujijiajituanzhibu_bianji");
 var editor = new Array();  
 KindEditor.ready(function(K) {  
 	for(var i = 0; i < bianji_list.length; i++){
@@ -64,6 +63,17 @@ function load_handbook() {
 		success: function(data) {
 			var data = JSON.parse(data);
 			read_only(data["content"]);
+			
+			if(htype == "b"){
+				$("#nav_1").show();
+				$("#chapter_0").parent().eq(0).attr("class","active");
+				$("#table_0").show();
+			}
+			else{
+				$("#nav_2").show();
+				$("#chapter_8").parent().eq(0).attr("class","active");
+				$("#table_8").show();
+			}
 		}
 	});
 }
@@ -76,11 +86,24 @@ function year_onchange() {
 		data: {"op": "load_handbook", "year": year},
 		success: function(data) {
 			var data = JSON.parse(data);
+			//console.log(data["htype"]);
+			htype = data["htype"];
 			fill_content(data['content']);
 			if (data['submitted']) {
 				$("#button_save").attr({"disabled":"disabled"});
 			} else {
 				$("#button_save").removeAttr("disabled");
+			}
+			
+			if(htype == "b"){
+				$("#nav_1").show();
+				$("#chapter_0").parent().eq(0).attr("class","active");
+				$("#table_0").show();
+			}
+			else{
+				$("#nav_2").show();
+				$("#chapter_8").parent().eq(0).attr("class","active");
+				$("#table_8").show();
 			}
 		}
 	})
@@ -90,9 +113,12 @@ function fill_content(content){
 	//console.log(content)
 	//if (!content) content = '[[[["1","2","","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[[""]],[[""]],[[""]]],[[["1","2","3","4","5","6"],["7"],["8","9","10","11","12","13"],["14"]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]';
 	//content = '[[[["1","2","3","4","5"],["11","22","33"],["44","55","66"]],[["",""],["",""],["",""],["",""]],[["1","2","","","","","","",""],["3","4","","","","","","",""],["5","6","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","","",""]]],[[["","12<span style=\'color:#E53333;\'>31</span>2"]],[["",""]],[["",""]]],[[["","<ol>\\n\\t<li>\\n\\t\\t我爱<span style=\'background-color:#E56600;\'>中</span>国\\n\\t</li>\\n\\t<li>\\n\\t\\t2222\\n\\t</li>\\n</ol>"]],[["",""]],[["",""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["11","","","","",""],[""],["22","","","","",""],[""],["33","","","","",""],[""]],[["","","","","",""],[""]],[["","","","","",""],[""]]],[[["1","","","","",""],[""],["2","","","","",""],[""]]],[[["","我爱<em>我家啊啊啊</em>"]]]]';
+	if(content == null){
+		return;
+	}
+	console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
-	
-	for(var i = 0; i < 8; i++){
+	for(var i = 0; i < 12; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -222,15 +248,15 @@ function fill_content(content){
 					
 				}
 			}
-		}
-	}
+		}	
+	}	
 }
 
 function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
-	for(var i = 0; i < 8; i++){
+	for(var i = 0; i < 12; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -241,6 +267,7 @@ function read_only(content){
 			var real_num = tr_num;
 			var start_num = 0;
 			if(i >= 3 && i <= 6){
+
 				table.find("tr").eq(0).children("td").last().remove();
 				table.find("tr").eq(1).children("td").last().remove();
 				if(TABLE_content.length / 2 >1){
@@ -312,7 +339,7 @@ function read_only(content){
 					real_num -= 1;
 				}
 
-				if(i == 0){
+				if(htype=="b" && i == 0){
 					table.find("tr").eq(0).children("td").last().remove();
 					table.find("tr").eq(start_num).children("td").last().remove();
 					if(table.attr("name") == "jiangchengqingkuang"){
@@ -365,13 +392,14 @@ function read_only(content){
 }
 
 function all_hind(){
-	for(var i = 0; i < 8; i++){
+	var length = $("#nav_1").children("li").length + $("#nav_2").children("li").length;
+	for(var i = 0; i < length; i++){
 		$("#table_"+i).hide();
 	}
 }
 
 function module_select(id){
-	var length = $("#nav_1").children("li").length;
+	var length = $("#nav_1").children("li").length + $("#nav_2").children("li").length;
 	chapter = id;
 	for(var i = 0; i < length; i++){
 		$("#chapter_"+i).parent().eq(0).attr("class","");
@@ -551,7 +579,7 @@ function is_in_array(arr,value){
 function submit(subtype){
 	var HANDBOOK_content = new Array();
 	wrong_messages = new Array();
-	for(var i = 0; i < 8; i++){
+	for(var i = 0; i < 12; i++){
 		var CHAPTER_content = new Array();
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -637,7 +665,7 @@ function submit(subtype){
 	
 	//console.log(JSON.stringify(HANDBOOK_content));
 	
-	if(wrong_messages.length != 0){
+	if(htype == "b" && wrong_messages.length != 0){
 		wrong_messages_br = "";
 		for(var i = 0; i < wrong_messages.length; i++){
 			wrong_messages_br += wrong_messages[i]+"\n";
