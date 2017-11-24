@@ -255,6 +255,9 @@ function fill_content(content){
 function read_only(content){
 	//var HANDBOOK_content = JSON.parse('[[[["wqe1aoidfjoaisdjfpaisdjfpaisdjfpasidfjapsdifjpasdifjapisdjfpaisdjfpaisdjfpasidjfpasidfj","qweqwe","123123","",""]],[["",""],["",""],["",""],["",""]],[["","","","","","","","",""]],[["","","","","","","","",""]],[["","","","","","",""]],[["","","",""]]],[[[""]],[[""]],[[""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","222","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]],[["","","","","","",""]],[["","","","","","",""]]],[[["","","","","","",""]]],[[[""]]]]');
 	var HANDBOOK_content = JSON.parse(content);
+	if(content == null){
+		return;
+	}
 	for(var i = 0; i < 12; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
