@@ -81,9 +81,6 @@ def permission(suser, opt, par=None):
 			return True
 		elif opt[1] == 'w':
 			return login and suser.admin_school
-		else:
-			print('permission error')
-			return False
 	elif opt[0] == 'd':
 		# permission(suser, 'dr', department)
 		# permission(suser, 'dw', department)
@@ -91,9 +88,6 @@ def permission(suser, opt, par=None):
 			return login
 		elif opt[1] == 'w':
 			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
-		else:
-			print('permission error')
-			return False
 	elif opt[0] == 'b':
 		# permission(suser, 'br', [my_department, visit_department])
 		# permission(suser, 'bw', branch)
@@ -101,9 +95,3 @@ def permission(suser, opt, par=None):
 			return login and (suser.admin_school or ((par[0] is not None) and (par[1] is not None) and (par[0].id == par[1].id)))
 		if opt[1] == 'w':
 			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
-		else:
-			print('permission error')
-			return False
-	else:
-		print('permission error')
-		return False

@@ -296,7 +296,10 @@ def handbook_show(request, hid):
 
 	if op == 'export':
 		jdata['result'] = 'OK'
-		jdata['export_path'] = export(handbook, branch)
+		if handbook.htype == 'd':
+			jdata['export_path'] = export(handbook, department)
+		elif handbook.hype == 'b':
+			jdata['export_path'] = export(handbook, branch)
 		return HttpResponse(json.dumps(jdata))
 
 	rdata['readonly'] = True
@@ -427,7 +430,7 @@ def news_list(request, dtype, idd=-1):
 		return HttpResponseRedirect('/index/')
 
 
-def export(handbook, branch):
+def export(handbook, aff):
 	styleSheet = getSampleStyleSheet()
 	normalStyle = styleSheet['Normal']
 	tableStyle = TableStyle([
@@ -455,107 +458,120 @@ def export(handbook, branch):
 
 	h = json.loads(handbook.content)
 	pdf = []
-	# 大标题
-	pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + branch.name + '团支部工作手册'
-	pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
-	# 基本情况
-	pdf.append(makeTitle('基本情况', 15, 'heimedium'))
-	# 	基本信息
-	pdf.append(makeTitle('基本信息'))
-	table = [['团员人数', '团支部书记', '组织委员', '宣传委员', '备注'], h[0][0][0]]
-	pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
-	if len(h[0][0]) > 1:
-		pdf.append(makeTitle('其他委员'))
-		table = [['委员职能', '委员姓名', '备注']]
-		table.extend(h[0][0][1:])
-		pdf.append(makeTable(table, [150, 150, 200]))
-	# 	奖惩情况
-	pdf.append(makeTitle('奖惩情况'))
-	table = [['', '时间', '内容']]
-	# ['团支部'], ['班级'], ['党课学习小组'], ['个人']
-	h01 = h[0][1]
-	i = 0
-	n = len(h01)
-	tbstyle = [
-		('FONTNAME',(0,0),(-1,-1),'heilight'),
-		('FONTSIZE',(0,0),(-1,-1),8),
-		('ALIGN',(0,0),(-1,-1),'CENTER'),
-		('VALIGN',(0,0),(-1,-1),'MIDDLE'),
-		('GRID',(0,0),(-1,-1),0.5,colors.black)
-		]
-	while i < n:
-		j = i + 1
-		while j < n and h01[i][0] == h01[j][0]: j += 1
-		table.extend(h01[i:j])
-		tbstyle.append(('SPAN',(0,i+1),(0,j)))
-		i = j
-	pdf.append(makeTable(table, [100, 100, 300], TableStyle(tbstyle)))
-	# 	团员花名册
-	pdf.append(makeTitle('团员花名册'))
-	table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
-	table.extend(h[0][2])
-	pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
-	# 	申请入团名单
-	pdf.append(makeTitle('申请入团名单'))
-	table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
-	table.extend(h[0][3])
-	pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
-	# 	交纳团费情况
-	pdf.append(makeTitle('交纳团费情况'))
-	table = [['月份', '支部人数', '应交人数', '实交人数', '应交金额', '实交金额', '备注']]
-	table.extend(h[0][4])
-	pdf.append(makeTable(table, [50, 50, 50, 50, 100, 100, 100]))
-	# 	推优入党名单
-	pdf.append(makeTitle('推优入党名单'))
-	table = [['学号', '姓名', '提交申请书时间', '入党时间', '转正时间']]
-	table.extend(h[0][5])
-	pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
-	pdf.append(platypus.flowables.PageBreak())
-	# 工作计划
-	pdf.append(makeTitle('工作计划', 15, 'heimedium'))
-	sarr = ['全年计划', '春季学期计划', '秋季学期计划']
-	for i in range(3):
-		pdf.append(makeTitle(sarr[i]))
-		pdf.append(makeTable([[makeTxt(h[1][i][0][0])]], [500]))
+	if handbook.htype == 'd':
+		pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + aff.name + '院系工作手册'
+		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
+		pdf.append(makeTitle('等级评估方案', 15, 'heimedium'))
+		pdf.append(makeTable([[makeTxt(h[8][0][0][0])]], [500]))
+		pdf.append(makeTitle('实施细则', 15, 'heimedium'))
+		pdf.append(makeTable([[makeTxt(h[9][0][0][0])]], [500]))
+		pdf.append(makeTitle('等级评估工作领导小组组成', 15, 'heimedium'))
+		pdf.append(makeTable([[makeTxt(h[10][0][0][0])]], [500]))
+		pdf.append(makeTitle('初级甲级团支部名单', 15, 'heimedium'))
+		pdf.append(makeTable([[makeTxt(h[11][0][0][0])]], [500]))
+	elif handbook.htype == 'b':
+		# 大标题
+		pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + aff.name + '团支部工作手册'
+		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
+		# 基本情况
+		pdf.append(makeTitle('基本情况', 15, 'heimedium'))
+		# 	基本信息
+		pdf.append(makeTitle('基本信息'))
+		table = [['团员人数', '团支部书记', '组织委员', '宣传委员', '备注'], h[0][0][0]]
+		pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
+		if len(h[0][0]) > 1:
+			pdf.append(makeTitle('其他委员'))
+			table = [['委员职能', '委员姓名', '备注']]
+			table.extend(h[0][0][1:])
+			pdf.append(makeTable(table, [150, 150, 200]))
+		# 	奖惩情况
+		pdf.append(makeTitle('奖惩情况'))
+		table = [['', '时间', '内容']]
+		# ['团支部'], ['班级'], ['党课学习小组'], ['个人']
+		h01 = h[0][1]
+		i = 0
+		n = len(h01)
+		tbstyle = [
+			('FONTNAME',(0,0),(-1,-1),'heilight'),
+			('FONTSIZE',(0,0),(-1,-1),8),
+			('ALIGN',(0,0),(-1,-1),'CENTER'),
+			('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+			('GRID',(0,0),(-1,-1),0.5,colors.black)
+			]
+		while i < n:
+			j = i + 1
+			while j < n and h01[i][0] == h01[j][0]: j += 1
+			table.extend(h01[i:j])
+			tbstyle.append(('SPAN',(0,i+1),(0,j)))
+			i = j
+		pdf.append(makeTable(table, [100, 100, 300], TableStyle(tbstyle)))
+		# 	团员花名册
+		pdf.append(makeTitle('团员花名册'))
+		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table.extend(h[0][2])
+		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		# 	申请入团名单
+		pdf.append(makeTitle('申请入团名单'))
+		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table.extend(h[0][3])
+		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		# 	交纳团费情况
+		pdf.append(makeTitle('交纳团费情况'))
+		table = [['月份', '支部人数', '应交人数', '实交人数', '应交金额', '实交金额', '备注']]
+		table.extend(h[0][4])
+		pdf.append(makeTable(table, [50, 50, 50, 50, 100, 100, 100]))
+		# 	推优入党名单
+		pdf.append(makeTitle('推优入党名单'))
+		table = [['学号', '姓名', '提交申请书时间', '入党时间', '转正时间']]
+		table.extend(h[0][5])
+		pdf.append(makeTable(table, [100, 100, 100, 100, 100]))
 		pdf.append(platypus.flowables.PageBreak())
-	# 支部事业
-	pdf.append(makeTitle('支部事业', 15, 'heimedium'))
-	sarr = ['支部事业简介', '支部事业目标', '预期成果']
-	for i in range(3):
-		pdf.append(makeTitle(sarr[i]))
-		pdf.append(makeTable([[makeTxt(h[2][i][0][0])]], [500]))
-		pdf.append(platypus.flowables.PageBreak())
-	# 思想引领、学风建设、体育氛围
-	sarr0 = ['思想引领', '学风建设', '体育氛围', '自定义']
-	sarr1 = ['主题团日', '组织生活', '支部活动']
-	for i in range(len(sarr0)):
-		pdf.append(makeTitle(sarr0[i], 15, 'heimedium'))
-		for j in range(len(sarr1)):
-			if i == 3 and j != 0: continue
-			ii = i + 3
-			sarr1j = sarr1[j]
-			if i == 3: sarr1j = '特色活动'
-			if len(h[ii][j]) > 2 or h[ii][j][1][0] != '':
-				for k in range(0, len(h[ii][j]), 2):
-					meta = h[ii][j][k]
-					cont = h[ii][j][k + 1][0]
-					pdf.append(makeTitle(sarr1j + ' - ' + meta[0]))
-					t = [['时间', meta[1], '地点', meta[2], '参与人数', meta[3]], ['主持人', meta[4], '', '记录人', meta[5], ''], [makeTxt(cont), '', '', '', '', '']]
-					tStyle = TableStyle([
-						('FONTNAME',(0,0),(-1,-1),'heilight'),
-						('FONTSIZE',(0,0),(-1,-1),8),
-						('ALIGN',(0,0),(-1,-1),'CENTER'),
-						('VALIGN',(0,0),(-1,-1),'MIDDLE'),
-						('GRID',(0,0),(-1,-1),0.5,colors.black),
-						('SPAN',(1,1),(2,1)),
-						('SPAN',(4,1),(5,1)),
-						('SPAN',(0,2),(-1,2)),
-						])
-					pdf.append(makeTable(t, [90, 80, 80, 90, 80, 80], tStyle))
-					pdf.append(platypus.flowables.PageBreak())
-	# 工作总结
-	pdf.append(makeTitle('全年工作总结', 15, 'heimedium'))
-	pdf.append(makeTable([[makeTxt(h[7][0][0][0])]], [500]))
+		# 工作计划
+		pdf.append(makeTitle('工作计划', 15, 'heimedium'))
+		sarr = ['全年计划', '春季学期计划', '秋季学期计划']
+		for i in range(3):
+			pdf.append(makeTitle(sarr[i]))
+			pdf.append(makeTable([[makeTxt(h[1][i][0][0])]], [500]))
+			pdf.append(platypus.flowables.PageBreak())
+		# 支部事业
+		pdf.append(makeTitle('支部事业', 15, 'heimedium'))
+		sarr = ['支部事业简介', '支部事业目标', '预期成果']
+		for i in range(3):
+			pdf.append(makeTitle(sarr[i]))
+			pdf.append(makeTable([[makeTxt(h[2][i][0][0])]], [500]))
+			pdf.append(platypus.flowables.PageBreak())
+		# 思想引领、学风建设、体育氛围
+		sarr0 = ['思想引领', '学风建设', '体育氛围', '自定义']
+		sarr1 = ['主题团日', '组织生活', '支部活动']
+		for i in range(len(sarr0)):
+			pdf.append(makeTitle(sarr0[i], 15, 'heimedium'))
+			for j in range(len(sarr1)):
+				if i == 3 and j != 0: continue
+				ii = i + 3
+				sarr1j = sarr1[j]
+				if i == 3: sarr1j = '特色活动'
+				if len(h[ii][j]) > 2 or h[ii][j][1][0] != '':
+					for k in range(0, len(h[ii][j]), 2):
+						meta = h[ii][j][k]
+						cont = h[ii][j][k + 1][0]
+						pdf.append(makeTitle(sarr1j + ' - ' + meta[0]))
+						t = [['时间', meta[1], '地点', meta[2], '参与人数', meta[3]], ['主持人', meta[4], '', '记录人', meta[5], ''], [makeTxt(cont), '', '', '', '', '']]
+						tStyle = TableStyle([
+							('FONTNAME',(0,0),(-1,-1),'heilight'),
+							('FONTSIZE',(0,0),(-1,-1),8),
+							('ALIGN',(0,0),(-1,-1),'CENTER'),
+							('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+							('GRID',(0,0),(-1,-1),0.5,colors.black),
+							('SPAN',(1,1),(2,1)),
+							('SPAN',(4,1),(5,1)),
+							('SPAN',(0,2),(-1,2)),
+							])
+						pdf.append(makeTable(t, [90, 80, 80, 90, 80, 80], tStyle))
+						pdf.append(platypus.flowables.PageBreak())
+		# 工作总结
+		pdf.append(makeTitle('全年工作总结', 15, 'heimedium'))
+		pdf.append(makeTable([[makeTxt(h[7][0][0][0])]], [500]))
+	
 	# 文件
 	export_path = 'media/' + pdfname + '-' + time.strftime('%Y%m%d%H%M%S') + '.pdf'
 	doc = SimpleDocTemplate(export_path)
