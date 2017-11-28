@@ -252,11 +252,13 @@ def handbook_edit(request, htype, idd):
 		year = int(request.POST.get('year'))
 		if htype == 'd':
 			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=department.id)
+			aff = department
 		elif htype == 'b':
 			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=branch.id)
+			aff = branch
 		if len(handbooks) > 0:
 			jdata['result'] = 'OK'
-			jdata['export_path'] = export(handbooks[0], branch)
+			jdata['export_path'] = export(handbooks[0], aff)
 		else:
 			jdata['result'] = '尚未提交或暂存'
 		return HttpResponse(json.dumps(jdata))
@@ -463,12 +465,16 @@ def export(handbook, aff):
 		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
 		pdf.append(makeTitle('等级评估方案', 15, 'heimedium'))
 		pdf.append(makeTable([[makeTxt(h[8][0][0][0])]], [500]))
+		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('实施细则', 15, 'heimedium'))
 		pdf.append(makeTable([[makeTxt(h[9][0][0][0])]], [500]))
+		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('等级评估工作领导小组组成', 15, 'heimedium'))
 		pdf.append(makeTable([[makeTxt(h[10][0][0][0])]], [500]))
+		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('初级甲级团支部名单', 15, 'heimedium'))
 		pdf.append(makeTable([[makeTxt(h[11][0][0][0])]], [500]))
+		pdf.append(platypus.flowables.PageBreak())
 	elif handbook.htype == 'b':
 		# 大标题
 		pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + aff.name + '团支部工作手册'
@@ -544,7 +550,7 @@ def export(handbook, aff):
 		sarr0 = ['思想引领', '学风建设', '体育氛围', '自定义']
 		sarr1 = ['主题团日', '组织生活', '支部活动']
 		for i in range(len(sarr0)):
-			pdf.append(makeTitle(sarr0[i], 15, 'heimedium'))
+			titled = False
 			for j in range(len(sarr1)):
 				if i == 3 and j != 0: continue
 				ii = i + 3
@@ -552,6 +558,9 @@ def export(handbook, aff):
 				if i == 3: sarr1j = '特色活动'
 				if len(h[ii][j]) > 2 or h[ii][j][1][0] != '':
 					for k in range(0, len(h[ii][j]), 2):
+						if not titled:
+							pdf.append(makeTitle(sarr0[i], 15, 'heimedium'))
+							titled = True
 						meta = h[ii][j][k]
 						cont = h[ii][j][k + 1][0]
 						pdf.append(makeTitle(sarr1j + ' - ' + meta[0]))

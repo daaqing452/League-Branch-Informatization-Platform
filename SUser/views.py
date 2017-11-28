@@ -15,7 +15,7 @@ import json
 import random
 
 NEWS_SHOW_NUM = 8
-SLIDE_SHOW_NUM = 3
+SLIDE_SHOW_NUM = 5
 
 
 @csrf_exempt 
