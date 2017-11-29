@@ -15,6 +15,9 @@ var weiyuan_html_without_edit = '<tr>'+
 
 
 var huodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
+var huodongneirong_html_without_edit = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:0.5px solid #ADADAD;\"></div></td>';
+var huodongneirong_html_without_edit2 = '<td style=\"width:100%;\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:1px solid #ADADAD;\"></div></td>';
+
 var chapter;
 var grade;
 var htype = "b";
@@ -318,6 +321,11 @@ function read_only(content){
 							var TR_content = TABLE_content[content_cnt];
 							editor[editor_index].html(TR_content[0]);
 							editor[editor_index].readonly(true);
+							
+							//tr.find("textarea").last().parents("tr").eq(0).append(huodongneirong_html_without_edit);
+							tr.empty();
+							tr.append(huodongneirong_html_without_edit);
+							tr.find("div").eq(0).append(TR_content[0]);
 							//console.log(tr.attr("class")+" "+textarea_content);
 						}
 						else{
@@ -377,6 +385,11 @@ function read_only(content){
 						KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[0]);
 						var editor_index = bianji_list.indexOf(textarea_name);
 						editor[editor_index].readonly(true);
+						editor[editor_index].remove();
+						tr.empty();
+						tr.append(huodongneirong_html_without_edit2);
+						tr.find("div").eq(0).append(TR_content[0]);
+						tr.find("div").eq(0).height(200);
 					}
 					else{
 						for(var n = 0; n < textarea_num; n++){
