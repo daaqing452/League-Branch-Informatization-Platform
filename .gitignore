@@ -1,10 +1,15 @@
 .DS_Store
 /media/*
 /LBInformatization/*.pyc
+/LBInformatization/__pycache__/*.pyc
 /SUser/.DS_Store
-/SUser/migrations/
+/SUser/migrations/*
+/SUser/__pycache__/*.pyc
+/SUser/*.pyc
 /Message/.DS_Store
-/Message/migrations/
+/Message/migrations/*
+/Message/__pycache/*.pyc
+/Message/*.pyc
 /static/.DS_Store
 /static/js/.DS_Store
 /static/template/.DS_Store
