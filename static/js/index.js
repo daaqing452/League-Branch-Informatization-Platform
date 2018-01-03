@@ -144,6 +144,9 @@ function load_admin() {
 			<input type='file' class='btn btn-sm' name='upload' style='margin:0px;display:inline;'> \
 			<input type='submit' value='上传名单' class='btn btn-info btn-sm' > \
 		</form> \
+		<br/> \
+		<br/> \
+		导入模板<a href='/static/file/department_admin.csv'>下载</a> \
 	");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
 }

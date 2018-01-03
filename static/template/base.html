@@ -68,7 +68,7 @@
                 <li><a data-toggle="modal" data-target="#myModal" onclick="send_message()">发送新消息</a></li>
                 <li class="divider"></li>
                 {% for message in unread_messages %}
-                <li><a type="message" mid="{{ message.id }}" data-toggle="modal" data-target="#myModal" onclick="read_message(this)">{{ message.title }}</a></li>
+                <li><a type="message" mid="{{ message.id }}" data-toggle="modal" data-target="#myModal" onclick="read_message(this)" style="color:red">{{ message.title }}</a></li>
                 {% endfor %}
                 {% ifequal unread_messages_length 0 %}
                 <li><a style="color:#aaaaaa">没有未读消息</a></li>

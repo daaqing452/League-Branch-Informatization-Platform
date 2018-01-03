@@ -40,7 +40,7 @@ def get_request_basis(request):
 	
 	# 检查登录状态
 	suser = None
-	if request.user.is_authenticated():
+	if request.user.is_authenticated:
 		suser = SUser.objects.filter(username=request.user.username)[0]
 		rdata['suser'] = suser
 	rdata['login'] = suser is not None
