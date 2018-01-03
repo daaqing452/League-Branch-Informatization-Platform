@@ -300,7 +300,7 @@ def handbook_show(request, hid):
 		jdata['result'] = 'OK'
 		if handbook.htype == 'd':
 			jdata['export_path'] = export(handbook, department)
-		elif handbook.hype == 'b':
+		elif handbook.htype == 'b':
 			jdata['export_path'] = export(handbook, branch)
 		return HttpResponse(json.dumps(jdata))
 
@@ -446,17 +446,31 @@ def export(handbook, aff):
 	def makeTitle(s, fontSize=10, face="heilight"):
 		return Paragraph('<para fontSize=' + str(fontSize) + ' align=center><br/><br/><font face="' + face + '">' + s + '</font><br/><br/></para>', normalStyle)
 
-	def makeTable(t, colw, tStyle=tableStyle):
+	def makeTable(t, colw, tStyle=tableStyle, largeText=False):
 		for i in range(len(t)):
 			for j in range(len(t[i])):
-				if len(t[i][j]) > colw[j] / 8:
+				if len(t[i][j]) > colw[j] / 8 or largeText:
 					t[i][j] = Paragraph('<font face="heilight" fontSize=8>' + t[i][j] + '</font>', normalStyle)
 		return Table(t, colWidths=colw, style=tStyle)
 
-	def makeTxt(html):
-		txt = re.compile(r'<[^>]+>', re.S).sub('', html)
-		txt = re.compile(r'\n', re.S).sub('<br/>', txt)
-		return txt
+	def crossPage(txt, SPAN):
+		txt = re.compile(r'<[^>]+>', re.S).sub('', txt)
+		txt = re.compile(r'\t', re.S).sub('', txt)
+		l = len(txt)
+		arr = []
+		i = 0
+		while i < l:
+			if i == 0:
+				span = SPAN
+			else:
+				span = 3400
+			arr.append( re.compile(r'<[^>]+>', re.S).sub('<br/>', txt[i:i+min(span, l-i)]) )
+			i += span
+		return arr
+
+	def makeCrossPage(txt, SPAN=3100):
+		arr = crossPage(txt, SPAN)
+		return makeTable([[x] for x in arr], [500], largeText=True)
 
 	h = json.loads(handbook.content)
 	pdf = []
@@ -464,16 +478,16 @@ def export(handbook, aff):
 		pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + aff.name + '院系工作手册'
 		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
 		pdf.append(makeTitle('等级评估方案', 15, 'heimedium'))
-		pdf.append(makeTable([[makeTxt(h[8][0][0][0])]], [500]))
+		pdf.append(makeCrossPage(h[8][0][0][0]))
 		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('实施细则', 15, 'heimedium'))
-		pdf.append(makeTable([[makeTxt(h[9][0][0][0])]], [500]))
+		pdf.append(makeCrossPage(h[9][0][0][0]))
 		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('等级评估工作领导小组组成', 15, 'heimedium'))
-		pdf.append(makeTable([[makeTxt(h[10][0][0][0])]], [500]))
+		pdf.append(makeCrossPage(h[10][0][0][0]))
 		pdf.append(platypus.flowables.PageBreak())
 		pdf.append(makeTitle('初级甲级团支部名单', 15, 'heimedium'))
-		pdf.append(makeTable([[makeTxt(h[11][0][0][0])]], [500]))
+		pdf.append(makeCrossPage(h[11][0][0][0]))
 		pdf.append(platypus.flowables.PageBreak())
 	elif handbook.htype == 'b':
 		# 大标题
@@ -537,14 +551,14 @@ def export(handbook, aff):
 		sarr = ['全年计划', '春季学期计划', '秋季学期计划']
 		for i in range(3):
 			pdf.append(makeTitle(sarr[i]))
-			pdf.append(makeTable([[makeTxt(h[1][i][0][0])]], [500]))
+			pdf.append(makeCrossPage(h[1][i][0][0], 2900))
 			pdf.append(platypus.flowables.PageBreak())
 		# 支部事业
 		pdf.append(makeTitle('支部事业', 15, 'heimedium'))
 		sarr = ['支部事业简介', '支部事业目标', '预期成果']
 		for i in range(3):
 			pdf.append(makeTitle(sarr[i]))
-			pdf.append(makeTable([[makeTxt(h[2][i][0][0])]], [500]))
+			pdf.append(makeCrossPage(h[2][i][0][0], 2900))
 			pdf.append(platypus.flowables.PageBreak())
 		# 思想引领、学风建设、体育氛围
 		sarr0 = ['思想引领', '学风建设', '体育氛围', '自定义']
@@ -564,22 +578,31 @@ def export(handbook, aff):
 						meta = h[ii][j][k]
 						cont = h[ii][j][k + 1][0]
 						pdf.append(makeTitle(sarr1j + ' - ' + meta[0]))
-						t = [['时间', meta[1], '地点', meta[2], '参与人数', meta[3]], ['主持人', meta[4], '', '记录人', meta[5], ''], [makeTxt(cont), '', '', '', '', '']]
-						tStyle = TableStyle([
+						t = [['时间', meta[1], '地点', meta[2], '参与人数', meta[3]], ['主持人', meta[4], '', '记录人', meta[5], '']]
+						# <crosspage>
+						arr = crossPage(cont, 2700)
+						print(arr)
+						tStyle = [
 							('FONTNAME',(0,0),(-1,-1),'heilight'),
 							('FONTSIZE',(0,0),(-1,-1),8),
 							('ALIGN',(0,0),(-1,-1),'CENTER'),
 							('VALIGN',(0,0),(-1,-1),'MIDDLE'),
 							('GRID',(0,0),(-1,-1),0.5,colors.black),
 							('SPAN',(1,1),(2,1)),
-							('SPAN',(4,1),(5,1)),
-							('SPAN',(0,2),(-1,2)),
-							])
+							('SPAN',(4,1),(5,1))
+							]
+						for i in range(len(arr)):
+							t.append([arr[i], '', '', '', '', ''])
+							tStyle.append(('SPAN',(0,i+2),(-1,i+2)))
+						print(t)
+						print(tStyle)
+						# </crosspage>
+						tStyle = TableStyle(tStyle)
 						pdf.append(makeTable(t, [90, 80, 80, 90, 80, 80], tStyle))
 						pdf.append(platypus.flowables.PageBreak())
 		# 工作总结
 		pdf.append(makeTitle('全年工作总结', 15, 'heimedium'))
-		pdf.append(makeTable([[makeTxt(h[7][0][0][0])]], [500]))
+		pdf.append(makeCrossPage(h[7][0][0][0]))
 	
 	# 文件
 	export_path = 'media/' + pdfname + '-' + time.strftime('%Y%m%d%H%M%S') + '.pdf'
