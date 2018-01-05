@@ -469,6 +469,7 @@ function release_a_n(){
 	$("#myModelYes").text("发布");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
+	$("#myModal_body").append("<div class=\"tupianchicun\"></div>")
 	editor = KindEditor.create('textarea[name="sg_text"]', {
         resizeType : 1,
         allowPreviewEmoticons : false,
@@ -503,6 +504,8 @@ function release_n(){
     });
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(8)");
 }
+
+
 
 function delete_slide() {
 	if (confirm("确认删除？")) {

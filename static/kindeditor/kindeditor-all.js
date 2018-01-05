@@ -3244,7 +3244,7 @@ _extend(KCmd, {
 		title = _undef(title, '');
 		border = _undef(border, 0);
 
-		var html = '<img src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		var html = '<img name="tuwen" src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
 		}
@@ -7460,6 +7460,7 @@ KindEditor.plugin('image', function(K) {
 	self.plugin.image = {
 		edit : function() {
 			var img = self.plugin.getSelectedImage();
+
 			self.plugin.imageDialog({
 				imageUrl : img ? img.attr('data-ke-src') : 'http://',
 				imageWidth : img ? img.width() : '',
@@ -7480,6 +7481,18 @@ KindEditor.plugin('image', function(K) {
 						img.attr('alt', title);
 					} else {
 						self.exec('insertimage', url, title, width, height, border, align);
+					}
+					
+					if($("#myModalLabel").text()=="发布图文"){
+						$(editor.html()).one("load", function() {
+						  	var img_temp = new Image();
+							img_temp.src = $(editor.html()).attr("src");
+							//console.log(img_temp.width+" "+img_temp.height);
+							$("div.tupianchicun").empty();
+							$("div.tupianchicun").append("上传图片: "+url.slice(22) + "; 图片尺寸: " + img_temp.width+"*"+img_temp.height );
+						}).each(function() {
+						  if(this.complete) $(this).load();
+						});
 					}
 					$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 					setTimeout(function() {

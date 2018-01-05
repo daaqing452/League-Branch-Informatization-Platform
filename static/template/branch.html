@@ -73,21 +73,27 @@
 
     <div class = "row">
         <div style="width: 90%;margin:0 auto;">
-            <div class="btn-group" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
-            <button class="btn btn-default" style="width: 17%;" ><span class="glyphicon glyphicon-home"></span> {{ branch.name }}
+            <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
+            <div class="btn-group">
+            <button class="btn btn-default"  ><span class="glyphicon glyphicon-home"></span> {{ branch.name }}
             </button>
+            </div>
             {% if is_admin %}
-            
-                <button class="btn" style="width: 16.6%;background-color: #999999;color: #fff;" onclick="window.location.href='/handbook/b/{{ branch.id }}'">新建团支部工作手册</button>
-            
-                <button class="btn" style="width: 16.7%;background-color: #CCCC99;color: #fff;" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</button>
-            
-                <button class="btn" style="width: 16.7%;background-color: #CC9966;color: #fff;" id="release_a_new" data-toggle="modal" data-target="#myModal" onclick="release_a_n()">发布图文</button>
-            
-                <button class="btn" style="width: 16.7%;background-color: #663300;color: #fff;" id="jiatuan" onclick="window.location.href='/jiatuan/b/{{ branch.id }}'">甲团</button>
-
-                <button class="btn" style="width: 16.7%;background-color: #336600;color: #fff;" id="load_member()" data-toggle="modal" data-target="#myModal" onclick="load_member()">导入班级成员名单</button>
-        
+              <div class="btn-group">
+                <button class="btn" style="background-color: #999999;color: #fff;" onclick="window.location.href='/handbook/b/{{ branch.id }}'">新建团支部工作手册</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #CCCC99;color: #fff;" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #CC9966;color: #fff;" id="release_a_new" data-toggle="modal" data-target="#myModal" onclick="release_a_n()">发布图文</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #663300;color: #fff;" id="jiatuan" onclick="window.location.href='/jiatuan/b/{{ branch.id }}'">甲团</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #336600;color: #fff;" id="load_member()" data-toggle="modal" data-target="#myModal" onclick="load_member()">导入班级成员名单</button>
+              </div>
             {% endif %}
             </div>
         </div>

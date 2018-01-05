@@ -72,11 +72,13 @@
 
     <div class = "row">
         <div style="width: 90%;margin:0 auto;">
-            <div class="btn-group" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
-                <button id="dLabel" class="btn btn-danger" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 15.5%;">
+            <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
+              <div class="btn-group">
+                <button id="dLabel" class="btn btn-danger" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     <span class="glyphicon glyphicon-home"></span> {{ department.name }}
                     <span class="caret"></span>
                 </button>
+              
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
                     {% for branch in branchs %}
                     <li>
@@ -84,15 +86,29 @@
                     </li>
                     {% endfor %}
                   </ul>
-                  
+              </div>
             {% if is_admin %}
-                <button class="btn" id="add_branch" data-toggle="modal" data-target="#myModal" style="width: 12%;background-color: #999999;color: #fff;" onclick="add_b()">添加团支部</button>   
-                <button class="btn" style="width: 12.5%;background-color: #CCCC99;color: #fff;" onclick="window.location.href='/handbook/d/{{ department.id }}'">新建院系手册</button>
-                <button class="btn"  id="review" data-toggle="modal" data-target="#myModal" style="width: 12%;background-color: #CC9966;color: #fff;" onclick="review_b()">审阅支部手册</button>
-                <button id="release_news" class="btn" data-toggle="modal" data-target="#myModal" style="width: 12%;background-color: #663300;color: #fff;" onclick="release_n()">发布新闻</button>
-                <button id="release_a_new" class="btn" data-toggle="modal" data-target="#myModal" style="width: 12%;background-color: #666666;color: #fff;"  onclick="release_a_n()">发布图文</button>
-                <button id="jiatuan" class="btn" data-toggle="modal" data-target="#myModal" style="width: 12%;background-color: #999999;color: #fff;" onclick="jiatuan()">甲团</button>
-                <button class="btn" style="width: 12.5%;background-color: #336600;color: #fff;" id="load_branch" data-toggle="modal" data-target="#myModal" onclick="load_branch()">导入团支部</button>
+              <div class="btn-group">
+                <button class="btn" id="add_branch" data-toggle="modal" data-target="#myModal" style="background-color: #999999;color: #fff;" onclick="add_b()">添加团支部</button>   
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #CCCC99;color: #fff;" onclick="window.location.href='/handbook/d/{{ department.id }}'">新建院系手册</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn"  id="review" data-toggle="modal" data-target="#myModal" style="background-color: #CC9966;color: #fff;" onclick="review_b()">审阅支部手册</button>
+              </div>
+              <div class="btn-group">
+                <button id="release_news" class="btn" data-toggle="modal" data-target="#myModal" style="background-color: #663300;color: #fff;" onclick="release_n()">发布新闻</button>
+              </div>
+              <div class="btn-group">
+                <button id="release_a_new" class="btn" data-toggle="modal" data-target="#myModal" style="background-color: #666666;color: #fff;"  onclick="release_a_n()">发布图文</button>
+              </div>
+              <div class="btn-group">
+                <button id="jiatuan" class="btn" data-toggle="modal" data-target="#myModal" style="background-color: #999999;color: #fff;" onclick="jiatuan()">甲团</button>
+              </div>
+              <div class="btn-group">
+                <button class="btn" style="background-color: #336600;color: #fff;" id="load_branch" data-toggle="modal" data-target="#myModal" onclick="load_branch()">导入团支部</button>
+              </div>
             {% endif %}
               
         </div>
