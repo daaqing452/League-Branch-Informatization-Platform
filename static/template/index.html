@@ -7,6 +7,7 @@
       .shadeDivWrap{width:auto; margin:0px 1px; height: auto; z-index:10;  padding-top:10px; position:absolute; }
       .shadeDiv{ width:60%; height:100%;  left:20%; background-color:#777777;/*:rgba(0,0,0,0.3);*/ opacity:0.57;filter:alpha(opacity=57); z-index:-1; position:absolute; }
       .shadeDivWrap p{width:100%; text-align:center; margin-top:3px;}
+
     </style>
     <div class = "row">
         <div style="height: 400px;width: 90%;margin:0 auto;">
@@ -84,7 +85,7 @@
             
             <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
               <div class="btn-group">
-                <button id="add_department" data-toggle="modal" data-target="#myModal" class="btn" style="background-color: #999999;color: #fff;" onclick="add_d()">添加院系</button>
+                <a href='/amt_setting/i/0/' class='nodecoration'><button class="btn" style="background-color: #999999;color: #fff;">调整院系设置</button></a>
               </div>
               <div class="btn-group">
                 <button id="review" data-toggle="modal" class="btn" data-target="#myModal" style="background-color: #CCCC99;color: #fff;" onclick="review_d()">审阅院系工作手册</button>

@@ -361,3 +361,11 @@ def add_user(request, username):
 	else:
 		html = username + ' already exists'
 	return HttpResponse(html)
+
+def amt_setting(request, amttype, did):
+	rdata, op, suser = get_request_basis(request)
+	
+	if amttype == 'i':
+		
+
+	return render(request, 'amt_setting.html', rdata)

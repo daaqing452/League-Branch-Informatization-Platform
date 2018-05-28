@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'LBInformatization.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bantuan2',
+        'NAME': 'bantuan',
         'USER': 'bantuan',
-        'PASSWORD': 'LaoWangZuiShuai233',
+        'PASSWORD': '2017@Bantuan',
         'HOST': 'localhost',
         'OPTIONS': {'charset': 'utf8mb4'},
     }

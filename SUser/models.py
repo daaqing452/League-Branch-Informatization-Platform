@@ -10,9 +10,11 @@ class SUser(models.Model):
 class Department(models.Model):
 	name = models.CharField(max_length=64, default='')
 	admin = models.TextField(default='[]')
+	amt_order = models.IntegerField(default=0)
 
 class Branch(models.Model):
 	name = models.CharField(max_length=32, default='')
 	did = models.IntegerField()
 	admin = models.TextField(default='[]')
 	member = models.TextField(default='[]')
+	amt_order = models.IntegerField(default=0)

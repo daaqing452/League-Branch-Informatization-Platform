@@ -147,8 +147,6 @@ def message(request, mid=-1):
 			branch = Branch.objects.get(id=rid)
 			recvers = [SUser.objects.get(id=rsuser_id).username for rsuser_id in json.loads(branch.admin)]
 		jdata['recvers'] = recvers
-		print('sub', rtype, rid)
-		print(recvers)
 		return HttpResponse(json.dumps(jdata))
 
 	if suser is None:

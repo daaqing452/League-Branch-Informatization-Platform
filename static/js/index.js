@@ -8,6 +8,7 @@ $(document).ready(function(){
 
 
 
+
 function add_d(){
 	
 	$(".modal-dialog").width(250);
