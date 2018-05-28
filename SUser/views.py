@@ -52,10 +52,6 @@ def index(request):
 		auth.logout(request)
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'add_department':
-		department = Department.objects.create(name=request.POST.get('name', ''))
-		return HttpResponse(json.dumps(jdata))
-
 	if op == 'apply':
 		group = random.randint(1, 0x3fffffff) * (random.randint(0, 1) * 2 - 1)
 		atype = int(request.POST.get('type'))
@@ -366,6 +362,19 @@ def amt_setting(request, amttype, did):
 	rdata, op, suser = get_request_basis(request)
 	
 	if amttype == 'i':
-		
+		# 权限检测
+		if permission(suser, 'iw'):
+			rdata['amttype'] = 'i'
+			rdata['departments'] = departments = Department.objects.order_by('amt_order')
 
-	return render(request, 'amt_setting.html', rdata)
+			if op == 'add_department':
+				department = Department.objects.create(name=request.POST.get('name', ''))
+				department.amt_order=department.id
+				department.save()
+				return HttpResponse(json.dumps(jdata))
+
+			return render(request, 'amt_setting.html', rdata)
+		else:
+			return HttpResponseRedirect('/index/')
+
+	return HttpResponseRedirect('/index/')

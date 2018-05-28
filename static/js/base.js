@@ -146,6 +146,7 @@ function commit(flag, param){
 				}
 			});
 			$("#myModal").modal('hide');
+			window.location.reload();
 			break;
 		}
 		//添加支部
