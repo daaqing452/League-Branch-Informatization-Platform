@@ -371,7 +371,11 @@ def amt_setting(request, amttype, did):
 				department = Department.objects.create(name=request.POST.get('name', ''))
 				department.amt_order=department.id
 				department.save()
-				return HttpResponse(json.dumps(jdata))
+				return HttpResponse(json.dumps({}))
+
+			if op == 'rename_department':
+				Department.objects.filter(id=int(request.POST.get('did'))).update(name=request.POST.get('name'))
+				return HttpResponse(json.dumps({}))
 
 			return render(request, 'amt_setting.html', rdata)
 		else:

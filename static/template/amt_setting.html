@@ -9,7 +9,7 @@
     <table class='table table-hover'>
     	{% for department in departments %}
     	<tr did={{ department.id }}>
-    		<td>{{ department.name }}</td>
+    		<td onclick='rename_d(this)'>{{ department.name }}</td>
     		<td><span class='glyphicon glyphicon-arrow-up'> </span></td>
     		<td><span class='glyphicon glyphicon-arrow-down'> </span></td>
     		<td><span class='glyphicon glyphicon-remove'> </span></td>
