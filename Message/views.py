@@ -372,29 +372,22 @@ def news(request, nid=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
-	if op == 'add_news':
-		title = request.POST.get('title')
-		text = request.POST.get('text')
-		display_type = request.POST.get('display_type')
-		display_id = request.POST.get('display_id')
-		year = year = datetime.datetime.now().year
-		news = News.objects.create(display_type=display_type, display_id=display_id, post_time=datetime.datetime.now(), title=title, text=text)
-		return HttpResponse(json.dumps(jdata))
-
-	if op == 'add_slide':
-		Slide.objects.create(display_type=request.POST.get('display_type'), display_id=int(request.POST.get('display_id')), title=request.POST.get('title'), img_path=request.POST.get('img_path'))
-		return HttpResponse(json.dumps(jdata))
-
-	if op == 'delete_slide':
-		slide = Slide.objects.get(id=int(request.POST.get("sid")))
-		if os.path.exists(slide.img_path[1:]):
-			os.remove(slide.img_path[1:])
-		slide.delete()
-		return HttpResponse(json.dumps(jdata))
-
 	news = News.objects.get(id=nid)
+	readable = False
+	if news.display_type == 'i':
+		readable = permission(suser, 'ir')
+	elif news.display_type == 'd':
+		readable = permission(suser, 'dr')
+	elif news.display_type == 'b':
+		readable = permission(suser, 'br')
+	else:
+		print('新闻访问错误')
 	rdata['news'] = news
-	return render(request, 'news.html', rdata)
+
+	if readable:
+		return render(request, 'news.html', rdata)
+	else:
+		return render(request, 'permission_denied.html', rdata)
 
 def news_list(request, dtype, idd=-1):
 	rdata, op, suser = get_request_basis(request)
@@ -420,10 +413,19 @@ def news_list(request, dtype, idd=-1):
 		readable = permission(suser, 'br', [rdata['self_department'], department])
 		rdata['is_admin'] = permission(suser, 'bw', branch)
 	else:
-		print("新闻列表错误")
+		print('新闻列表访问错误')
 	rdata['news_list'] = news_list = list(reversed(news_list))
 
-	if op == 'delete':
+	if op == 'add_news':
+		title = request.POST.get('title')
+		text = request.POST.get('text')
+		display_type = request.POST.get('display_type')
+		display_id = request.POST.get('display_id')
+		year = year = datetime.datetime.now().year
+		news = News.objects.create(display_type=display_type, display_id=display_id, post_time=datetime.datetime.now(), title=title, text=text)
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'delete_news':
 		News.objects.filter(id=int(request.POST.get('nid'))).delete()
 		return HttpResponse(json.dumps(jdata))
 
@@ -436,9 +438,37 @@ def slide_list(request, dtype, idd=-1):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
-	readable = False
-	if readable:
-		return render(request, 'news_list.html', rdata)
+	if dtype == 'i':
+		slide_list = Slide.objects.filter(display_type='i')
+		rdata['title'] = '学校图文'
+		rdata['is_admin'] = permission(suser, 'iw')
+	elif dtype == 'd':
+		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		department = Department.objects.filter(id=idd)[0]
+		rdata['title'] = department.name + '图文'
+		rdata['is_admin'] = permission(suser, 'dw', department)
+	elif dtype == 'b':
+		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		branch = Branch.objects.get(id=idd)
+		department = Department.objects.get(id=branch.did)
+		rdata['title'] = branch.name + '图文'
+		rdata['is_admin'] = permission(suser, 'bw', branch)
+	else:
+		print('图文列表访问错误')
+
+	if op == 'add_slide':
+		Slide.objects.create(display_type=request.POST.get('display_type'), display_id=int(request.POST.get('display_id')), title=request.POST.get('title'), text=request.POST.get('text'), img_path=request.POST.get('img_path'), post_time=datetime.datetime.now())
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'delete_slide':
+		slide = Slide.objects.get(id=int(request.POST.get("sid")))
+		if os.path.exists(slide.img_path[1:]):
+			os.remove(slide.img_path[1:])
+		slide.delete()
+		return HttpResponse(json.dumps(jdata))
+
+	if rdata['is_admin']:
+		return render(request, 'slide_list.html', rdata)
 	else:
 		return render(request, 'permission_denied.html', rdata)
 

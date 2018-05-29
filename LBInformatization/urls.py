@@ -37,14 +37,17 @@ urlpatterns = [
     url(r'^message/([0-9]{1,9})/$', message),
     url(r'^handbook/([b,d])/([0-9]{1,9})/$', handbook_edit),
     url(r'^handbook/([0-9]{1,9})/$', handbook_show),
-    url(r'^news/$', news),
+    
     url(r'^news/([0-9]{1,9})/$', news),
     url(r'^news_list/([i])/$', news_list),
     url(r'^news_list/([b,d])/([0-9]{1,9})/$', news_list),
+    url(r'^slide_list/([i])/$', slide_list),
+    url(r'^slide_list/([b,d])/([0-9]{1,9})/$', slide_list),
+
     url(r'^jiatuan/b/([0-9]{1,9})/$', jiatuan_edit),
     url(r'^jiatuan/([0-9]{1,9})/$', jiatuan_show),
 
-    url(r'^amt_setting/(i)/(0)/$', amt_setting),
+    url(r'^amt_setting/(i)/$', amt_setting),
     url(r'^amt_setting/(d)/([0-9]{1,9})/$', amt_setting),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

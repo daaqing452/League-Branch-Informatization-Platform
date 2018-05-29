@@ -330,7 +330,7 @@ def add_user(request, username):
 		html = username + ' already exists'
 	return HttpResponse(html)
 
-def amt_setting(request, amttype, did):
+def amt_setting(request, amttype, did=-1):
 	rdata, op, suser = get_request_basis(request)
 	rdata['amttype'] = amttype
 

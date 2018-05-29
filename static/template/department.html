@@ -63,8 +63,8 @@
                     <span class="sr-only">Next</span>
                   </a>
                   {% if is_admin %}
-                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px">
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true" onclick="delete_slide()"></span>
+                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px" href='/slide_list/d/{{ department.id }}'>
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                   </a>
                   {% endif %}
                 </div>

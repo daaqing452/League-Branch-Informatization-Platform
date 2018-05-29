@@ -72,9 +72,7 @@
                     <span class="sr-only">Next</span>
                   </a>
                   {% if is_admin %}
-                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px">
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true" onclick="delete_slide()"></span>
-                  </a>
+                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px" href='/slide_list/i/'> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a>
                   {% endif %}
                 </div>
                 <!-- end of carousel -->  
@@ -88,7 +86,7 @@
             
             <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
               <div class="btn-group">
-                <a href='/amt_setting/i/0/' class='nodecoration'><button class="btn" style="background-color: #999999;color: #fff;">调整院系设置</button></a>
+                <a href='/amt_setting/i/' class='nodecoration'><button class="btn" style="background-color: #999999;color: #fff;">调整院系设置</button></a>
               </div>
               <div class="btn-group">
                 <button id="review" data-toggle="modal" class="btn" data-target="#myModal" style="background-color: #CCCC99;color: #fff;" onclick="review_d()">审阅院系工作手册</button>

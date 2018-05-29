@@ -179,7 +179,7 @@ function commit(flag, param){
 			var title = $("#news_title").val();
 			var text = editor.html();
 			$.ajax({
-				url: "/news/",
+				url: "/news_list/",
 				type: "POST",
 				data: {"op": "add_news", "title": title, "text": text, "display_type": display_type, "display_id": display_id},
 				success: function(data) {
@@ -201,7 +201,7 @@ function commit(flag, param){
 			//图片地址 /media/XXX
 			var img_path = $(text).attr("src");
 			$.ajax({
-				url: "/news/",
+				url: "/slide_list/",
 				type: "POST",
 				data: {"op": "add_slide", "title": title, "text": text, "img_path": img_path, "display_type": display_type, "display_id": display_id},
 				success: function(data) {

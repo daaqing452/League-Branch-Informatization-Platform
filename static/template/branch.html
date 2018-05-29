@@ -24,7 +24,7 @@
                           {% if is_admin %}
                           <td style="float:left"> <button class="btn btn-primary" style="padding:2px 10px 2px 10px" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</button></td>
                           {% endif %}
-                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}'><button class="btn btn-success" style="padding:2px 10px 2px 10px"> 显示更多</button> </a> </td>
+                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}/'><button class="btn btn-success" style="padding:2px 10px 2px 10px"> 显示更多</button> </a> </td>
                         </tr>
                     </tfoot>
 
@@ -64,8 +64,8 @@
                     <span class="sr-only">Next</span>
                   </a>
                   {% if is_admin %}
-                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px">
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true" onclick="delete_slide()"></span>
+                  <a class="carousel-control" style="margin-top:20px; margin-left:88%; height:50px" href='/slide_list/b/{{ branch.id }}/'>
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                   </a>
                   {% endif %}
                 </div>
