@@ -176,10 +176,6 @@ def department(request, did):
 		rdata['is_admin'] = is_admin = permission(suser, 'dw', department)
 	jdata = {}
 
-	if op == 'add_branch':
-		branch = Branch.objects.create(name=request.POST.get('name', ''), did=did)
-		return HttpResponse(json.dumps(jdata))
-
 	if op == 'get_departments':
 		departments = []
 		for department in Department.objects.all():
@@ -360,25 +356,78 @@ def add_user(request, username):
 
 def amt_setting(request, amttype, did):
 	rdata, op, suser = get_request_basis(request)
-	
+	rdata['amttype'] = amttype
+
 	if amttype == 'i':
-		# 权限检测
 		if permission(suser, 'iw'):
-			rdata['amttype'] = 'i'
-			rdata['departments'] = departments = Department.objects.order_by('amt_order')
+			rdata['amt_objects'] = departments = Department.objects.order_by('amt_order')
 
 			if op == 'add_department':
 				department = Department.objects.create(name=request.POST.get('name', ''))
-				department.amt_order=department.id
+				department.amt_order = department.id
 				department.save()
 				return HttpResponse(json.dumps({}))
 
-			if op == 'rename_department':
-				Department.objects.filter(id=int(request.POST.get('did'))).update(name=request.POST.get('name'))
+			if op == 'rename':
+				Department.objects.filter(id=int(request.POST.get('dbid'))).update(name=request.POST.get('name'))
+				return HttpResponse(json.dumps({}))
+
+			if op == 'updown':
+				department = Department.objects.get(id=int(request.POST.get('dbid')))
+				departments = list(Department.objects.order_by('amt_order'))
+				index = departments.index(department)
+				target = index + int(request.POST.get('direction'))
+				if target >= 0 and target < len(departments):
+					department_target = departments[target]
+					temp = department.amt_order
+					department.amt_order = department_target.amt_order
+					department_target.amt_order = temp
+					department.save()
+					department_target.save()
+				return HttpResponse(json.dumps({}))
+
+			if op == 'remove':
+				Department.objects.get(id=int(request.POST.get('dbid'))).delete()
 				return HttpResponse(json.dumps({}))
 
 			return render(request, 'amt_setting.html', rdata)
 		else:
 			return HttpResponseRedirect('/index/')
+
+	if amttype == 'd':
+		if permission(suser, 'dw'):
+			rdata['amt_objects'] = branchs = Branch.objects.filter(did=int(did)).order_by('amt_order')
+
+			if op == 'add_branch':
+				branch = Branch.objects.create(name=request.POST.get('name', ''), did=did)
+				branch.amt_order = branch.id
+				branch.save()
+				return HttpResponse(json.dumps({}))
+		
+			if op == 'rename':
+				Branch.objects.filter(id=int(request.POST.get('dbid'))).update(name=request.POST.get('name'))
+				return HttpResponse(json.dumps({}))
+
+			if op == 'updown':
+				branch = Branch.objects.get(id=int(request.POST.get('dbid')))
+				branchs = list(Branch.objects.order_by('amt_order'))
+				index = branchs.index(branch)
+				target = index + int(request.POST.get('direction'))
+				if target >= 0 and target < len(branchs):
+					branch_target = branchs[target]
+					temp = branch.amt_order
+					branch.amt_order = branch_target.amt_order
+					branch_target.amt_order = temp
+					branch.save()
+					branch_target.save()
+				return HttpResponse(json.dumps({}))
+
+			if op == 'remove':
+				Branch.objects.get(id=int(request.POST.get('dbid'))).delete()
+				return HttpResponse(json.dumps({}))
+
+			return render(request, 'amt_setting.html', rdata)
+		else:
+			HttpResponseRedirect('/index/')
 
 	return HttpResponseRedirect('/index/')

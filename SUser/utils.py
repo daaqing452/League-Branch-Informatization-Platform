@@ -46,12 +46,12 @@ def get_request_basis(request):
 	rdata['login'] = suser is not None
 
 	# 所有院系
-	departments = Department.objects.all()
+	departments = Department.objects.order_by('amt_order')
 	d0 = []
 	for department in departments:
 		d1 = {}
 		d1['department'] = department
-		d1['branchs'] = Branch.objects.filter(did=department.id)
+		d1['branchs'] = Branch.objects.filter(did=department.id).order_by('amt_order')
 		d0.append(d1)
 	rdata['departments'] = d0
 
