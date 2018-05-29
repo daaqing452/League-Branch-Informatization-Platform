@@ -9,6 +9,8 @@
 
     {% ifequal amttype "d" %}
     <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="add_b()">添加新团支部</button>
+    &nbsp;
+    <button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="load_branch()">导入团支部</button>
     {% endifequal %}
 
     <br/><br/>
@@ -22,5 +24,7 @@
     	</tr>
     	{% endfor %}
     </table>
+
+    <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
 
     {% endblock context %}

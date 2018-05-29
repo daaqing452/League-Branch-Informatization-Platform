@@ -18,6 +18,22 @@ function add_b(){
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(6)");
 }
 
+function load_branch() {
+	$("#myModal_body").empty();
+	$("#myModalLabel").text("导入团支部列表");
+	$('#myModal_body').append("\
+		<form enctype='multipart/form-data' action='" + window.location.pathname + "' method='post' style=‘margin:0px;display:inline;’> \
+			<input type='hidden' name='csrfmiddlewaretoken' value='" + $('#csrf_token').val() + "'> \
+			<input type='file' class='btn btn-sm' name='upload' style='margin:0px;display:inline;'> \
+			<input type='submit' value='上传列表' class='btn btn-info btn-sm' > \
+		</form> \
+		<br/> \
+		<br/> \
+		导入模板<a href='/static/file/branch_name.csv'>下载</a> \
+	");
+	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
+}
+
 function rename(node) {
 	var dbid = $(node).parents("tr").eq(0).attr("dbid");
 	var name = $(node).html();

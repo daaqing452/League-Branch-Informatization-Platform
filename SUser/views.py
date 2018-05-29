@@ -222,30 +222,6 @@ def department(request, did):
 		material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
 		return HttpResponse(json.dumps(jdata))
 
-	# 导入团支部列表
-	f = request.FILES.get('upload', None)
-	if not f is None:
-		f_path = upload_file(f)
-		f = codecs.open(f_path, 'r', 'gbk')
-		line_no = -1
-		while True:
-			line_no += 1
-			try:
-				line = f.readline()
-			except:
-				print('第' + str(line_no + 1) + '行读入失败')
-				continue
-			if len(line) == 0: break
-			if line[-2:] == '\r\n': line = line[:-2]
-			if line[-1:] == '\n': line = line[:-1]
-			branch_name = line
-			branchs = Branch.objects.filter(name=branch_name)
-			if len(branchs) == 0:
-				branch = Branch.objects.create(name=branch_name, did=department.id)
-			else:
-				print('第' + str(line_no + 1) + '行重复')
-		f.close()
-
 	if (department is not None) and permission(suser, 'dr', department):
 		news_list = News.objects.filter(display_type='d', display_id=did)
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
@@ -396,6 +372,7 @@ def amt_setting(request, amttype, did):
 
 	if amttype == 'd':
 		if permission(suser, 'dw'):
+			department = Department.objects.get(id=int(did))
 			rdata['amt_objects'] = branchs = Branch.objects.filter(did=int(did)).order_by('amt_order')
 
 			if op == 'add_branch':
@@ -425,6 +402,30 @@ def amt_setting(request, amttype, did):
 			if op == 'remove':
 				Branch.objects.get(id=int(request.POST.get('dbid'))).delete()
 				return HttpResponse(json.dumps({}))
+
+			# 导入团支部列表
+			f = request.FILES.get('upload', None)
+			if not f is None:
+				f_path = upload_file(f)
+				f = codecs.open(f_path, 'r', 'gbk')
+				line_no = -1
+				while True:
+					line_no += 1
+					try:
+						line = f.readline()
+					except:
+						print('第' + str(line_no + 1) + '行读入失败')
+						continue
+					if len(line) == 0: break
+					if line[-2:] == '\r\n': line = line[:-2]
+					if line[-1:] == '\n': line = line[:-1]
+					branch_name = line
+					branchs = Branch.objects.filter(name=branch_name)
+					if len(branchs) == 0:
+						branch = Branch.objects.create(name=branch_name, did=department.id)
+					else:
+						print('第' + str(line_no + 1) + '行重复')
+				f.close()
 
 			return render(request, 'amt_setting.html', rdata)
 		else:
