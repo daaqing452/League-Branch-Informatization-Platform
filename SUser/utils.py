@@ -62,6 +62,8 @@ def get_request_basis(request):
 	rdata['unread_messages'] = messages
 	rdata['unread_messages_length'] = len(messages)
 
+	rdata['years'] = json.loads(School.objects.all()[0].years)
+
 	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
 

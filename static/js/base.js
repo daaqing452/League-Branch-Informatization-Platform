@@ -3,7 +3,7 @@ $(document).ready(function(){
 	check_red_spot();
 });
 
-years = [2017, 2016]
+//years = [2017, 2016]
 
 function check_red_spot() {
 	var a = $("a[type=message]");

@@ -23,3 +23,4 @@ class Branch(models.Model):
 
 class School(models.Model):
 	slide_show_num = models.IntegerField(default=5)
+	years = models.TextField(default='[]')

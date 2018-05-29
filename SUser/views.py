@@ -431,3 +431,18 @@ def amt_setting(request, amttype, did=-1):
 			return render(request, 'permission_denied.html', rdata)
 
 	return render(request, 'permission_denied.html', rdata)
+
+def global_setting(request):
+	rdata, op, suser = get_request_basis(request)
+
+	if suser.admin_school:
+		if op == 'add_year':
+			years = json.loads(School.objects.all()[0].years)
+			years.insert(0, int(request.POST.get('new_year')))
+			print(years)
+			School.objects.all().update(years=json.dumps(years))
+			return HttpResponse(json.dumps({}))
+
+		return render(request, 'global_setting.html', rdata)
+	else:
+		return render(request, 'permission_denied.html', rdata)

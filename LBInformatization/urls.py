@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^jiatuan/b/([0-9]{1,9})/$', jiatuan_edit),
     url(r'^jiatuan/([0-9]{1,9})/$', jiatuan_show),
 
+    url(r'^global_setting/$', global_setting),
     url(r'^amt_setting/(i)/$', amt_setting),
     url(r'^amt_setting/(d)/([0-9]{1,9})/$', amt_setting),
     

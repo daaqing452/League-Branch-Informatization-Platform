@@ -536,7 +536,7 @@ def export(handbook, aff):
 	h = json.loads(handbook.content)
 	pdf = []
 	if handbook.htype == 'd':
-		pdfname = str(handbook.year) + '-' + str(handbook.year+1) + '学年' + aff.name + '院系工作手册'
+		pdfname = str(handbook.year-1) + '-' + str(handbook.year) + '学年' + aff.name + '院系工作手册'
 		pdf.append(Paragraph('<para fontSize=20 align=center><font face="heimedium">' + pdfname + '</font><br/><br/></para>', normalStyle))
 		pdf.append(makeTitle('等级评估方案', 15, 'heimedium'))
 		pdf.append(makeCrossPage(h[8][0][0][0]))
