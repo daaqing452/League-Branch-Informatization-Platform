@@ -1,27 +1,36 @@
 {% extends "base.html" %}
 	{% load static %}
     {% block context %}
-    <script src="{% static "js/news_list.js" %}"> </script>
+    <script src="{% static "js/slide_list.js" %}"> </script>
     
-    <div style="width: 60%;margin:0 auto;">
-	    <div style="text-align: center"><h3>{{ title }} </h3></div>
-	    <hr>
-	    <ul>
-		    {% for news in news_list %}
-		    <li style="list-style-type:none">
-		    	<div>
-		    		<a href="/news/{{ news.id }}/"> {{ news.title }} </a>
-		    	</div>
-		    	<div style="color:#aaaaaa; font-size:1px; float:right">
-		    		<span> {{ news.post_time | date:"Y-m-d H:i:s" }}</span>
-		    		{% if is_admin %}
-		    		<span nid={{ news.id }} class="glyphicon glyphicon-remove" onclick="deletee(this)"> </span>
+    <div style="width: 100%;margin:0 auto;">
+	    <div style="text-align: center">
+	    	<h3>{{ title }} </h3>
+	    	<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="release_a_n()">添加新图文</button>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<button class="btn btn-warning" onclick="change_slide_show_num()">修改显示数量</button>
+	    	<input id="slide_show_num_input" style="width:50px; height:30px" type="text" value={{ slide_show_num }} />
+	   	</div>
+	   	<br/>
+
+	    <div>
+	    	{% for slide in slide_list %}
+	    	<div id="item" style="width:202px; height:250px; float:left; border: 1px solid #000000; margin:10px" sid={{ slide.id }}>
+	    		<div style="float:left">
+		    		{% if slide.show %}
+		    		<span class="label label-success" onclick="show(this, 0)"> 显示 </span>
+		    		{% else %}
+		    		<span class="label label-default" onclick="show(this, 1)"> 不显示 </span>
 		    		{% endif %}
 		    	</div>
-		    </li>
-		    <hr>
-		    {% endfor %}
-		</ul>
+    			<div style="float:right"><span class="label label-danger" onclick="remove(this)"> 删除 </span></div>
+		    	<br/><br/>
+	    		<div style="text-align:center"> <b style="text-align:center">{{ slide.title }}</b></div>
+	    		<div> <a href="{{ slide.img_path }}"><img src={{ slide.img_path }} style="width:200px;" /></a> </div>
+			</div>
+	    	{% endfor %}
+	    	</tr>
+	    </div>
     </div>
-    
+
     {% endblock context %}

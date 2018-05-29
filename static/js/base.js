@@ -196,14 +196,15 @@ function commit(flag, param){
 			var tuple = getUrlInfo();
 			var display_type = tuple[0];
 			var display_id = tuple[1];
-			var text = editor.html();
-			var title = $("#news_title").val();
+			var imghtml = editor.html();
+			var title = $("#slide_title").val();
+			var text = $("#slide_text").val();
 			//图片地址 /media/XXX
-			var img_path = $(text).attr("src");
+			var img_path = $(imghtml).attr("src");
 			$.ajax({
-				url: "/slide_list/",
+				url: window.location.href,
 				type: "POST",
-				data: {"op": "add_slide", "title": title, "text": text, "img_path": img_path, "display_type": display_type, "display_id": display_id},
+				data: {"op": "add_slide", "title": title, "text": text, "img_path": img_path},
 				success: function(data) {
 					var data = JSON.parse(data);
 					alert("发布成功");
@@ -463,27 +464,6 @@ function read_message(b){
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(4)");
 }
 
-function release_a_n(){
-	$(".modal-dialog").width(500);
-	$("#myModal_body").empty();
-	$("#myModalLabel").text("发布图文");
-	$("#myModelYes").text("发布");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
-	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
-	$("#myModal_body").append("<div class=\"tupianchicun\"></div>")
-	editor = KindEditor.create('textarea[name="sg_text"]', {
-        resizeType : 1,
-        allowPreviewEmoticons : false,
-        allowImageRemote : false,
-        useContextmenu : false,
-        uploadJson : '/uploadFile/',
-        width : '100%',
-        items : [
-            'image']
-    });
-    $(".modal-footer").children("button").eq(1).attr("onclick","commit(9)");
-}
-
 function release_n(){
 	$(".modal-dialog").width(1000);
 	$("#myModal_body").empty();
@@ -504,21 +484,4 @@ function release_n(){
             'insertunorderedlist', '|', 'emoticons', 'image']
     });
     $(".modal-footer").children("button").eq(1).attr("onclick","commit(8)");
-}
-
-
-
-function delete_slide() {
-	if (confirm("确认删除？")) {
-		var sid = $("li.active").attr("sid");
-		$.ajax({
-			url: "/news/",
-			type: "POST",
-			data: {"op": "delete_slide", "sid": sid},
-			success: function(data) {
-				var data = JSON.parse(data);
-				window.location.reload();
-			}
-		});
-	}
 }

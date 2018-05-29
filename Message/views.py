@@ -442,30 +442,51 @@ def slide_list(request, dtype, idd=-1):
 		slide_list = Slide.objects.filter(display_type='i')
 		rdata['title'] = '学校图文'
 		rdata['is_admin'] = permission(suser, 'iw')
+		rdata['slide_show_num'] = School.objects.all()[0].slide_show_num
 	elif dtype == 'd':
-		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		slide_list = Slide.objects.filter(display_type=dtype, display_id=idd)
 		department = Department.objects.filter(id=idd)[0]
 		rdata['title'] = department.name + '图文'
 		rdata['is_admin'] = permission(suser, 'dw', department)
+		rdata['slide_show_num'] = department.slide_show_num
 	elif dtype == 'b':
-		news_list = News.objects.filter(display_type=dtype, display_id=idd)
+		slide_list = Slide.objects.filter(display_type=dtype, display_id=idd)
 		branch = Branch.objects.get(id=idd)
 		department = Department.objects.get(id=branch.did)
 		rdata['title'] = branch.name + '图文'
 		rdata['is_admin'] = permission(suser, 'bw', branch)
+		rdata['slide_show_num'] = branch.slide_show_num
 	else:
 		print('图文列表访问错误')
 
 	if op == 'add_slide':
-		Slide.objects.create(display_type=request.POST.get('display_type'), display_id=int(request.POST.get('display_id')), title=request.POST.get('title'), text=request.POST.get('text'), img_path=request.POST.get('img_path'), post_time=datetime.datetime.now())
+		Slide.objects.create(display_type=dtype, display_id=int(idd), title=request.POST.get('title'), text=request.POST.get('text'), img_path=request.POST.get('img_path'), post_time=datetime.datetime.now())
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'delete_slide':
-		slide = Slide.objects.get(id=int(request.POST.get("sid")))
+		slide = Slide.objects.get(id=int(request.POST.get('sid')))
 		if os.path.exists(slide.img_path[1:]):
 			os.remove(slide.img_path[1:])
 		slide.delete()
 		return HttpResponse(json.dumps(jdata))
+
+	if op == 'show':
+		Slide.objects.filter(id=int(request.POST.get('sid'))).update(show=int(request.POST.get('show')))
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'change_slide_show_num':
+		num = int(request.POST.get('num'))
+		if dtype == 'i':
+			School.objects.all().update(slide_show_num=num)
+		elif dtype == 'd':
+			department.slide_show_num = num
+			department.save()
+		elif dtype == 'b':
+			branch.slide_show_num = num
+			branch.save()
+		return HttpResponse(json.dumps(jdata))
+
+	rdata['slide_list'] = reversed(slide_list)
 
 	if rdata['is_admin']:
 		return render(request, 'slide_list.html', rdata)

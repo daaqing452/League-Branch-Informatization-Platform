@@ -37,6 +37,7 @@ class Slide(models.Model):
 	title = models.TextField(default='')
 	text = models.TextField(default='')
 	img_path = models.TextField(default='')
+	show = models.BooleanField(default=True)
 
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)

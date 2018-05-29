@@ -15,7 +15,6 @@ import json
 import random
 
 NEWS_SHOW_NUM = 8
-SLIDE_SHOW_NUM = 5
 
 
 @csrf_exempt 
@@ -164,8 +163,8 @@ def index(request):
 	if permission(suser, 'ir'):
 		news_list = News.objects.filter(display_type='i')
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
-		slide_list = Slide.objects.filter(display_type='i')
-		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='i', show=True)
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), School.objects.all()[0].slide_show_num)]
 		return render(request, 'index.html', rdata)
 
 def department(request, did):
@@ -225,8 +224,8 @@ def department(request, did):
 	if (department is not None) and permission(suser, 'dr', department):
 		news_list = News.objects.filter(display_type='d', display_id=did)
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
-		slide_list = Slide.objects.filter(display_type='d', display_id=did)
-		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='d', display_id=did, show=True)
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), department.slide_show_num)]
 		return render(request, 'department.html', rdata)
 	else:
 		return render(request, 'permission_denied.html', rdata)
@@ -297,8 +296,8 @@ def branch(request, bid):
 	if (branch is not None) and permission(suser, 'br', [rdata['self_department'], department]):
 		news_list = News.objects.filter(display_type='b', display_id=bid)
 		rdata['news_list'] = list(reversed(news_list))[0:min(len(news_list), NEWS_SHOW_NUM)]
-		slide_list = Slide.objects.filter(display_type='b', display_id=bid)
-		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
+		slide_list = Slide.objects.filter(display_type='b', display_id=bid, show=True)
+		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), branch.slide_show_num)]
 		return render(request, 'branch.html', rdata)
 	else:
 		return render(request, 'permission_denied.html', rdata)

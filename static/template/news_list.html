@@ -2,6 +2,7 @@
 	{% load static %}
     {% block context %}
     <script src="{% static "js/news_list.js" %}"> </script>
+
     <div style="width: 60%;margin:0 auto;">
 	    <div style="text-align: center"><h3>{{ title }} </h3></div>
 	    <hr>
@@ -14,7 +15,7 @@
 		    	<div style="color:#aaaaaa; font-size:1px; float:right">
 		    		<span> {{ news.post_time | date:"Y-m-d H:i:s" }}</span>
 		    		{% if is_admin %}
-		    		<span nid={{ news.id }} class="glyphicon glyphicon-remove" onclick="deletee(this)"> </span>
+		    		<span nid={{ news.id }} class="label label-danger" onclick="deletee(this)"> 删除 </span>
 		    		{% endif %}
 		    	</div>
 		    </li>
