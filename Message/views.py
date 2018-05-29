@@ -385,7 +385,8 @@ def news(request, nid=-1):
 
 	if op == 'delete_slide':
 		slide = Slide.objects.get(id=int(request.POST.get("sid")))
-		os.remove(slide.img_path[1:])
+		if os.path.exists(slide.img_path[1:]):
+			os.remove(slide.img_path[1:])
 		slide.delete()
 		return HttpResponse(json.dumps(jdata))
 
