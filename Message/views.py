@@ -150,7 +150,7 @@ def message(request, mid=-1):
 		return HttpResponse(json.dumps(jdata))
 
 	if suser is None:
-		return HttpResponseRedirect('/index/')
+		return render(request, 'permission_denied.html', rdata)
 
 	# 显示收件箱
 	if mid == -1:
@@ -270,6 +270,8 @@ def handbook_edit(request, htype, idd):
 	# 权限检测
 	if (suser is not None) and (suser.admin_super or (suser.id in admin_department) or (suser.id in admin_branch)):
 		return render(request,'handbook.html', rdata)
+	else:
+		return render(request, 'permission_denied.html', rdata)
 
 def handbook_show(request, hid):
 	rdata, op, suser = get_request_basis(request)
@@ -428,8 +430,17 @@ def news_list(request, dtype, idd=-1):
 	if readable:
 		return render(request, 'news_list.html', rdata)
 	else:
-		return HttpResponseRedirect('/index/')
+		return render(request, 'permission_denied.html', rdata)
 
+def slide_list(request, dtype, idd=-1):
+	rdata, op, suser = get_request_basis(request)
+	jdata = {}
+
+	readable = False
+	if readable:
+		return render(request, 'news_list.html', rdata)
+	else:
+		return render(request, 'permission_denied.html', rdata)
 
 def export(handbook, aff):
 	styleSheet = getSampleStyleSheet()

@@ -229,7 +229,7 @@ def department(request, did):
 		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
 		return render(request, 'department.html', rdata)
 	else:
-		return HttpResponseRedirect('/index/')
+		return render(request, 'permission_denied.html', rdata)
 
 def branch(request, bid):
 	rdata, op, suser = get_request_basis(request)
@@ -301,7 +301,7 @@ def branch(request, bid):
 		rdata['slide_list'] = list(reversed(slide_list))[0:min(len(slide_list), SLIDE_SHOW_NUM)]
 		return render(request, 'branch.html', rdata)
 	else:
-		return HttpResponseRedirect('/index/')
+		return render(request, 'permission_denied.html', rdata)
 
 def profile(request, sid):
 	rdata, op, suser = get_request_basis(request)
@@ -368,7 +368,7 @@ def amt_setting(request, amttype, did):
 
 			return render(request, 'amt_setting.html', rdata)
 		else:
-			return HttpResponseRedirect('/index/')
+			return render(request, 'permission_denied.html', rdata)
 
 	if amttype == 'd':
 		if permission(suser, 'dw'):
@@ -429,6 +429,6 @@ def amt_setting(request, amttype, did):
 
 			return render(request, 'amt_setting.html', rdata)
 		else:
-			HttpResponseRedirect('/index/')
+			return render(request, 'permission_denied.html', rdata)
 
-	return HttpResponseRedirect('/index/')
+	return render(request, 'permission_denied.html', rdata)
