@@ -175,11 +175,10 @@ function commit(flag, param){
 			var tuple = getUrlInfo();
 			var display_type = tuple[0];
 			var display_id = tuple[1];
-
 			var title = $("#news_title").val();
 			var text = editor.html();
 			$.ajax({
-				url: "/news_list/",
+				url: "/news_list/i/",
 				type: "POST",
 				data: {"op": "add_news", "title": title, "text": text, "display_type": display_type, "display_id": display_id},
 				success: function(data) {
