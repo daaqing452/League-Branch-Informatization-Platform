@@ -17,6 +17,12 @@
     <script>
         var years = {{ years }};
     </script>
+    <style type="text/css">
+      .shadeDivWrap{width:auto; margin:0px 1px; height: auto; z-index:10;  padding-top:10px; position:absolute; }
+      .shadeDiv{ width:60%; height:100%;  left:20%; background-color:#777777;/*:rgba(0,0,0,0.3);*/ opacity:0.57;filter:alpha(opacity=57); z-index:-1; position:absolute; }
+      .shadeDivWrap p{width:100%; text-align:center; margin-top:3px;}
+
+    </style>
 </head>
 
 <body >
@@ -64,7 +70,7 @@
                 <a href='#' > 规范文件 </a>
             </li>
             <li >
-                <a href='#' > 通知公告 </a>
+                <a href='#' > 通知 </a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

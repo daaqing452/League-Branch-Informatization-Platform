@@ -6,9 +6,9 @@
     <div style="width: 100%;margin:0 auto;">
 	    <div style="text-align: center">
 	    	<h3>{{ title }} </h3>
-	    	<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="release_a_n()">添加新图文</button>
-	    	&nbsp;&nbsp;&nbsp;&nbsp;
-	    	<button class="btn btn-warning" onclick="change_slide_show_num()">修改显示数量</button>
+	    	<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" onclick="release_a_n()">添加新图文</button>
+	    	
+	    	<button class="btn btn-sm btn-warning" onclick="change_slide_show_num()">修改显示数量</button>
 	    	<input id="slide_show_num_input" style="width:50px; height:30px" type="text" value={{ slide_show_num }} />
 	   	</div>
 	   	<br/>
@@ -25,8 +25,8 @@
 		    	</div>
     			<div style="float:right"><span class="label label-danger" onclick="remove(this)"> 删除 </span></div>
 		    	<br/><br/>
-	    		<div style="text-align:center"> <b style="text-align:center">{{ slide.title }}</b></div>
-	    		<div> <a href="{{ slide.img_path }}"><img src={{ slide.img_path }} style="width:200px;" /></a> </div>
+	    		<div style="text-align:center"> <b style="text-align:center">{{ slide.title }}</b><br><b style="text-align:center">{{ slide.text }}</b></div>
+	    		<div> <a href="{{ slide.img_path }}"><img src={{ slide.img_path }} style="width:80%;margin:0 auto" /></a> </div>
 			</div>
 	    	{% endfor %}
 	    	</tr>

@@ -3,12 +3,6 @@
     {% block context %}
     <script src="{% static "js/index.js" %}"> </script>
     <script src="{% static "js/html2canvas.js" %}"> </script>
-    <style type="text/css">
-      .shadeDivWrap{width:auto; margin:0px 1px; height: auto; z-index:10;  padding-top:10px; position:absolute; }
-      .shadeDiv{ width:60%; height:100%;  left:20%; background-color:#777777;/*:rgba(0,0,0,0.3);*/ opacity:0.57;filter:alpha(opacity=57); z-index:-1; position:absolute; }
-      .shadeDivWrap p{width:100%; text-align:center; margin-top:3px;}
-
-    </style>
     <div class = "row">
         <div style="width: 90%;margin:0 auto;">
             {% if is_admin %}
@@ -79,10 +73,10 @@
                   <div class="carousel-inner" role="listbox" style="height: 400px">
                     {% for slide in slide_list %}
                     <div class="item {% if forloop.first %} active {% endif %}" style="height: 100%">
-                      <img src="{{ slide.img_path }}" style="width: 70%;margin:0 auto">
+                      <img src="{{ slide.img_path }}" style="height: 100%;margin:0 auto">
                       <div class="carousel-caption shadeDivWrap">
                         <div class="shadeDiv"></div>
-                        <p>{{ slide.title }}</p>
+                        <p>{{ slide.title }}<br>{{ slide.text }}</p>
                         <!--<p>{{ slide.text }}</p>-->
                       </div>
                     </div>

@@ -5,7 +5,7 @@
         <div style="width: 90%;margin:0 auto;">
             <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
               <div class="btn-group">
-                <button id="dLabel" class="btn btn-success" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                <button id="dLabel" class="btn" style="background-color: #993333;color: #fff;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                     <span class="glyphicon glyphicon-home"></span> {{ department.name }}
                     <span class="caret"></span>
                 </button>
@@ -80,9 +80,10 @@
                   <div class="carousel-inner" role="listbox" style="height: 400px">
                     {% for slide in slide_list %}
                     <div class="item {% if forloop.first %} active {% endif %}" style="height: 100%">
-                      <img src="{{ slide.img_path }}" style="width: 70%;margin:0 auto">
-                      <div class="carousel-caption">
-                        <h3>{{ slide.title }}</h3>
+                      <img src="{{ slide.img_path }}" style="height: 100%;margin:0 auto">
+                      <div class="carousel-caption shadeDivWrap">
+                        <div class="shadeDiv"></div>
+                        <p>{{ slide.title }}<br>{{ slide.text }}</p>
                       </div>
                     </div>
                     {% endfor %}

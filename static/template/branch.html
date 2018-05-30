@@ -66,9 +66,10 @@
                   <div class="carousel-inner" role="listbox" style="height: 400px">
                     {% for slide in slide_list %}
                     <div class="item {% if forloop.first %} active {% endif %}" style="height: 100%">
-                      <img src="{{ slide.img_path }}" style="width: 100%">
-                      <div class="carousel-caption">
-                        <h3>{{ slide.title }}</h3>
+                      <img src="{{ slide.img_path }}" style="height: 100%;margin:0 auto">
+                      <div class="carousel-caption shadeDivWrap">
+                        <div class="shadeDiv"></div>
+                        <p>{{ slide.title }}<br>{{ slide.text }}</p>
                         <!--<p>{{ slide.text }}</p>-->
                       </div>
                     </div>
