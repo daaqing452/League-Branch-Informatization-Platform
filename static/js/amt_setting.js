@@ -3,7 +3,7 @@ $(document).ready(function(){
 });
 
 function add_d(){
-	$(".modal-dialog").width(250);
+	$(".modal-dialog").width(400);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("添加院系");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"departmentname\" type=\"text\"  placeholder=\"院系名\"/><br/>");
@@ -11,10 +11,10 @@ function add_d(){
 }
 
 function add_b(){
-	$(".modal-dialog").width(250);
+	$(".modal-dialog").width(400);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("添加团支部");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"branchname\" type=\"text\"  placeholder=\"支部名\"/><br/>");
+	$("#myModal_body").append("<input class=\"form-control\" id=\"branchname\" type=\"text\"  placeholder=\"支部名（如：清华大学计算机系计xx支部）\"/><br/>");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(6)");
 }
 
