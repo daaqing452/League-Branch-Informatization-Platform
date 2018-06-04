@@ -8,7 +8,7 @@
 /SUser/*.pyc
 /Message/.DS_Store
 /Message/migrations/*
-/Message/__pycache/*.pyc
+/Message/__pycache__/*.pyc
 /Message/*.pyc
 /static/.DS_Store
 /static/js/.DS_Store
