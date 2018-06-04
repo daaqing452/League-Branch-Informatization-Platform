@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <div style="width: 60%;margin:0 auto;">
+	    <div style="text-align: center"><h3>{{ news.title }} </h3></div>
+	    <hr>
+	    {{ news.text | safe }}
+    </div>
+    <script src="{% static "js/news.js" %}"> </script>
+    {% endblock context %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <script src="{% static "js/amt_setting.js" %}"> </script>
+
+    {% ifequal amttype "i" %}
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="add_d()">添加新院系</button>
+    {% endifequal %}
+
+    {% ifequal amttype "d" %}
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="add_b()">添加新团支部</button>
+    &nbsp;
+    <button class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="load_branch()">导入团支部</button>
+    {% endifequal %}
+
+    <br/><br/>
+    <table class="table table-hover" style="width:500px">
+    	{% for object in amt_objects %}
+    	<tr dbid={{ object.id }}>
+    		<td onclick="rename(this)">{{ object.name }}</td>
+    		<td><span class="glyphicon glyphicon-arrow-up" onclick="updown(this, -1)"> </span></td>
+    		<td><span class="glyphicon glyphicon-arrow-down" onclick="updown(this, 1)"> </span></td>
+    		<td><span class="glyphicon glyphicon-remove" onclick="remove(this)"> </span></td>
+    	</tr>
+    	{% endfor %}
+    </table>
+
+    <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
+
+    {% endblock context %}

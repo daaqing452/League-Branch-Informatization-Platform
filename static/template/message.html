@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+
+    {% if read_all %}
+    <table>
+    	<tr>
+    		<td>状态</td>
+    		<td>标题</td>
+    		<td>发件人</td>
+    		<td>收件时间</td>
+    	</tr>
+    	{% for message in messages %}
+    	<tr>
+    		<td>{% if message.read %} 已读 {% else %} 未读 {% endif %}</td>
+    		<td><a href="/message/{{ message.id }}/">{{ message.title }}</a></td>
+    		<td>{{ message.send_username }}</td>
+    		<td>{{ message.send_time }}</td>
+    	</tr>
+    	{% endfor %}
+    </table>
+    {% else %}
+        <h4>{{ message.title }}</h4>
+        <p>{{ message.send_time }}</p>
+        <p>发件人：{{ send_username }}</p>
+        <p>{{ message.text }}</p>
+        <p>{{ message.attachment }}</p>
+    {% endif %}
+    
+    {% endblock context %}

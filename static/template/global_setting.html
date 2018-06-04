@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+    <script src="{% static "js/global_setting.js" %}"> </script>
+    
+    <hr>
+    目前已有年份：
+    <select>
+    	{% for year in years %}
+    	<option> {{ year }} </option>
+    	{% endfor %}
+    </select>
+    &nbsp;
+    <button class="btn btn-primary" onclick="add_year()">添加年份</button>
+
+    {% endblock context %}
