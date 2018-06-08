@@ -128,7 +128,7 @@ def index(request):
 			apportion = apportions[0]
 		else:
 			apportion = JiatuanApportion.objects.create(year=year)
-		apportion.deadline = datetime.datetime.strptime(request.POST.get('deadline'), '%Y-%m-%d')
+		apportion.deadline = datetime.datetime.strptime(request.POST.get('deadline') + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
 		minge_dict = {}
 		minges = json.loads(request.POST.get('minges'))
 		for minge in minges:
@@ -207,8 +207,20 @@ def department(request, did):
 		jdata['departments'] = departments
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'get_branchs_jiatuan':
+	if op == 'get_jiatuan_branchs':
 		year = request.POST.get('year')
+		apportions = JiatuanApportion.objects.filter(year=year)
+		status = 0
+		if len(apportions) > 0:
+			apportion = apportions[0]
+			if datetime.datetime.now() > apportion.deadline.replace(tzinfo=None):
+				status = 2
+			else:
+				minge = json.loads(apportion.minge)
+				if str(department.id) in minge:
+					status = 1
+					jdata['minge'] = minge[str(department.id)]
+		jdata['status'] = status
 		branchs = []
 		for branch in Branch.objects.filter(did=did):
 			d = {}
@@ -221,6 +233,7 @@ def department(request, did):
 				d['material'] = '/jiatuan/' + str(materials[0].id) + '/'
 			branchs.append(d)
 		jdata['branchs'] = branchs
+		print(jdata)
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'jiatuan_inform':

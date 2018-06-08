@@ -47,6 +47,7 @@ function jiatuan() {
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
+	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4><br/>");
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='jiatuan_inform()'>通知甲团</button></div>");
 	jiatuan_year_onchange();
@@ -75,9 +76,19 @@ function jiatuan_year_onchange() {
 	$.ajax({
 		url: window.location.href,
 		type: "POST",
-		data: {"op" : "get_branchs_jiatuan", "year": year},
+		data: {"op" : "get_jiatuan_branchs", "year": year},
 		success: function(data) {
 			var data = JSON.parse(data);
+			var status = data['status'];
+			if (status == 0) {
+				alert("甲团评选尚未开始！");
+				return;
+			}
+			if (status == 2) {
+				alert("甲团评选已经结束！");
+				return;
+			}
+			$('span#minge').text(data["minge"]);
 			var branchs = data["branchs"];
 			div.append("<table id='minge' length='" + branchs.length + "'><tr>");
 			for (var i = 0; i < branchs.length; i++) {

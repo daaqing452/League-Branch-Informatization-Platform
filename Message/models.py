@@ -43,7 +43,7 @@ class Handbook(models.Model):
 
 class JiatuanApportion(models.Model):
 	year = models.IntegerField(default=0)
-	deadline = models.DateTimeField(default='2099-01-01 00:00:00.000000')
+	deadline = models.DateTimeField(default='2099-12-31 23:59:59.999999')
 	minge = models.TextField(default='{}')
 
 class JiatuanMaterial(models.Model):
