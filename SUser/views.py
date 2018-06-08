@@ -83,8 +83,17 @@ def index(request):
 			message = Message.objects.create(recv_uid=recv_uid, send_uid=suser.id, group=group, mtype=mtype, send_time=datetime.datetime.now(), title='权限申请', text=text, meta=json.dumps(meta))
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'get_departments_jiatuan':
+	if op == 'get_apportion':
 		year = request.POST.get('year')
+		apportions = JiatuanApportion.objects.filter(year=year)
+		if len(apportions) > 0:
+			apportion = apportions[0]
+			jdata['deadline'] = apportion.deadline.strftime('%Y-%m-%d')
+			minge = json.loads(apportion.minge)
+		else:
+			jdata['deadline'] = '2099-01-01'
+			minge = {}
+
 		jiatuan_dict = {}
 		for material in JiatuanMaterial.objects.filter(year=year):
 			branch = Branch.objects.get(id=material.submit_id)
@@ -104,19 +113,32 @@ def index(request):
 			d['name'] = department.name
 			if department.id in jiatuan_dict:
 				d['jiatuans'] = jiatuan_dict[department.id]
+			if str(department.id) in minge.keys():
+				d['minge'] = minge[str(department.id)]
+			else:
+				d['minge'] = 0
 			departments.append(d)
 		jdata['departments'] = departments
-		print(jdata)
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'submit_minge':
+	if op == 'submit_apportion':
 		year = request.POST.get('year')
+		apportions = JiatuanApportion.objects.filter(year=year)
+		if len(apportions) > 0:
+			apportion = apportions[0]
+		else:
+			apportion = JiatuanApportion.objects.create(year=year)
+		apportion.deadline = datetime.datetime.strptime(request.POST.get('deadline'), '%Y-%m-%d')
+		minge_dict = {}
 		minges = json.loads(request.POST.get('minges'))
 		for minge in minges:
 			department = Department.objects.get(id=minge['did'])
 			department_admin = json.loads(department.admin)
+			minge_dict[department.id] = int(minge['value'])
 			for everyone in department_admin:
 				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
+		apportion.minge = json.dumps(minge_dict)
+		apportion.save()
 		return HttpResponse(json.dumps(jdata))
 
 	# 导入院系管理员名单

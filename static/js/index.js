@@ -47,7 +47,7 @@ function jiatuan() {
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
-	$("#myModal_body").append("设置截止时间");
+	$("#myModal_body").append("设置截止时间：<input id='deadline' type='text' style='width:85%' />");
 	$("#myModal_body").append("<hr/>")
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	//$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='submit_minge()'>分配名额</button></div>");
@@ -56,11 +56,12 @@ function jiatuan() {
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(10)");
 }
 
-function submit_minge() {
+function submit_apportion() {
 	var year = $("#year").val();
 	var n = $("#minge").attr("length");
 	var minges = new Array();
 	var yes = true;
+	var info = "";
 	for (var i = 0; i < n; i++) {
 		var input = $("#minge-" + i);
 		var did = input.attr("did");
@@ -69,21 +70,27 @@ function submit_minge() {
 		value = parseInt(value);
 		if (isNaN(value)) yes = false;
 		minges.push({"did": did, "value": value});
+		if (value > 0) {
+			info += input.attr("department_name") + "：" + value + "\n";
+		}
 	}
+	var deadline = $("input#deadline").val();
 	if (!yes) {
 		alert("名额不合法");
 		return;
 	}
-	$.ajax({
-		url: "/index/",
-		type: "POST",
-		data: {"op" : "submit_minge", "year": year, "minges": JSON.stringify(minges)},
-		success: function(data) {
-			var data = JSON.parse(data);
-			alert("分配成功");
-			$("#myModal").modal('hide');
-		}
-	});
+	if (confirm(info + "确定分配？")) {
+		$.ajax({
+			url: "/index/",
+			type: "POST",
+			data: {"op" : "submit_apportion", "year": year, "deadline": deadline, "minges": JSON.stringify(minges)},
+			success: function(data) {
+				var data = JSON.parse(data);
+				alert("分配成功");
+				$("#myModal").modal('hide');
+			}
+		});
+	}
 }
 
 function jiatuan_year_onchange() {
@@ -93,15 +100,18 @@ function jiatuan_year_onchange() {
 	$.ajax({
 		url: window.location.href,
 		type: "POST",
-		data: {"op" : "get_departments_jiatuan", "year": year},
+		data: {"op" : "get_apportion", "year": year},
 		success: function(data) {
 			var data = JSON.parse(data);
 			var departments = data["departments"];
+			$('input#deadline').val(data['deadline']);
 			div.append("<table id='minge' length='" + departments.length + "'><tr>");
 			for (var i = 0; i < departments.length; i++) {
 				var department = departments[i];
-				var s = "<td width='180' style='padding-bottom:20px'>"
-				s += "<input style='width:20px' type='text' id='minge-" + i + "' did='" + department['did'] + "'/>";
+				var s = "<td width='180' style='padding-bottom:20px'>";
+				var minge = "";
+				if (department['minge'] > 0) minge = department['minge'];
+				s += "<input style='width:20px' type='text' id='minge-" + i + "' did=" + department['did'] + " value='" + minge + "' department_name='" + department["name"] + "'/>";
 				s += department["name"] + "<br/>";
 				if (department.hasOwnProperty("jiatuans")) {
 					var jiatuans = department['jiatuans'];

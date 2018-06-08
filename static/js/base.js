@@ -215,7 +215,7 @@ function commit(flag, param){
 		}
 		// 甲团-校级
 		case 10:{
-			submit_minge();
+			submit_apportion();
 			break;
 		}
 		// 甲团-院系

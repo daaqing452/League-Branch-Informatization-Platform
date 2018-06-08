@@ -14,14 +14,6 @@ class Message(models.Model):
 	attachment = models.TextField(default='[]')
 	meta = models.TextField(default='{}')
 
-class Handbook(models.Model):
-	htype = models.CharField(max_length=1, default='.')
-	review_id = models.IntegerField(default=0)
-	submit_id = models.IntegerField(default=0)
-	year = models.IntegerField(default=0)
-	content = models.TextField(default='')
-	submitted = models.BooleanField(default=False)
-
 class News(models.Model):
 	display_type = models.CharField(max_length=1, default='.')
 	display_id = models.IntegerField(default=0)
@@ -38,6 +30,21 @@ class Slide(models.Model):
 	text = models.TextField(default='')
 	img_path = models.TextField(default='')
 	show = models.BooleanField(default=True)
+
+
+class Handbook(models.Model):
+	htype = models.CharField(max_length=1, default='.')
+	review_id = models.IntegerField(default=0)
+	submit_id = models.IntegerField(default=0)
+	year = models.IntegerField(default=0)
+	content = models.TextField(default='')
+	submitted = models.BooleanField(default=False)
+
+
+class JiatuanApportion(models.Model):
+	year = models.IntegerField(default=0)
+	deadline = models.DateTimeField(default='2099-01-01 00:00:00.000000')
+	minge = models.TextField(default='{}')
 
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)
