@@ -220,25 +220,6 @@ function commit(flag, param){
 		}
 		// 甲团-院系
 		case 11:{
-			var year = $("#year").val();
-			var title = $("#news_title").val();
-			var text = editor.html();
-			var attach_list = new Array();
-			for(var i = 0; i < $("div.attachment").length; i ++ ){
-				var attach = new Array();
-				attach.push($("div.attachment").eq(i).attr("title"));
-				attach.push($("div.attachment").eq(i).attr("url"));
-				attach_list.push(attach);
-			}
-			$.ajax({
-				url: window.location.href,
-				type: "POST",
-				data: {"op": "submit_jiatuan_material", "year": year, "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
-				success: function(data) {
-					var data = JSON.parse(data);
-					alert("提交成功");
-				}
-			});
 			$("#myModal").modal('hide');
 			break;
 		}

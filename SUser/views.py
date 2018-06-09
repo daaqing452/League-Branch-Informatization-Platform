@@ -233,12 +233,36 @@ def department(request, did):
 				d['material'] = '/jiatuan/' + str(materials[0].id) + '/'
 			branchs.append(d)
 		jdata['branchs'] = branchs
-		print(jdata)
+		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+		if len(assignments) > 0:
+			jdata['assigned'] = True
+			jdata['assigned_branchs'] = assignments[0].branchs
+		else:
+			jdata['assigned'] = False
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'jiatuan_inform':
 		year = request.POST.get('year')
 		jiatuans = json.loads(request.POST.get('jiatuans'))
+		apportions = JiatuanApportion.objects.filter(year=year)
+		if len(apportions) == 0:
+			jdata['info'] = '未分配甲团名额'
+			return HttpResponse(json.dumps(jdata))
+		else:
+			minge = json.loads(apportions[0].minge)
+			if not str(department.id) in minge:
+				jdata['info'] = '未被分配甲团名额'
+				return HttpResponse(json.dumps(jdata))
+			minge = int(minge[str(department.id)])
+		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+		if len(assignments) > 0:
+			jdata['info'] = '已通知'
+			return HttpResponse(json.dumps(jdata))
+		if len(jiatuans) != minge:
+			jdata['info'] = '支部数与名额不符'
+			return HttpResponse(json.dumps(jdata))
+		assignment = JiatuanAssignment.objects.create(year=year, did=department.id, branchs=json.dumps(jiatuans))
+		jdata['info'] = 'yes'
 		for jiatuan in jiatuans:
 			branch = Branch.objects.get(id=jiatuan)
 			branch_admin = json.loads(branch.admin)

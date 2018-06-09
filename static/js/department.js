@@ -43,13 +43,13 @@ function review_year_onchange() {
 function jiatuan() {
 	$(".modal-dialog").width(800);
 	$("#myModal_body").empty();
-	$("#myModalLabel").text("甲团");
+	$("#myModalLabel").text("确定校甲团支部");
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
 	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4><br/>");
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
-	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='jiatuan_inform()'>通知甲团</button></div>");
+	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' id='inform' onclick='jiatuan_inform()'>通知甲团</button></div>");
 	jiatuan_year_onchange();
 	/*$("#myModal_body").append("<hr/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
@@ -68,6 +68,8 @@ function jiatuan() {
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(11)");
 }
 
+var max_minge = 0;
+
 function jiatuan_year_onchange() {
 	var year = $("#year").val();
 	var div = $("#minge_div");
@@ -80,20 +82,29 @@ function jiatuan_year_onchange() {
 		success: function(data) {
 			var data = JSON.parse(data);
 			var status = data['status'];
+			var assigned_branchs = JSON.parse(data['assigned_branchs']);
 			if (status == 0) {
+				$('span#minge').text("");
 				alert("甲团评选尚未开始！");
 				return;
 			}
 			if (status == 2) {
+				$('span#minge').text("");
 				alert("甲团评选已经结束！");
 				return;
 			}
 			$('span#minge').text(data["minge"]);
+			max_minge = parseInt(data["minge"]);
 			var branchs = data["branchs"];
 			div.append("<table id='minge' length='" + branchs.length + "'><tr>");
 			for (var i = 0; i < branchs.length; i++) {
 				var branch = branchs[i];
-				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "'/> ";
+				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' onclick='branch_checkbox_onclick()' branch_name='" + branch["name"] + "' ";
+				if (data['assigned']) {
+					s += "disabled=true ";
+					if (assigned_branchs.indexOf(''+branch["bid"]) != -1) s += "checked='checked' ";
+				}
+				s += "/> ";
 				if (branch.hasOwnProperty("material")) {
 					s += "<a href='" + branch["material"] + "'>" + branch["name"] + "</a></td>";
 				} else {
@@ -104,27 +115,72 @@ function jiatuan_year_onchange() {
 					div.append("</tr><tr>");
 				}
 			}
+			if (data['assigned']) {
+				$('button#inform').attr("disabled", "disabled");
+			}
 			div.append("</tr></table>");
 		}
 	});
 }
 
+function branch_checkbox_onclick() {
+	var checked_num = $("input:checked").length;
+	if (checked_num >= max_minge) {
+		$("input:not(:checked)").attr('disabled', true);
+	} else {
+		$("input:not(:checked)").attr('disabled', false);
+	}
+}
+
 function jiatuan_inform() {
 	var year = $("#year").val();
-	var n = $("#minge").attr("length");
 	var jiatuans = new Array();
-	for (var i = 0; i < n; i++) {
-		var input = $("#minge-" + i);
-		var bid = input.attr("bid");
-		if (input.prop("checked")) jiatuans.push(bid);
+	var s = "甲团名单：\n";
+	$("input:checked").each(function() {
+		var input = $(this);
+		jiatuans.push(input.attr("bid"));
+		s += input.attr("branch_name") + "\n";
+	});
+	s += "确认通知？";
+	if (jiatuans.length != max_minge) {
+		alert("支部个数不符合！");
+		return;
+	}
+	if (confirm(s)) {
+		$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op" : "jiatuan_inform", "year": year, "jiatuans": JSON.stringify(jiatuans)},
+			success: function(data) {
+				var data = JSON.parse(data);
+				if (data["info"] == "yes") {
+					alert("通知甲团成功");
+				} else {
+					alert(data["info"]);
+				}
+			}
+		});
+	}
+}
+
+function jiatuan_submit() {
+	var year = $("#year").val();
+	var title = $("#news_title").val();
+	var text = editor.html();
+	var attach_list = new Array();
+	for(var i = 0; i < $("div.attachment").length; i ++ ){
+		var attach = new Array();
+		attach.push($("div.attachment").eq(i).attr("title"));
+		attach.push($("div.attachment").eq(i).attr("url"));
+		attach_list.push(attach);
 	}
 	$.ajax({
 		url: window.location.href,
 		type: "POST",
-		data: {"op" : "jiatuan_inform", "year": year, "jiatuans": JSON.stringify(jiatuans)},
+		data: {"op": "submit_jiatuan_material", "year": year, "title": title, "text": text, "attachment": JSON.stringify(attach_list)},
 		success: function(data) {
 			var data = JSON.parse(data);
-			alert("通知甲团成功");
+			alert("提交成功");
 		}
 	});
 }

@@ -46,6 +46,11 @@ class JiatuanApportion(models.Model):
 	deadline = models.DateTimeField(default='2099-12-31 23:59:59.999999')
 	minge = models.TextField(default='{}')
 
+class JiatuanAssignment(models.Model):
+	year = models.IntegerField(default=0)
+	did = models.IntegerField(default=0)
+	branchs = models.TextField(default='[]')
+
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)

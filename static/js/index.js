@@ -43,7 +43,7 @@ function review_year_onchange() {
 function jiatuan() {
 	$(".modal-dialog").width(800);
 	$("#myModal_body").empty();
-	$("#myModalLabel").text("甲团");
+	$("#myModalLabel").text("甲团名额分配");
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
