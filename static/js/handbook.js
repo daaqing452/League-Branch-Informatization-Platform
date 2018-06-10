@@ -568,7 +568,7 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 			}	
 		}
 	}
-	if(tr_class == "huamingce" || tr_class == "shenqingrutuan"){
+	if(tr_class == "huamingce"){
 		if(textarea_n >= 0 && textarea_n <= 6 && tr_class == "huamingce"){
 			if(content == ""){
 				return "团员信息填写有误(必填项)";
@@ -585,6 +585,33 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 			}
 		}
 		if(textarea_n == 6 || textarea_n == 7){
+			if(content != "" && data_pat.test(content) == false){
+				return  "团员信息填写有误(日期格式)";
+			}
+		}
+		if(textarea_n == 2){
+			if(content != "" && content != "男" && content != "女"){
+				return "团员信息填写有误(性别)";
+			}
+		}
+	}
+	if(tr_class == "shenqingrutuan"){
+		if(textarea_n >= 0 && textarea_n <= 6 && tr_class == "huamingce"){
+			if(content == ""){
+				return "团员信息填写有误(必填项)";
+			}
+		}
+		if(textarea_n >= 0 && textarea_n <= 6 && already_fill){
+			if(content == ""){
+				return "团员信息填写有误(必填项)";
+			}
+		}
+		if(textarea_n == 0 && content != ""){
+			if(xuehao_pat.test(content) == false){
+				return "团员信息学号填写有误";
+			}
+		}
+		if(textarea_n == 5 || textarea_n == 6){
 			if(content != "" && data_pat.test(content) == false){
 				return  "团员信息填写有误(日期格式)";
 			}
