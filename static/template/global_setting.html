@@ -3,14 +3,65 @@
     {% block context %}
     <script src="{% static "js/global_setting.js" %}"> </script>
     
+    <h1>全局设置</h1>
     <hr>
     目前已有年份：
-    <select>
+    <select id="years">
     	{% for year in years %}
     	<option> {{ year }} </option>
     	{% endfor %}
     </select>
     &nbsp;
     <button class="btn btn-primary" onclick="add_year()">添加年份</button>
+    <button class="btn btn-danger" onclick="delete_year()">删除年份</button>
+    <br/>
+    <hr/>
+
+    <table>
+        <tr><td><h5>院系/单位团（工）委</h5></td><td></td><td><h5>支部人数</h5></td><td></td><td><h5>管理员名单</h5></td></tr>
+        <tr style="height:10px"><td></td><td></td></tr>
+        <tr>
+            <td>学校</td>
+            <td style="width:50px"></td>
+            <td></td>
+            <td style="width:50px"></td>
+            <td>
+                <span class="glyphicon glyphicon-user"></span> &nbsp;
+                {% for admin in admins %}
+                    {{ admin.username }}{% if forloop.first %}{% else %}{% if suser.admin_super %}<span style="color: #ff0000; font-size:1px" class="glyphicon glyphicon-remove" sid={{ admin.id }} onclick="delete_admin_school(this)"></span>{% endif %}{% endif %}&nbsp;&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+        {% for d0 in departments %}
+        <tr style="height:10px"><td></td><td></td></tr>
+        <tr>
+            <td>{{ d0.department.name }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <span class="glyphicon glyphicon-user"></span> &nbsp;
+                {% for admin in d0.admins %}
+                    {{ admin.username }}&nbsp;&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+        {% for d1 in d0.branchs %}
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;╰&nbsp;{{ d1.branch.name }}</td>
+            <td></td>
+            <td>{{ d1.member_num }}人</td>
+            <td></td>
+            <td>
+                <span class="glyphicon glyphicon-user"></span> &nbsp;
+                {% for admin in d1.admins %}
+                    {{ admin.username }}&nbsp;&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+    </table>
+    <hr/>
 
     {% endblock context %}

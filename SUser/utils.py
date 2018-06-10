@@ -51,7 +51,7 @@ def get_request_basis(request):
 	for department in departments:
 		d1 = {}
 		d1['department'] = department
-		d1['branchs'] = Branch.objects.filter(did=department.id).order_by('amt_order')
+		d1['branchs'] = [{'branch': branch} for branch in Branch.objects.filter(did=department.id).order_by('amt_order')]
 		d0.append(d1)
 	rdata['departments'] = d0
 

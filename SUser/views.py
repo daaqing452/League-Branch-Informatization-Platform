@@ -508,6 +508,20 @@ def amt_setting(request, amttype, did=-1):
 
 def global_setting(request):
 	rdata, op, suser = get_request_basis(request)
+	if suser is None:
+		return render(request, 'permission_denied.html', rdata)
+
+	if suser.admin_super:
+		if op == 'delete_admin_school':
+			sid = int(request.POST.get('sid'))
+			susers = SUser.objects.filter(id=sid)
+			print(sid, susers[0].username)
+			if len(susers) > 0 and susers[0].username != 'root':
+				susers[0].admin_school = False
+				susers[0].save()
+				return HttpResponse(json.dumps({'info': '取消成功！'}))
+			else:
+				return HttpResponse(json.dumps({'info': '取消失败！'}))
 
 	if suser.admin_school:
 		if op == 'add_year':
@@ -516,6 +530,37 @@ def global_setting(request):
 			print(years)
 			School.objects.all().update(years=json.dumps(years))
 			return HttpResponse(json.dumps({}))
+
+		if op == 'delete_year':
+			years = json.loads(School.objects.all()[0].years)
+			year = int(request.POST.get('year'))
+			if year in years:
+				years.remove(year)
+				School.objects.update(years=json.dumps(years))
+				return HttpResponse(json.dumps({'info': '删除成功'}))
+			else:
+				return HttpResponse(json.dumps({'info': '出错？'}))
+
+		rdata['admins'] = SUser.objects.filter(admin_school=True)
+		for d0 in rdata['departments']:
+			department = d0['department']
+			admins = []
+			admin_ids = json.loads(department.admin)
+			for admin_id in admin_ids:
+				susers = SUser.objects.filter(id=admin_id)
+				if len(susers) > 0:
+					admins.append(susers[0])
+			d0['admins'] = admins
+			for d1 in d0['branchs']:
+				branch = d1['branch']
+				admins = []
+				admin_ids = json.loads(branch.admin)
+				for admin_id in admin_ids:
+					susers = SUser.objects.filter(id=admin_id)
+					if len(susers) > 0:
+						admins.append(susers[0])
+				d1['admins'] = admins
+				d1['member_num'] = len(json.loads(branch.member))
 
 		return render(request, 'global_setting.html', rdata)
 	else:
