@@ -9,7 +9,7 @@
             <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
         </div>
         <div class="col-md-10" id="content">
-            <h1 class="text-warning text-center">{{ title }}</h1> 
+            <h1 id="title" class="text-warning text-center">{{ title }}</h1> 
             <h4>年份</h4>
             {% if readonly %}
             {{ handbook.year }}
@@ -421,11 +421,14 @@
                 </table>
             </div>
             {% if readonly %}
+            <button id="button_export" class="btn btn-primary" style="float: right; width: 100px; margin-left:20px" onclick="exportt()">全部导出</button>
+            {% ifequal htype 0 %}
+            <button id="button_export_single" class="btn btn-primary" style="float: right; width: 100px;" onclick="export_single()">导出此页</button>
+            {% endifequal %}
             {% else %}
             <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px; margin-left:20px" onclick="submit(1)">提交</button>
             <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-left:20px" onclick="submit(0)">暂存</button>
             {% endif %}
-            <button id="button_export" class="btn btn-primary" style="float: right; width: 100px;" onclick="exportt()">导出</button>
             <a id="download"></a>
         </div>
         </div>

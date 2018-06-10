@@ -9,10 +9,10 @@
             <button class="btn btn-primary" onclick="fill_content()">编辑团支部手册(可写)</button>-->
         </div>
         <div class="col-md-8" id="content">
-            <h1 class="text-warning text-center">{{ title }}</h1>   
+            <h1 id="title" class="text-warning text-center">{{ title }}</h1>   
             <h4>年份</h4>
             {% if readonly %}
-            {{ jiatuan.year }}
+            <span id="year_show">{{ jiatuan.year }}</span>
             {% else %}
             <select id="year" style="width: 200px;" onchange="year_onchange()" >
             </select>
@@ -33,9 +33,8 @@
                 <div style="display: none;" id="table_0">
                     <h4>基本信息
                     {% if readonly %}
-                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt('fundamental_info')">导出</button>
-                    {% endif %}
-                    </h4>
+                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt(0)">导出</button>
+                    {% endif %}</h4>
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                             <tr>
                                 <td>团支部名称</td>
@@ -82,23 +81,28 @@
 
                     <h4>基本情况
                     {% if readonly %}
-                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt('fundamental_condition')">导出</button>
-                    {% endif %}
-                    </h4>
+                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt(1)">导出</button>
+                    {% endif %}</h4>
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                             <tr class="jibenqingkuang">
                                 <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" placeholder="(曾获荣誉)"></textarea></td>
                             </tr>
                     </table>
 
-                    <h4>基本要求</h4>
+                    <h4>基本要求
+                    {% if readonly %}
+                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt(2)">导出</button>
+                    {% endif %}</h4>
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                             <tr class="jibenyaoqiu">
                                 <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" placeholder="(思想引领、学风建设、体育氛围)"></textarea></td>
                             </tr>
                     </table>
 
-                    <h4>支部事业与文化</h4>
+                    <h4>支部事业与文化
+                    {% if readonly %}
+                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt(3)">导出</button>
+                    {% endif %}</h4>
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                             <tr class="zhibushiyeyuwenhua">
                                 <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
@@ -107,7 +111,10 @@
                 </div>
 
                 <div style="display: none;" id="table_1">
-                    <h4>支部工作案例</h4>
+                    <h4>支部工作案例
+                    {% if readonly %}
+                    <button class="btn btn-primary btn-xs" style="float:right" onclick="exportt(4)">导出</button>
+                    {% endif %}</h4>
                     <textarea  name="sg_text" id="case_text" style="height: 300px;width: 100%;"></textarea>
                     
                 </div>
@@ -127,6 +134,7 @@
         </div>
         <div class="col-md-2"></div>
     </div>
+    <a id="download"></a>
 
     <script>
     {% if readonly %}

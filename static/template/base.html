@@ -54,7 +54,7 @@
                     <a href="/department/{{ department.department.id }}/">{{ department.department.name }}</a>
                     <ul class="dropdown-menu">
                         {% for branch in department.branchs %}
-                        <li><a href="/branch/{{ branch.id }}/">{{ branch.name }}</a></li>
+                        <li><a href="/branch/{{ branch.branch.id }}/">{{ branch.branch.name }}</a></li>
                         {% endfor %}
                     </ul>  
                 </li>

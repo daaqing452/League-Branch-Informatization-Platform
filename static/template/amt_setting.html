@@ -14,10 +14,16 @@
     {% endifequal %}
 
     <br/><br/>
-    <table class="table table-hover" style="width:500px">
-    	{% for object in amt_objects %}
-    	<tr dbid={{ object.id }}>
-    		<td onclick="rename(this)">{{ object.name }}</td>
+    <table class="table table-hover" style="width:800px">
+    	{% for d in amt_objects %}
+    	<tr dbid={{ d.object.id }}>
+    		<td onclick="rename(this)">{{ d.object.name }}</td>
+            <td>
+                <span class="glyphicon glyphicon-user"></span>&nbsp;
+                {% for admin in d.admins %}
+                    {{ admin.username }}<span style="color:#ff0000;font-size:1px" class="glyphicon glyphicon-remove" sid={{ admin.id }} dbid={{ d.object.id }} onclick="delete_db_admin(this)"></span>&nbsp;&nbsp;
+                {% endfor %}
+            </td>
     		<td><span class="glyphicon glyphicon-arrow-up" onclick="updown(this, -1)"> </span></td>
     		<td><span class="glyphicon glyphicon-arrow-down" onclick="updown(this, 1)"> </span></td>
     		<td><span class="glyphicon glyphicon-remove" onclick="remove(this)"> </span></td>
