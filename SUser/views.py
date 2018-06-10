@@ -409,7 +409,19 @@ def amt_setting(request, amttype, did=-1):
 
 	if amttype == 'i':
 		if permission(suser, 'iw'):
-			rdata['amt_objects'] = departments = Department.objects.order_by('amt_order')
+			departments = Department.objects.order_by('amt_order')
+			amt_objects = []
+			for department in departments:
+				d = {'object': department}
+				admins = []
+				admin_ids = json.loads(department.admin)
+				for admin_id in admin_ids:
+					susers = SUser.objects.filter(id=admin_id)
+					if len(susers) > 0:
+						admins.append(susers[0])
+				d['admins'] = admins
+				amt_objects.append(d)
+			rdata['amt_objects'] = amt_objects
 
 			if op == 'add_department':
 				department = Department.objects.create(name=request.POST.get('name', ''))
@@ -439,14 +451,39 @@ def amt_setting(request, amttype, did=-1):
 				Department.objects.get(id=int(request.POST.get('dbid'))).delete()
 				return HttpResponse(json.dumps({}))
 
+			if op == 'delete_db_admin':
+				dsuser = SUser.objects.get(id=int(request.POST.get('sid')))
+				department = Department.objects.get(id=int(request.POST.get('dbid')))
+				admins = json.loads(department.admin)
+				if dsuser.id in admins:
+					admins.remove(dsuser.id)
+					department.admin = json.dumps(admins)
+					department.save()
+					message = Message.objects.create(recv_uid=dsuser.id, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='管理员资格变更', text='你已被取消'+department.name+'院系管理员资格')
+					return HttpResponse(json.dumps({'info': '取消成功！'}))
+				else:
+					return HttpResponse(json.dumps({'info': '取消失败！'}))
+
 			return render(request, 'amt_setting.html', rdata)
 		else:
 			return render(request, 'permission_denied.html', rdata)
 
 	if amttype == 'd':
-		if permission(suser, 'dw'):
-			department = Department.objects.get(id=int(did))
-			rdata['amt_objects'] = branchs = Branch.objects.filter(did=int(did)).order_by('amt_order')
+		department = Department.objects.get(id=int(did))
+		if permission(suser, 'dw', department):
+			branchs = Branch.objects.filter(did=int(did)).order_by('amt_order')
+			amt_objects = []
+			for branch in branchs:
+				d = {'object': branch}
+				admins = []
+				admin_ids = json.loads(branch.admin)
+				for admin_id in admin_ids:
+					susers = SUser.objects.filter(id=admin_id)
+					if len(susers) > 0:
+						admins.append(susers[0])
+				d['admins'] = admins
+				amt_objects.append(d)
+			rdata['amt_objects'] = amt_objects
 
 			if op == 'add_branch':
 				branch = Branch.objects.create(name=request.POST.get('name', ''), did=did)
@@ -475,6 +512,19 @@ def amt_setting(request, amttype, did=-1):
 			if op == 'remove':
 				Branch.objects.get(id=int(request.POST.get('dbid'))).delete()
 				return HttpResponse(json.dumps({}))
+
+			if op == 'delete_db_admin':
+				dsuser = SUser.objects.get(id=int(request.POST.get('sid')))
+				branch = Branch.objects.get(id=int(request.POST.get('dbid')))
+				admins = json.loads(branch.admin)
+				if dsuser.id in admins:
+					admins.remove(dsuser.id)
+					branch.admin = json.dumps(admins)
+					branch.save()
+					message = Message.objects.create(recv_uid=dsuser.id, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='管理员资格变更', text='你已被取消'+branch.name+'支部管理员资格')
+					return HttpResponse(json.dumps({'info': '取消成功！'}))
+				else:
+					return HttpResponse(json.dumps({'info': '取消失败！'}))
 
 			# 导入团支部列表
 			f = request.FILES.get('upload', None)
@@ -519,6 +569,7 @@ def global_setting(request):
 			if len(susers) > 0 and susers[0].username != 'root':
 				susers[0].admin_school = False
 				susers[0].save()
+				message = Message.objects.create(recv_uid=susers[0].id, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='管理员资格变更', text='你已被取消校级管理员资格')
 				return HttpResponse(json.dumps({'info': '取消成功！'}))
 			else:
 				return HttpResponse(json.dumps({'info': '取消失败！'}))
@@ -565,3 +616,4 @@ def global_setting(request):
 		return render(request, 'global_setting.html', rdata)
 	else:
 		return render(request, 'permission_denied.html', rdata)
+

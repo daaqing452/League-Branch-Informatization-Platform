@@ -78,3 +78,19 @@ function remove(node) {
 		});
 	}
 }
+
+function delete_db_admin(node) {
+	var span = $(node);
+	if (confirm('确认取消该管理员权限？')) {
+		$.ajax({
+			url: window.location.href,
+			type: 'POST',
+			data: {'op': 'delete_db_admin', 'sid': span.attr('sid'), 'dbid': span.attr('dbid')},
+			success: function(data) {
+				var data = JSON.parse(data);
+				alert(data['info']);
+				window.location.reload();
+			}
+		});
+	}
+}
