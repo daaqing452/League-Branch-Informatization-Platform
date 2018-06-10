@@ -350,7 +350,8 @@ def branch(request, bid):
 			if len(line) == 0: break
 			if line[-2:] == '\r\n': line = line[:-2]
 			if line[-1:] == '\n': line = line[:-1]
-			username = line
+			arr = line.split(',')
+			username = arr[0]
 			susers = SUser.objects.filter(username=username)
 			if len(susers) == 0:
 				password = username

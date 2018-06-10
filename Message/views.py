@@ -186,14 +186,16 @@ def handbook_edit(request, htype, idd):
 			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=0, submitted=True)
 			l = []
 			for handbook in handbooks:
-				department = Department.objects.get(id=handbook.submit_id)
-				l.append({'hid': handbook.id, 'title': department.name})
+				departments = Department.objects.filter(id=handbook.submit_id)
+				if len(departments) > 0:
+					l.append({'hid': handbook.id, 'title': departments[0].name})
 		if htype == 'b':
 			handbooks = Handbook.objects.filter(year=year, htype=htype, review_id=request.POST.get('did'), submitted=True)
 			l = []
 			for handbook in handbooks:
-				branch = Branch.objects.get(id=handbook.submit_id)
-				l.append({'hid': handbook.id, 'title': branch.name})
+				branchs = Branch.objects.filter(id=handbook.submit_id)
+				if len(branchs) > 0:
+					l.append({'hid': handbook.id, 'title': branchs[0].name})
 		jdata['handbooks'] = l
 		return HttpResponse(json.dumps(jdata))
 
