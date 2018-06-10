@@ -314,7 +314,23 @@ function submit(subtype){
 			}
 		});
 	}
+}
 
-	
-	
+function exportt(etype) {
+	$.ajax({
+		url: window.location.href,
+		type: 'POST',
+		data: {'op': 'export', 'title': $('#title').text(), 'etype': etype},
+		success: function(data) {
+			var data = JSON.parse(data);
+			if (data['result'] == 'OK') {
+				export_path = '/' + data['export_path'];
+				$('a#download').attr('href', export_path);
+				$('a#download').attr('download', export_path.slice(7));
+				document.getElementById("download").click();
+			} else {
+				alert(data['result']);
+			}
+		}
+	});
 }

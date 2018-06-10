@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from SUser.models import *
 from SUser.utils import get_request_basis, permission
 from Message.models import  *
+import codecs
 import datetime
 import json
 import os
@@ -256,7 +257,7 @@ def handbook_edit(request, htype, idd):
 			aff = branch
 		if len(handbooks) > 0:
 			jdata['result'] = 'OK'
-			jdata['export_path'] = export(handbooks[0], aff)
+			jdata['export_path'] = export_handbook(handbooks[0], aff)
 		else:
 			jdata['result'] = '尚未提交或暂存'
 		return HttpResponse(json.dumps(jdata))
@@ -299,9 +300,9 @@ def handbook_show(request, hid):
 	if op == 'export':
 		jdata['result'] = 'OK'
 		if handbook.htype == 'd':
-			jdata['export_path'] = export(handbook, department)
+			jdata['export_path'] = export_handbook(handbook, department)
 		elif handbook.htype == 'b':
-			jdata['export_path'] = export(handbook, branch)
+			jdata['export_path'] = export_handbook(handbook, branch)
 		return HttpResponse(json.dumps(jdata))
 
 	rdata['readonly'] = True
@@ -369,6 +370,25 @@ def jiatuan_show(request, jid):
 	if op == 'load_jiatuan':
 		jdata['content'] = jiatuan.content
 		jdata['year'] = jiatuan.year
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'export':
+		etype = int(request.POST.get('etype'))
+		content = json.loads(jiatuan.content)
+		title = request.POST.get('title')
+		jdata['result'] = 'OK'
+		if etype == 0:
+			jdata["export_path"] = export_fundamental_info(title, content[0])
+		elif etype == 1:
+			jdata["export_path"] = export_txt(title + ' - 基本情况', content[0][2][0][0])
+		elif etype == 2:
+			jdata["export_path"] = export_txt(title + ' - 基本要求', content[0][3][0][0])
+		elif etype == 3:
+			jdata["export_path"] = export_txt(title + ' - 支部事业与文化', content[0][4][0][0])
+		elif etype == 4:
+			jdata["export_path"] = export_txt(title + ' - 支部工作案例', content[1][0])
+		else:
+			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
 
 	rdata['title'] = branch.name + ' 甲团材料'
@@ -503,7 +523,34 @@ def slide_list(request, dtype, idd=-1):
 	else:
 		return render(request, 'permission_denied.html', rdata)
 
-def export(handbook, aff):
+@csrf_exempt 
+def uploadFile(request):
+	if request.method == 'POST':
+		buf = request.FILES.get('imgFile', None)
+		file_name = buf.name
+		file_buff = buf.read()
+		time_stamp = time.strftime('%Y%m%d%H%M%S')
+		real_file_name = str(time_stamp)+"-"+file_name
+		save_file("media", real_file_name, file_buff)
+		dict_tmp = {}
+		dict_tmp["error"] = 0
+		dict_tmp["url"] = "/media/"+file_name
+		dict_tmp["real_url"] = "/media/"+ real_file_name
+		return HttpResponse(json.dumps(dict_tmp))
+
+def save_file(path, file_name, data):
+    if data == None:
+        return
+    if(not path.endswith("/")):
+        path=path+"/"
+    file=open(path+file_name, "wb")
+    file.write(data)
+    file.flush()
+    file.close()
+
+
+
+def export_handbook(handbook, aff):
 	styleSheet = getSampleStyleSheet()
 	normalStyle = styleSheet['Normal']
 	tableStyle = TableStyle([
@@ -681,27 +728,20 @@ def export(handbook, aff):
 	doc.build(pdf)
 	return export_path
 
-@csrf_exempt 
-def uploadFile(request):
-	if request.method == 'POST':
-		buf = request.FILES.get('imgFile', None)
-		file_name = buf.name
-		file_buff = buf.read()
-		time_stamp = time.strftime('%Y%m%d%H%M%S')
-		real_file_name = str(time_stamp)+"-"+file_name
-		save_file("media", real_file_name, file_buff)
-		dict_tmp = {}
-		dict_tmp["error"] = 0
-		dict_tmp["url"] = "/media/"+file_name
-		dict_tmp["real_url"] = "/media/"+ real_file_name
-		return HttpResponse(json.dumps(dict_tmp))
+def export_txt(title, txt):
+	filename = 'media/' + title + ' - ' + str(datetime.datetime.now()) + '.txt'
+	f = codecs.open(filename, 'w', 'utf-8')
+	f.write(txt)
+	f.close()
+	return filename
 
-def save_file(path, file_name, data):
-    if data == None:
-        return
-    if(not path.endswith("/")):
-        path=path+"/"
-    file=open(path+file_name, "wb")
-    file.write(data)
-    file.flush()
-    file.close()
+def export_fundamental_info(title, a):
+	filename = filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
+	f = codecs.open(filename, 'w', 'gbk')
+	print(a)
+	f.write('团支部名称,团支部书记姓名,男性团员人数,女性团员人数,团员总人数,男性党员人数,女性党员人数,党员总人数,男性申请入党人数,女性申请入党人数,申请入党总人数,班级男性人数,班级女性人数,班级总人数\n')
+	f.write(a[0][0][0] + ',' + a[0][0][1])
+	for i in range(12): f.write(',' + a[1][i//3][i%3])
+	f.write('\n')
+	f.close()
+	return filename
