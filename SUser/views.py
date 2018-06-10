@@ -96,8 +96,12 @@ def index(request):
 
 		jiatuan_dict = {}
 		for material in JiatuanMaterial.objects.filter(year=year):
-			branch = Branch.objects.get(id=material.submit_id)
-			department = Department.objects.get(id=branch.did)
+			branchs = Branch.objects.filter(id=material.submit_id)
+			if len(branchs) == 0: continue
+			branch = branchs[0]
+			departments = Department.objects.get(id=branch.did)
+			if len(departments) == 0: continue
+			department = departments[0]
 			if not department.id in jiatuan_dict: jiatuan_dict[department.id] = []
 			d = {}
 			d['name'] = branch.name
