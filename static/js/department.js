@@ -94,7 +94,10 @@ function jiatuan_year_onchange() {
 				alert("甲团评选已经结束！");
 				return;
 			}
-			var assigned_branchs = JSON.parse(data['assigned_branchs']);
+			var assigned_branchs;
+			if (data['assigned']) {
+				assigned_branchs = JSON.parse(data['assigned_branchs']);
+			}
 			$('span#minge').text(data["minge"]);
 			max_minge = parseInt(data["minge"]);
 			$('span#submitted_branch').text("已提交支部：");
