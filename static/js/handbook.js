@@ -826,6 +826,30 @@ function exportt() {
 			if (data['result'] == 'OK') {
 				export_path = '/' + data['export_path'];
 				$('a#download').attr('href', export_path);
+				$('a#download').attr('download', export_path.slice(7));
+				document.getElementById("download").click();
+			} else {
+				alert(data['result']);
+			}
+		}
+	});
+}
+
+function export_single() {
+	var a = $("li.active").children('a');
+	var tab_id = parseInt(a.attr('id').slice(8));
+	var tab_text = a.text();
+	var title = $("#title").text();
+	$.ajax({
+		url: window.location.href,
+		type: 'POST',
+		data: {'op': 'export_single', 'year': $("#year").val(), "title": title, "tab_id": tab_id, "tab_text": tab_text},
+		success: function(data) {
+			var data = JSON.parse(data);
+			if (data['result'] == 'OK') {
+				export_path = '/' + data['export_path'];
+				$('a#download').attr('href', export_path);
+				$('a#download').attr('download', export_path.slice(7));
 				document.getElementById("download").click();
 			} else {
 				alert(data['result']);

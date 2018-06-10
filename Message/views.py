@@ -247,7 +247,7 @@ def handbook_edit(request, htype, idd):
 			handbook.save()
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'export':
+	'''if op == 'export':
 		year = int(request.POST.get('year'))
 		if htype == 'd':
 			handbooks = Handbook.objects.filter(htype=htype, year=year, submit_id=department.id)
@@ -260,7 +260,7 @@ def handbook_edit(request, htype, idd):
 			jdata['export_path'] = export_handbook(handbooks[0], aff)
 		else:
 			jdata['result'] = '尚未提交或暂存'
-		return HttpResponse(json.dumps(jdata))
+		return HttpResponse(json.dumps(jdata))'''
 
 	if htype == 'd':
 		rdata['title'] = '院系工作手册'
@@ -292,7 +292,6 @@ def handbook_show(request, hid):
 		rdata['title'] = branch.name + " 团支部工作手册"
 
 	if op == 'load_handbook':
-		print(request.POST.get('year'))
 		jdata['content'] = handbook.content
 		jdata['htype'] = handbook.htype
 		return HttpResponse(json.dumps(jdata))
@@ -303,9 +302,26 @@ def handbook_show(request, hid):
 			jdata['export_path'] = export_handbook(handbook, department)
 		elif handbook.htype == 'b':
 			jdata['export_path'] = export_handbook(handbook, branch)
+		else:
+			jdata['result'] = '错误'
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'export_single':
+		title = request.POST.get('title')
+		tab_id = int(request.POST.get('tab_id'))
+		tab_text = request.POST.get('tab_text')
+		if handbook.htype == 'd':
+			jdata['result'] = 'OK'
+			jdata['export_path'] = export_txt(title + ' - ' + tab_text, json.loads(handbook.content)[tab_id][0][0][0])
+		else:
+			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
 
 	rdata['readonly'] = True
+	if handbook.htype == 'd':
+		rdata['htype'] = 0
+	else:
+		rdata['htype'] = 1
 
 	# 权限检测
 	if (suser is not None) and (suser.admin_super or (hflag and suser.admin_school) or (not hflag and suser.id in admin_department)):
@@ -731,6 +747,8 @@ def export_handbook(handbook, aff):
 def export_txt(title, txt):
 	filename = 'media/' + title + ' - ' + str(datetime.datetime.now()) + '.txt'
 	f = codecs.open(filename, 'w', 'utf-8')
+	txt = re.compile(r'<[^>]+>', re.S).sub('', txt)
+	txt = re.compile(r'\t', re.S).sub('', txt)
 	f.write(txt)
 	f.close()
 	return filename
