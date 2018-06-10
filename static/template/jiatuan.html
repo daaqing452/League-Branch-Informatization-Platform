@@ -26,13 +26,15 @@
                     <li role="presentation"><a id="chapter_0" href="javascript:void(0)" onclick="module_select(0)">甲团申请</a></li>
                     <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作案例</a></li>
                     <li role="presentation"><a id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">活动照片</a></li>
-
                 </ul>
 
                 <br/>
                 <!--基本情况-->
                 <div style="display: none;" id="table_0">
                     <h4>基本信息</h4>
+                    {% if readonly %}
+                    <button class="btn btn-primary btn-small" style="float:right">导出</button>
+                    {% endif %}
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                             <tr>
                                 <td>团支部名称</td>
@@ -76,8 +78,6 @@
                             <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
                         </tr>
                     </table>
-
-                
 
                     <h4>基本情况</h4>
                     <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
