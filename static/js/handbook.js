@@ -1001,3 +1001,22 @@ function export_single() {
 		}
 	});
 }
+
+function export_item(etype) {
+	$.ajax({
+		url: window.location.href,
+		type: 'POST',
+		data: {'op': 'export_item', 'title': $('#title').text(), 'etype': etype},
+		success: function(data) {
+			var data = JSON.parse(data);
+			if (data['result'] == 'OK') {
+				export_path = '/' + data['export_path'];
+				$('a#download').attr('href', export_path);
+				$('a#download').attr('download', export_path.slice(7));
+				document.getElementById("download").click();
+			} else {
+				alert(data['result']);
+			}
+		}
+	});
+}

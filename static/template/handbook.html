@@ -41,7 +41,10 @@
 
             <!--基本情况-->
             <div style="display: none;" id="table_0">
-                <h4>基本信息</h4>
+                <h4>基本信息
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(0)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
                             <td align="center">团员人数</td>
@@ -61,7 +64,10 @@
                                 <span class="glyphicon glyphicon-plus" onclick="addOption_3(this)"></span></span>
                         </tr>
                 </table>
-                <h4>奖惩情况</h4>
+                <h4>奖惩情况
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(1)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all" name="jiangchengqingkuang">
                         <tr>
                             <td style="width: 10%">奖惩对象</td>
@@ -103,7 +109,10 @@
                         </tr>
                 </table>
 
-                <h4>团员花名册(含党员、预备党员)</h4>
+                <h4>团员花名册(含党员、预备党员)
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(2)">导出</button>
+                {% endif %}</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
@@ -136,7 +145,10 @@
                         </tr>
                 </table>
 
-                <h4>申请入团名单(本学年申请入团名单,没有可不填)</h4>
+                <h4>申请入团名单(本学年申请入团名单,没有可不填)
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(3)">导出</button>
+                {% endif %}</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
@@ -166,7 +178,10 @@
                         </tr>
                 </table>
 
-                <h4>交纳团费情况(每月单独填写)</h4>
+                <h4>交纳团费情况(每月单独填写)
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(4)">导出</button>
+                {% endif %}</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">月份</td>
@@ -193,7 +208,10 @@
                         </tr>
                 </table>
 
-                <h4>推优入党名单(本学年经支部推优入党名单,没有可不填)</h4>
+                <h4>推优入党名单(本学年经支部推优入党名单,没有可不填)
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(5)">导出</button>
+                {% endif %}</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
@@ -217,19 +235,28 @@
             </div>
             <!--工作计划-->
             <div  style="display: none;" id="table_1">
-                <h4>全年计划</h4>
+                <h4>全年计划
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(6)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="quannianjihua">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="quannianjihua_bianji"></textarea></td>
                         </tr>
                 </table>
-                <h4>春季学期计划</h4>
+                <h4>春季学期计划
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(7)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="chunjixueqijihua">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="chunjixueqijihua_bianji"></textarea></td>
                         </tr>
                 </table>
-                <h4>秋季学期计划</h4>
+                <h4>秋季学期计划
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(8)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="qiujixueqijihua">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="qiujixueqijihua_bianji"></textarea></td>
@@ -239,19 +266,28 @@
 
             <!--支部事业-->
             <div  style="display: none;" id="table_2">
-                <h4>支部事业简介</h4>
+                <h4>支部事业简介
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(9)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyejianjie">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyejianjie_bianji"></textarea></td>
                         </tr>
                 </table>
-                <h4>支部事业目标</h4>
+                <h4>支部事业目标
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(10)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyemubiao">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyemubiao_bianji"></textarea></td>
                         </tr>
                 </table>
-                <h4>预期成果</h4>
+                <h4>预期成果
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(11)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyeyuqichengguo">
                             <td><textarea style="width: 100%; height: 100px; overflow: auto; resize: none;" name="zhibushiyeyuqichengguo_bianji"></textarea></td>
