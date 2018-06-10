@@ -107,11 +107,22 @@ function fill_content(content){
 	}
 	var ANLI_content = JIATUAN_content[1];
 	var PIC_content = JIATUAN_content[2];
-	editor1.html(ANLI_content[0]);
+	//editor1.html(ANLI_content[0]);
+	//console.log(ANLI_content);
+	if(ANLI_content[0] == ""){
+		editor1.html("填写说明：<br />&nbsp; &nbsp; 一、 支部工作案例应重点描述该支部最优特色的几方面工作；<br />&nbsp; &nbsp; 二、 工作案例不少于1000字<br />&nbsp; &nbsp; 三、 优秀支部工作案例将用于后期宣传，形成《在集体中成长》中的支部案例素材；<br />&nbsp; &nbsp; 四、 校团委会根据优秀支部工作案例情况择优筛选出优秀支部进行重点支持。<span> </span><br />");
+	}
+	else{
+		editor1.html(ANLI_content[0]);
+	}
+	var html_content = "照片命名需体现对照片的描述<br/>";
 	for(var i = 0; i < PIC_content.length; i++){
 		var url = PIC_content[i];
-		$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
+		html_content += '<img name="tuwen" src="' +url + '" data-ke-src="' + url + '" width="30%"/><br/>';
+		$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\"><a href=\"'+url+'\">'+url.slice(22)+'</a>&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 	}
+	//console.log(html_content);
+	editor2.html(html_content);
 	
 }
 

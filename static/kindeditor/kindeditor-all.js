@@ -3245,6 +3245,7 @@ _extend(KCmd, {
 		border = _undef(border, 0);
 
 		var html = '<img name="tuwen" src="' + _escape(url) + '" data-ke-src="' + _escape(url) + '" ';
+		html += 'width="30%" ';
 		if (width) {
 			html += 'width="' + _escape(width) + '" ';
 		}
@@ -3258,7 +3259,7 @@ _extend(KCmd, {
 			html += 'align="' + _escape(align) + '" ';
 		}
 		html += 'alt="' + _escape(title) + '" ';
-		html += '/>';
+		html += '/><br/>';
 		return this.inserthtml(html);
 	},
 	createlink : function(url, type) {
@@ -7494,7 +7495,7 @@ KindEditor.plugin('image', function(K) {
 						  if(this.complete) $(this).load();
 						});
 					}
-					$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\">'+url.slice(22)+'&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
+					$("#table_2").append('<div class=\"attachment\" url=\"'+url + '\" title=\"'+url.slice(22)+'\"><a href=\"'+url+'\">'+url.slice(22)+'</a>&nbsp<a onclick=\"del_line(this)\">取消</a><div>');
 					setTimeout(function() {
 						self.hideDialog().focus();
 					}, 0);

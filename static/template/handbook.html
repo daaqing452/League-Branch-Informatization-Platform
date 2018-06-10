@@ -24,10 +24,8 @@
                 <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作计划</a></li>
                 <li role="presentation" ><a  id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">支部事业</a></li>
                 <li role="presentation"><a id="chapter_3" href="javascript:void(0)" onclick="module_select(3)">思想引领</a></li>
-                <li role="presentation"><a id="chapter_4" href="javascript:void(0)" onclick="module_select(4)">学风建设</a></li>
-                <li role="presentation"><a id="chapter_5" href="javascript:void(0)" onclick="module_select(5)">体育氛围</a></li>
-                <li role="presentation"><a id="chapter_6" href="javascript:void(0)" onclick="module_select(6)">自定义</a></li>
-                <li role="presentation"><a id="chapter_7" href="javascript:void(0)" onclick="module_select(7)">工作总结</a></li>
+                <li role="presentation"><a id="chapter_6" href="javascript:void(0)" onclick="module_select(4)">支部活动</a></li>
+                <li role="presentation"><a id="chapter_7" href="javascript:void(0)" onclick="module_select(5)">工作总结</a></li>
 
             </ul>
 
@@ -105,16 +103,17 @@
                         </tr>
                 </table>
 
-                <h4>团员花名册</h4>
+                <h4>团员花名册(含党员、预备党员)</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
                             <td align="center">姓名</td>
                             <td align="center">性别</td>
                             <td align="center">民族</td>
+                            <td align="center">政治面貌</td>
                             <td align="center">籍贯</td>
-                            <td align="center">出生年月</td>
-                            <td align="center">申请入团时间</td>
+                            <td align="center">出生日期</td>
+                            <td align="center">入团时间</td>
                             
                             <td align="center">备注</td>
                             <td align="center">操作</td>
@@ -124,8 +123,9 @@
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="男/女"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XX族"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="共青团员、中共预备党员、中共党员"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XX省XX市(县)"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX" ></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             
@@ -136,7 +136,7 @@
                         </tr>
                 </table>
 
-                <h4>申请入团名单</h4>
+                <h4>申请入团名单(本学年申请入团名单,没有可不填)</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
@@ -144,7 +144,7 @@
                             <td align="center">性别</td>
                             <td align="center">民族</td>
                             <td align="center">籍贯</td>
-                            <td align="center">出生年月</td>
+                            <td align="center">出生日期</td>
                             <td align="center">申请入团时间</td>
                             
                             <td align="center">备注</td>
@@ -166,14 +166,14 @@
                         </tr>
                 </table>
 
-                <h4>交纳团费情况</h4>
+                <h4>交纳团费情况(每月单独填写)</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">月份</td>
-                            <td align="center">支部人数</td>
-                            <td align="center">应交人数</td>
+                            <td align="center">支部人数(含党员、预备党员)</td>
+                            <td align="center">应交人数(共青团员)</td>
                             <td align="center">实交人数</td>
-                            <td align="center">应交金额</td>
+                            <td align="center">应交金额(0.2元每人每月)</td>
                             <td align="center">实交金额</td>
                             <td align="center">备注(无故不交/因病离校/出差实习/其他)</td>
                             <td align="center">操作</td>
@@ -193,14 +193,14 @@
                         </tr>
                 </table>
 
-                <h4>推优入党名单</h4>
+                <h4>推优入党名单(本学年经支部推优入党名单,没有可不填)</h4>
                 <table  class="table table-condensed" style="table-layout:fixed;word-break:break-all" align="center">
                         <tr>
                             <td align="center">学号</td>
                             <td align="center">姓名</td>
                             <td align="center">提交申请书时间</td>
                             <td align="center">入党时间</td>
-                            <td align="center">转正时间</td>
+                            <td align="center">转正时间(尚未转正可不填)</td>
                             <td align="center">操作</td>
                         </tr>
                         <tr class="tuiyourudang">
@@ -276,11 +276,11 @@
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
+                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" ></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
+                            <td rowspan="3" align="center" style="vertical-align: middle;">
                                 <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
                             </td>
                         </tr>
@@ -288,105 +288,17 @@
                             <td align="center" style="vertical-align: middle;">活动内容</td> 
                             <td colspan="5"><textarea name="huodongneirong_bianji_0" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
                         </tr>
-                        
-                </table>
-                <h4>组织生活</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
+                            <td align="center" style="vertical-align: middle;">活动总结</td> 
                             <td colspan="5"><textarea name="huodongneirong_bianji_1" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
                         </tr>
                         
                 </table>
-                <h4>支部活动</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all;" >
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_2" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
-            </div>
-            <!--学风建设-->
-            <div  style="display: none;" id="table_4">
-                <h4>主题团日</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_3" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
                 <h4>组织生活</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
+                            <td align="center">活动类型</td>
+                            <td align="center">活动主题</td>
                             <td align="center">活动时间</td>
                             <td align="center">地点</td>
                             <td align="center">参与人数</td>
@@ -396,153 +308,38 @@
                             <td align="center">操作</td>
                         </tr>
                         <tr>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="推优入党、批评与自我批评、基本理论学习等"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
+                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="不少于支部成员五分之四"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
+                            <td rowspan="3" align="center" style="vertical-align: middle;">
+                                <span class="glyphicon glyphicon-plus" onclick="addOption_leixing(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
                             </td>
                         </tr>
                         <tr>
                             <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_4" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td colspan="6"><textarea name="huodongneirong_bianji_2" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="vertical-align: middle;">活动总结</td> 
+                            <td colspan="6"><textarea name="huodongneirong_bianji_3" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
                         </tr>
                         
                 </table>
-                <h4>支部活动</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all;" >
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_5" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
+                
             </div>
-            <!--体育氛围-->
-            <div  style="display: none;" id="table_5">
-                <h4>主题团日</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_6" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
-                <h4>组织生活</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_7" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
-                <h4>支部活动</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all;" >
-                        <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
-                            <td align="center">活动时间</td>
-                            <td align="center">地点</td>
-                            <td align="center">参与人数</td>
-                            <td align="center">主持人</td>
-                            <td align="center">记录人</td>
-                            
-                            <td align="center">操作</td>
-                        </tr>
-                        <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td class="canyurenshu"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
-                            
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_8" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                        
-                </table>
-            </div>
+            
             <!--自定义-->
-            <div  style="display: none;" id="table_6">
-                <h4>特色活动</h4>
+            <div  style="display: none;" id="table_4">
+                <h4>支部活动</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all;" >
                         <tr>
-                            <td align="center" style="width: 250px;">活动主题</td>
+                            <td align="center">活动类型</td>
+                            <td align="center">活动主题</td>
                             <td align="center">活动时间</td>
                             <td align="center">地点</td>
                             <td align="center">参与人数</td>
@@ -552,6 +349,7 @@
                             <td align="center">操作</td>
                         </tr>
                         <tr>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="学风建设、体育活动、社会实践、支部事业与文化"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
@@ -559,29 +357,39 @@
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             
-                            <td rowspan="2" align="center" style="vertical-align: middle;">
-                                <span class="glyphicon glyphicon-plus" onclick="addOption_2(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
+                            <td rowspan="3" align="center" style="vertical-align: middle;">
+                                <span class="glyphicon glyphicon-plus" onclick="addOption_leixing(this)"></span><span class="glyphicon glyphicon-minus" onclick="delOption_2(this)"></span>
                             </td>
                         </tr>
                         <tr>
                             <td align="center" style="vertical-align: middle;">活动内容</td> 
-                            <td colspan="5"><textarea name="huodongneirong_bianji_9" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                            <td colspan="6"><textarea name="huodongneirong_bianji_4" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="vertical-align: middle;">活动总结</td> 
+                            <td colspan="6"><textarea name="huodongneirong_bianji_5" style="width: 100%; height: 100px; overflow: auto; resize: none;"></textarea></td>
                         </tr>
                         
                 </table>
             </div>
             <!--工作总结-->
-            <div style="display: none;" id="table_7">
-                <h4>全年工作总结</h4>
+            <div style="display: none;" id="table_5">
+                <h4>秋季学期工作总结</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr class="quanniangongzuozongjie">
-                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="quanniangongzuozongjie_bianji"></textarea></td>
+                        <tr class="qiujixueqigongzuozongjie">
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="qiujixueqigongzuozongjie_bianji"></textarea></td>
+                        </tr>
+                </table>
+                <h4>春季学期工作总结</h4>
+                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                        <tr class="chunjixueqigongzuozongjie">
+                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="chunjixueqigongzuozongjie_bianji"></textarea></td>
                         </tr>
                 </table>
             </div>
 
             <!--等级评估方案-->
-            <div style="display: none;" id="table_8">
+            <div style="display: none;" id="table_6">
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="dengjipinggufangan">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="dengjipinggufangan_bianji"></textarea></td>
@@ -589,7 +397,7 @@
                 </table>
             </div>
             <!--实施细则-->
-            <div style="display: none;" id="table_9">
+            <div style="display: none;" id="table_7">
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="shishixize">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="shishixize_bianji"></textarea></td>
@@ -597,7 +405,7 @@
                 </table>
             </div>
             <!--等级评估工作领导小组组成-->
-            <div style="display: none;" id="table_10">
+            <div style="display: none;" id="table_8">
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="dengjipinggulingdao">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="dengjipinggulingdao_bianji"></textarea></td>
@@ -605,7 +413,7 @@
                 </table>
             </div>
             <!--初评甲级团支部名单-->
-            <div style="display: none;" id="table_11">
+            <div style="display: none;" id="table_9">
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="chujijiajituanzhibu">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="chujijiajituanzhibu_bianji"></textarea></td>
