@@ -11,9 +11,6 @@ $(document).ready(function(){
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	$("#table_0").show();
 	if (!readonly) year_onchange();
-	
-    
-    
 });
 
 function load_jiatuan() {
@@ -37,11 +34,19 @@ function year_onchange() {
 		data: {"op": "load_jiatuan", "year": year},
 		success: function(data) {
 			var data = JSON.parse(data);
-			fill_content(data['content']);
-			if (data['submitted']) {
-				$("#button_save").attr({"disabled":"disabled"});
+			if (data['info'] == 'yes') {
+				$("span#load_info").hide();
+				$("div#main_content").show();
+				fill_content(data['content']);
+				if (data['submitted']) {
+					$("#button_save").attr({"disabled":"disabled"});
+				} else {
+					$("#button_save").removeAttr("disabled");
+				}
 			} else {
-				$("#button_save").removeAttr("disabled");
+				$("span#load_info").show();
+				$("span#load_info").text(data['info']);
+				$("div#main_content").hide();
 			}
 		}
 	})

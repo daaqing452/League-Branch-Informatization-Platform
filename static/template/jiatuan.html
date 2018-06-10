@@ -20,102 +20,105 @@
             <br/>
             <br/>
 
-            <ul id="nav_2" class="nav nav-tabs">
-                <li role="presentation"><a id="chapter_0" href="javascript:void(0)" onclick="module_select(0)">甲团申请</a></li>
-                <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作案例</a></li>
-                <li role="presentation"><a id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">活动照片</a></li>
+            <span id="load_info"></span>
+            <div id="main_content">
+                <ul id="nav_2" class="nav nav-tabs">
+                    <li role="presentation"><a id="chapter_0" href="javascript:void(0)" onclick="module_select(0)">甲团申请</a></li>
+                    <li role="presentation" ><a  id="chapter_1" href="javascript:void(0)" onclick="module_select(1)">工作案例</a></li>
+                    <li role="presentation"><a id="chapter_2" href="javascript:void(0)" onclick="module_select(2)">活动照片</a></li>
 
-            </ul>
+                </ul>
 
-            <br/>
-            <!--基本情况-->
-            <div style="display: none;" id="table_0">
-                <h4>基本信息</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                <br/>
+                <!--基本情况-->
+                <div style="display: none;" id="table_0">
+                    <h4>基本信息</h4>
+                    <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                            <tr>
+                                <td>团支部名称</td>
+                                <td>团支部书记姓名</td>
+                            </tr>
+                            <tr class="jibenxinxi">
+                                <td><textarea style="width: 100%; overflow: auto; resize: none;"  ></textarea></td>
+                                <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            </tr>
+                    </table>
+
+                    <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td>团支部名称</td>
-                            <td>团支部书记姓名</td>
+                            <td></td>
+                            <td>男生人数</td>
+                            <td>女生人数</td>
+                            <td>总人数</td>
                         </tr>
-                        <tr class="jibenxinxi">
-                            <td><textarea style="width: 100%; overflow: auto; resize: none;"  ></textarea></td>
+                        <tr class="renshu">
+                            <td>团员人数</td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
                             <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
                         </tr>
-                </table>
-
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                    <tr>
-                        <td></td>
-                        <td>男生人数</td>
-                        <td>女生人数</td>
-                        <td>总人数</td>
-                    </tr>
-                    <tr class="renshu">
-                        <td>团员人数</td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                    </tr>
-                    <tr class="renshu">
-                        <td>党员人数</td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                    </tr>
-                    <tr class="renshu">
-                        <td>申请入党人数</td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                    </tr>
-                    <tr class="renshu">
-                        <td>班级人数</td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                        <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
-                    </tr>
-                </table>
+                        <tr class="renshu">
+                            <td>党员人数</td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        </tr>
+                        <tr class="renshu">
+                            <td>申请入党人数</td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        </tr>
+                        <tr class="renshu">
+                            <td>班级人数</td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                            <td><textarea style="width: 100%; overflow: auto; resize: none;" ></textarea></td>
+                        </tr>
+                    </table>
 
                 
 
-                <h4>基本情况</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr class="jibenqingkuang">
-                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                </table>
+                    <h4>基本情况</h4>
+                    <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                            <tr class="jibenqingkuang">
+                                <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                            </tr>
+                    </table>
 
-                <h4>基本要求</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr class="jibenyaoqiu">
-                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                </table>
+                    <h4>基本要求</h4>
+                    <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                            <tr class="jibenyaoqiu">
+                                <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                            </tr>
+                    </table>
 
-                <h4>支部事业与文化</h4>
-                <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
-                        <tr class="zhibushiyeyuwenhua">
-                            <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
-                        </tr>
-                </table>
+                    <h4>支部事业与文化</h4>
+                    <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
+                            <tr class="zhibushiyeyuwenhua">
+                                <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;"></textarea></td>
+                            </tr>
+                    </table>
+                </div>
+
+                <div style="display: none;" id="table_1">
+                    <h4>支部工作案例</h4>
+                    <textarea  name="sg_text" id="case_text" style="height: 300px;width: 100%;"></textarea>
+                    
+                </div>
+
+                <div style="display: none;" id="table_2">
+                    <h4>活动照片(上传三张)</h4>
+                    <textarea  name="photo" id="photo_text" style="width: 100%"></textarea>
+                    
+                </div>
+                <br/>
+                {% if readonly %}
+                {% else %}
+                <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>
+                <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="submit(0)">暂存</button>
+                {% endif %}
             </div>
-
-            <div style="display: none;" id="table_1">
-                <h4>支部工作案例</h4>
-                <textarea  name="sg_text" id="case_text" style="height: 300px;width: 100%;"></textarea>
-                
-            </div>
-
-            <div style="display: none;" id="table_2">
-                <h4>活动照片(上传三张)</h4>
-                <textarea  name="photo" id="photo_text" style="width: 100%"></textarea>
-                
-            </div>
-            <br/>
-            {% if readonly %}
-            {% else %}
-            <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px;" onclick="submit(1)">提交</button>
-            <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-right:20px" onclick="submit(0)">暂存</button>
-            {% endif %}
         </div>
         <div class="col-md-2"></div>
     </div>

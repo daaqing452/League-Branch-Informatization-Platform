@@ -318,6 +318,16 @@ def jiatuan_edit(request, bid):
 
 	if op == 'load_jiatuan':
 		year = int(request.POST.get('year'))
+		department = Department.objects.get(id=branch.did)
+		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+		if len(assignments) == 0:
+			jdata['info'] = '院系尚未制定甲团'
+			return HttpResponse(json.dumps(jdata))
+		branchs = json.loads(assignments[0].branchs)
+		if not str(branch.id) in branchs:
+			jdata['info'] = '支部不是甲级团支部'
+			return HttpResponse(json.dumps(jdata))
+		jdata['info'] = 'yes'
 		jiatuans = JiatuanMaterial.objects.filter(year=year, submit_id=branch.id)
 		jdata['content'] = None
 		jdata['submitted'] = False
