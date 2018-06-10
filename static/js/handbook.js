@@ -16,6 +16,12 @@ var weiyuan_html_without_edit = '<tr>'+
 
 var huodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
 var huodongneirong_html_without_edit = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"5\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:0.5px solid #ADADAD;\"></div></td>';
+var youleixingdehuodongneirong_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"6\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
+var youleixingdehuodongneirong_html_without_edit = '<td align=\"center\" style=\"vertical-align: middle;\">活动内容</td> <td colspan=\"6\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:0.5px solid #ADADAD;\"></div></td>';
+var huodongzongjie_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动总结</td> <td colspan=\"5\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
+var huodongzongjie_html_without_edit = '<td align=\"center\" style=\"vertical-align: middle;\">活动总结</td> <td colspan=\"5\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:0.5px solid #ADADAD;\"></div></td>';
+var youleixingdehuodongzongjie_html = '<td align=\"center\" style=\"vertical-align: middle;\">活动总结</td> <td colspan=\"6\"><textarea  style=\"width: 100%; height: 100px; overflow: auto; resize: none;\"></textarea></td>';
+var youleixingdehuodongzongjie_html_without_edit = '<td align=\"center\" style=\"vertical-align: middle;\">活动总结</td> <td colspan=\"6\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:0.5px solid #ADADAD;\"></div></td>';
 var huodongneirong_html_without_edit2 = '<td style=\"width:100%;\"><div  style=\"width: 100%; height: 100px; overflow: auto; resize: none; border:1px solid #ADADAD;\"></div></td>';
 
 var chapter;
@@ -44,7 +50,7 @@ items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'itali
 
 
 var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qiujixueqijihua_bianji","zhibushiyejianjie_bianji","zhibushiyemubiao_bianji",
-					"zhibushiyeyuqichengguo_bianji","quanniangongzuozongjie_bianji",
+					"zhibushiyeyuqichengguo_bianji","qiujixueqigongzuozongjie_bianji","chunjixueqigongzuozongjie_bianji",
 					"huodongneirong_bianji_0","huodongneirong_bianji_1","huodongneirong_bianji_2","huodongneirong_bianji_3",
 					"huodongneirong_bianji_4","huodongneirong_bianji_5","huodongneirong_bianji_6","huodongneirong_bianji_7",
 					"huodongneirong_bianji_8","huodongneirong_bianji_9","dengjipinggufangan_bianji",
@@ -121,7 +127,7 @@ function fill_content(content){
 	}
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
-	for(var i = 0; i < 12; i++){
+	for(var i = 0; i < 10; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -132,29 +138,56 @@ function fill_content(content){
 			var real_num = tr_num;
 			var start_num = 0;
 			
-			if(i >= 3 && i <= 6){
-				
-				if(TABLE_content.length / 2 >1){
-					for(var clone_num = 0; clone_num < TABLE_content.length / 2 - 1; clone_num++){
+			if(i >= 3 && i <= 4){
+				//console.log(JSON.stringify(TABLE_content));
+				if(TABLE_content.length / 3 >1){
+					for(var clone_num = 0; clone_num < TABLE_content.length / 3 - 1; clone_num++){
 						var tr_pre = table.find("tr").eq(0).clone(); 
 						var tr_cur = table.find("tr").eq(1).clone();
-
 						//var tr_next = table.find("tr").eq(2).clone();
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
+
 						//tr_next.appendTo(table); 
-						table.append("<tr>"+huodongneirong_html+"</tr>");
-						table.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+						if(i == 3){
+							if(k == 0){
+								table.append("<tr>"+huodongneirong_html+"</tr>");
+								table.append("<tr>"+huodongzongjie_html+"</tr>");
+							}
+							else{
+								table.append("<tr>"+youleixingdehuodongneirong_html+"</tr>");
+								table.append("<tr>"+youleixingdehuodongzongjie_html+"</tr>");
+							}
+						}
+						else{
+							table.append("<tr>"+youleixingdehuodongneirong_html+"</tr>");
+							table.append("<tr>"+youleixingdehuodongzongjie_html+"</tr>");
+						}
+						var tr = table.find("tr").last().prev();
+						tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
 						var bianji_length = bianji_list.length
 						bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
-						
+
 						KindEditor.ready(function(K) { 
 							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
 						});
+
+						var tr = table.find("tr").last();
+						tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+						var bianji_length = bianji_list.length
+						bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
+
+						KindEditor.ready(function(K) { 
+							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+						});  
 					}
 					
 				}
+
 				var content_cnt = 0;
+				//console.log(table.find("tr").length);
+				//console.log(JSON.stringify(TABLE_content));
+				
 				for(var m = 0; m < table.find("tr").length; m++){
 					var tr = table.find("tr").eq(m);
 					if(tr.find("textarea").length != 0){
@@ -252,7 +285,17 @@ function fill_content(content){
 				}
 			}
 		}	
-	}	
+	}
+	//dosomething
+	var placeholder_list = ["dengjipinggufangan_bianji","shishixize_bianji","dengjipinggulingdao_bianji","chujijiajituanzhibu_bianji"];
+	var placeholder_words = ["填写院系本学年等级评估方案","填写院系本学年等级评估实施细则","填写院系本学年等级评估领导小组组成","填写院系本学年初评甲级团支部名单"]
+	for(var i = 0; i < 4; i++){
+		var editor_index = bianji_list.indexOf(placeholder_list[i]);
+		if(editor[editor_index].html() == ""){
+			editor[editor_index].html(placeholder_words[i]);
+		}
+	}
+
 }
 
 function read_only(content){
@@ -261,7 +304,8 @@ function read_only(content){
 	if(content == null){
 		return;
 	}
-	for(var i = 0; i < 12; i++){
+	
+	for(var i = 0; i < 10; i++){
 		var CHAPTER_content = HANDBOOK_content[i];
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -271,12 +315,13 @@ function read_only(content){
 			var tr_num = table.find("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
-			if(i >= 3 && i <= 6){
-
+			if(i >= 3 && i <= 4){
+				//console.log(table_num);
+				
 				table.find("tr").eq(0).children("td").last().remove();
 				table.find("tr").eq(1).children("td").last().remove();
-				if(TABLE_content.length / 2 >1){
-					for(var clone_num = 0; clone_num < TABLE_content.length / 2 - 1; clone_num++){
+				if(TABLE_content.length / 3 >1){
+					for(var clone_num = 0; clone_num < TABLE_content.length / 3 - 1; clone_num++){
 						var tr_pre = table.find("tr").eq(0).clone(); 
 						var tr_cur = table.find("tr").eq(1).clone();
 						//console.log(tr_cur.children("td").last().attr("align"));
@@ -286,17 +331,41 @@ function read_only(content){
 						tr_pre.appendTo(table); 
 						tr_cur.appendTo(table); 
 						//tr_next.appendTo(table); 
-						table.append("<tr>"+huodongneirong_html+"</tr>");
-						table.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+						if(i == 3){
+							if(k == 0){
+								table.append("<tr>"+huodongneirong_html+"</tr>");
+								table.append("<tr>"+huodongzongjie_html+"</tr>");
+							}
+							else{
+								table.append("<tr>"+youleixingdehuodongneirong_html+"</tr>");
+								table.append("<tr>"+youleixingdehuodongzongjie_html+"</tr>");
+							}
+						}
+						else{
+							table.append("<tr>"+youleixingdehuodongneirong_html+"</tr>");
+							table.append("<tr>"+youleixingdehuodongzongjie_html+"</tr>");
+						}
+						var tr = table.find("tr").last().prev();
+						tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
 						var bianji_length = bianji_list.length
 						bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
-						
+
 						KindEditor.ready(function(K) { 
 							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
 						});
+
+						var tr = table.find("tr").last();
+						tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+						var bianji_length = bianji_list.length
+						bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
+
+						KindEditor.ready(function(K) { 
+							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+						}); 
 					}
 					
 				}
+
 				var content_cnt = 0;
 				for(var m = 0; m < table.find("tr").length; m++){
 					var tr = table.find("tr").eq(m);
@@ -324,7 +393,35 @@ function read_only(content){
 							
 							//tr.find("textarea").last().parents("tr").eq(0).append(huodongneirong_html_without_edit);
 							tr.empty();
-							tr.append(huodongneirong_html_without_edit);
+							if(content_cnt % 2 == 1){
+								if(i == 3){
+									if(k == 0){
+										tr.append(huodongneirong_html_without_edit);
+									}
+									else{
+										tr.append(youleixingdehuodongneirong_html_without_edit);
+									}
+								}
+								else{
+									tr.append(youleixingdehuodongneirong_html_without_edit);
+									
+								}
+							}
+							else{
+								if(i == 3){
+									if(k == 0){
+										tr.append(huodongzongjie_html_without_edit);
+									}
+									else{
+										tr.append(youleixingdehuodongzongjie_html_without_edit);
+									}
+								}
+								else{
+									tr.append(youleixingdehuodongzongjie_html_without_edit);
+									
+								}
+							}
+							
 							tr.find("div").eq(0).append(TR_content[0]);
 							//console.log(tr.attr("class")+" "+textarea_content);
 						}
@@ -487,7 +584,7 @@ function check_fill(tr,already_fill,tr_class,textarea_n,content){
 				return "团员信息学号填写有误";
 			}
 		}
-		if(textarea_n == 5){
+		if(textarea_n == 6 || textarea_n == 7){
 			if(content != "" && data_pat.test(content) == false){
 				return  "团员信息填写有误(日期格式)";
 			}
@@ -594,7 +691,7 @@ function is_in_array(arr,value){
 function submit(subtype){
 	var HANDBOOK_content = new Array();
 	wrong_messages = new Array();
-	for(var i = 0; i < 12; i++){
+	for(var i = 0; i < 10; i++){
 		var CHAPTER_content = new Array();
 		var div = $("#table_"+i);
 		var table_num = div.find("table").length;
@@ -611,7 +708,7 @@ function submit(subtype){
 					continue;
 				}
 				var keditor_flag = false;
-				if(i >= 3 && i <= 6){
+				if(i >= 3 && i <= 4){
 					var textarea_name = tr.find("textarea").last().attr("name");
 					for(var it = 0; it < bianji_list.length; it++){
 						if(bianji_list[it].indexOf(textarea_name) >= 0){
@@ -678,7 +775,7 @@ function submit(subtype){
 		HANDBOOK_content.push(CHAPTER_content);
 	}
 	
-	//console.log(JSON.stringify(HANDBOOK_content));
+	console.log(JSON.stringify(HANDBOOK_content));
 	
 	if(htype == "b" && wrong_messages.length != 0){
 		wrong_messages_br = "";
@@ -738,8 +835,19 @@ function addOption_2(b){
 	$this_table.append("<tr>"+pre_html+"</tr>");
 	$this_table.append("<tr>"+current_html+"</tr>");
 	$this_table.append("<tr>"+huodongneirong_html+"</tr>");
+	$this_table.append("<tr>"+huodongzongjie_html+"</tr>");
+	
+	var tr = $this_table.find("tr").last().prev();
+	tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+	var bianji_length = bianji_list.length
+	bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
 
-	$this_table.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+	KindEditor.ready(function(K) { 
+		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+	});
+
+	var tr = $this_table.find("tr").last();
+	tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
 	var bianji_length = bianji_list.length
 	bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
 
@@ -763,6 +871,41 @@ function addOption_3(b){
 	var tr_html = weiyuan_html;
 	new_row.innerHTML = tr_html;
 	$(new_row).attr("class","tianjiaweiyuan");
+}
+
+function addOption_leixing(b){
+	if(readonly){
+		return;
+	}
+	var $b = $(b);
+	var $this_table = $b.parents("table").eq(0);	
+	var current_index = b.parentNode.parentNode.rowIndex;
+	var pre_html = $this_table.find("tr").eq(current_index-1).html();
+	var current_html = $this_table.find("tr").eq(current_index).html();
+	
+	
+	$this_table.append("<tr>"+pre_html+"</tr>");
+	$this_table.append("<tr>"+current_html+"</tr>");
+	$this_table.append("<tr>"+youleixingdehuodongneirong_html+"</tr>");
+	$this_table.append("<tr>"+youleixingdehuodongzongjie_html+"</tr>");
+
+	var tr = $this_table.find("tr").last().prev();
+	tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+	var bianji_length = bianji_list.length
+	bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
+
+	KindEditor.ready(function(K) { 
+		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+	});
+
+	var tr = $this_table.find("tr").last();
+	tr.find('td').last().children("textarea").attr("name","huodongneirong_bianji_"+bianji_list.length);
+	var bianji_length = bianji_list.length
+	bianji_list.push("huodongneirong_bianji_"+bianji_list.length);
+
+	KindEditor.ready(function(K) { 
+		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+	});  
 }
 
 function delOption(b){
@@ -806,11 +949,12 @@ function delOption_2(b){
 	var current_row = b.parentNode.parentNode;
 	var current_index = current_row.rowIndex;
 	var op_table = b.parentNode.parentNode.parentNode;
-	if(current_index == 1 && op_table.rows.length == 3)
+	if(current_index == 1 && op_table.rows.length == 4)
 	{
 		alert("至少一条记录！");
 		return;
 	}
+	op_table.deleteRow(current_index+2);
 	op_table.deleteRow(current_index+1);
 	op_table.deleteRow(current_index);
 	op_table.deleteRow(current_index-1);
