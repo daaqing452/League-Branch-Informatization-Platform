@@ -9,7 +9,6 @@ $(document).ready(function(){
 
 
 function review_d(){
-	
 	$(".modal-dialog").width(250);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("审阅院系工作手册");
@@ -113,18 +112,20 @@ function jiatuan_year_onchange() {
 				if (department['minge'] > 0) minge = department['minge'];
 				s += "<input style='width:20px' type='text' id='minge-" + i + "' did=" + department['did'] + " value='" + minge + "' department_name='" + department["name"] + "'/>";
 				s += department["name"] + "<br/>";
-				if (department.hasOwnProperty("jiatuans")) {
-					var jiatuans = department['jiatuans'];
-					for (var j = 0; j < jiatuans.length; j++) {
-						var jiatuan = jiatuans[j];
-						s += "<div style=\"font-size:5px\">" + jiatuan["name"] + " ";
-						s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
-						if (jiatuan.hasOwnProperty("handbook")) {
-							s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
-						} else {
-							s += "工作手册";
+				if (department["submitted"]) {
+					if (department.hasOwnProperty("jiatuans")) {
+						var jiatuans = department['jiatuans'];
+						for (var j = 0; j < jiatuans.length; j++) {
+							var jiatuan = jiatuans[j];
+							s += "<div style=\"font-size:5px\">" + jiatuan["name"] + " ";
+							s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
+							if (jiatuan.hasOwnProperty("handbook")) {
+								s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
+							} else {
+								s += "工作手册";
+							}
+							s += "</div>";
 						}
-						s += "</div>";
 					}
 				}
 				div.append(s);

@@ -220,7 +220,7 @@ function commit(flag, param){
 		}
 		// 甲团-院系
 		case 11:{
-			$("#myModal").modal('hide');
+			submit_jiatuan_to_school();
 			break;
 		}
 		// 甲团-班级

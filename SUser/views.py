@@ -117,6 +117,8 @@ def index(request):
 				d['minge'] = minge[str(department.id)]
 			else:
 				d['minge'] = 0
+			assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+			d['submitted'] = (len(assignments) > 0 and assignments[0].submitted)
 			departments.append(d)
 		jdata['departments'] = departments
 		return HttpResponse(json.dumps(jdata))
@@ -222,7 +224,7 @@ def department(request, did):
 					jdata['minge'] = minge[str(department.id)]
 		jdata['status'] = status
 		branchs = []
-		for branch in Branch.objects.filter(did=did):
+		for branch in Branch.objects.filter(did=did).order_by('amt_order'):
 			d = {}
 			d['bid'] = branch.id
 			d['name'] = branch.name
@@ -237,6 +239,7 @@ def department(request, did):
 		if len(assignments) > 0:
 			jdata['assigned'] = True
 			jdata['assigned_branchs'] = assignments[0].branchs
+			jdata['submitted'] = assignments[0].submitted
 		else:
 			jdata['assigned'] = False
 		return HttpResponse(json.dumps(jdata))
@@ -278,6 +281,18 @@ def department(request, did):
 		materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
 		if len(materials) > 0: materials[0].delete();
 		material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'submit_jiatuan_to_school':
+		year = request.POST.get('year')
+		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+		if len(assignments) == 0:
+			jdata["info"] = "尚未分配名额"
+			return HttpResponse(json.dumps(jdata))
+		assignment = assignments[0]
+		assignment.submitted = True
+		assignment.save()
+		jdata["info"] = "yes"
 		return HttpResponse(json.dumps(jdata))
 
 	if (department is not None) and permission(suser, 'dr', department):

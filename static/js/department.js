@@ -47,9 +47,11 @@ function jiatuan() {
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
-	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4><br/>");
+	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4>");
+	$("#myModal_body").append("<span id='submitted_branch'></span><br/><br/>");
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' id='inform' onclick='jiatuan_inform()'>通知甲团</button></div>");
+	$('#myModelYes').text("向校级提交");
 	jiatuan_year_onchange();
 	/*$("#myModal_body").append("<hr/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
@@ -82,7 +84,6 @@ function jiatuan_year_onchange() {
 		success: function(data) {
 			var data = JSON.parse(data);
 			var status = data['status'];
-			var assigned_branchs = JSON.parse(data['assigned_branchs']);
 			if (status == 0) {
 				$('span#minge').text("");
 				alert("甲团评选尚未开始！");
@@ -93,8 +94,12 @@ function jiatuan_year_onchange() {
 				alert("甲团评选已经结束！");
 				return;
 			}
+			var assigned_branchs = JSON.parse(data['assigned_branchs']);
 			$('span#minge').text(data["minge"]);
 			max_minge = parseInt(data["minge"]);
+			$('span#submitted_branch').text("已提交支部：");
+			var submitted_branch_num = 0;
+
 			var branchs = data["branchs"];
 			div.append("<table id='minge' length='" + branchs.length + "'><tr>");
 			for (var i = 0; i < branchs.length; i++) {
@@ -107,6 +112,8 @@ function jiatuan_year_onchange() {
 				s += "/> ";
 				if (branch.hasOwnProperty("material")) {
 					s += "<a href='" + branch["material"] + "'>" + branch["name"] + "</a></td>";
+					$('span#submitted_branch').append(branch["name"] + ", ");
+					submitted_branch_num += 1;
 				} else {
 					s += branch["name"] + "</td>";
 				}
@@ -117,7 +124,12 @@ function jiatuan_year_onchange() {
 			}
 			if (data['assigned']) {
 				$('button#inform').attr("disabled", "disabled");
+				if (data['submitted']) {
+					$('#myModelYes').text("已向校级提交");
+					$('#myModelYes').attr('disabled', 'disabled');
+				}
 			}
+			if (submitted_branch_num == 0) $('span#submitted_branch').empty();
 			div.append("</tr></table>");
 		}
 	});
@@ -163,6 +175,27 @@ function jiatuan_inform() {
 	}
 }
 
+function submit_jiatuan_to_school() {
+	var year = $("#year").val();
+	if (confirm("确认向校级提交？")) {
+		$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op": "submit_jiatuan_to_school", "year": year},
+			success: function(data) {
+				var data = JSON.parse(data);
+				if (data["info"] = "yes") {
+					alert("提交成功！");
+				} else {
+					alert(data["info"]);
+				}
+			}
+		});
+	}
+}
+
+
+// ???
 function jiatuan_submit() {
 	var year = $("#year").val();
 	var title = $("#news_title").val();

@@ -50,6 +50,7 @@ class JiatuanAssignment(models.Model):
 	year = models.IntegerField(default=0)
 	did = models.IntegerField(default=0)
 	branchs = models.TextField(default='[]')
+	submitted = models.BooleanField(default=False)
 
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)
