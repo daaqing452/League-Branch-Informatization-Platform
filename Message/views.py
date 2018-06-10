@@ -319,6 +319,9 @@ def handbook_show(request, hid):
 			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
 
+	if op == 'export_item':
+		pass
+
 	rdata['readonly'] = True
 	if handbook.htype == 'd':
 		rdata['htype'] = 0
@@ -396,7 +399,7 @@ def jiatuan_show(request, jid):
 		title = request.POST.get('title')
 		jdata['result'] = 'OK'
 		if etype == 0:
-			jdata["export_path"] = export_fundamental_info(title, content[0])
+			jdata["export_path"] = export_jiatuan_fundamental_info(title, content[0])
 		elif etype == 1:
 			jdata["export_path"] = export_txt(title + ' - 基本情况', content[0][2][0][0])
 		elif etype == 2:
@@ -663,14 +666,14 @@ def export_handbook(handbook, aff):
 		pdf.append(makeTable(table, [100, 100, 300], TableStyle(tbstyle)))
 		# 	团员花名册
 		pdf.append(makeTitle('团员花名册'))
-		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table = [['学号', '姓名', '性别', '民族', '政治面貌', '籍贯', '出生日期', '入团时间', '备注']]
 		table.extend(h[0][2])
-		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		pdf.append(makeTable(table, [60, 50, 30, 30, 30, 70, 70, 70, 50]))
 		# 	申请入团名单
 		pdf.append(makeTitle('申请入团名单'))
-		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生年月', '入团时间', '入团地点', '备注']]
+		table = [['学号', '姓名', '性别', '民族', '籍贯', '出生日期', '申请入团时间', '备注']]
 		table.extend(h[0][3])
-		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 70, 50]))
+		pdf.append(makeTable(table, [60, 50, 30, 30, 70, 70, 70, 50]))
 		# 	交纳团费情况
 		pdf.append(makeTitle('交纳团费情况'))
 		table = [['月份', '支部人数', '应交人数', '实交人数', '应交金额', '实交金额', '备注']]
@@ -696,9 +699,8 @@ def export_handbook(handbook, aff):
 			pdf.append(makeTitle(sarr[i]))
 			pdf.append(makeCrossPage(h[2][i][0][0], 2900))
 			pdf.append(platypus.flowables.PageBreak())
-		# 思想引领、学风建设、体育氛围
-		sarr0 = ['思想引领', '学风建设', '体育氛围', '自定义']
-		sarr1 = ['主题团日', '组织生活', '支部活动']
+		# 思想引领
+		sarr1 = ['主题团日', '组织生活']
 		for i in range(len(sarr0)):
 			titled = False
 			for j in range(len(sarr1)):
@@ -755,13 +757,18 @@ def export_txt(title, txt):
 	f.close()
 	return filename
 
-def export_fundamental_info(title, a):
-	filename = filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
+def export_jiatuan_fundamental_info(title, a):
+	filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
 	f = codecs.open(filename, 'w', 'gbk')
-	print(a)
 	f.write('团支部名称,团支部书记姓名,男性团员人数,女性团员人数,团员总人数,男性党员人数,女性党员人数,党员总人数,男性申请入党人数,女性申请入党人数,申请入党总人数,班级男性人数,班级女性人数,班级总人数\n')
 	f.write(a[0][0][0] + ',' + a[0][0][1])
 	for i in range(12): f.write(',' + a[1][i//3][i%3])
 	f.write('\n')
 	f.close()
 	return filename
+
+def export_handbook_fundamental_info(title, a):
+	filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
+	print(a)
+	return
+	f = codecs.open(filename, 'w', 'gbk')
