@@ -111,7 +111,7 @@ def index(request):
 				d['handbook'] = '/handbook/' + str(handbooks[0].id) + '/'
 			jiatuan_dict[department.id].append(d)
 		departments = []
-		for department in Department.objects.all():
+		for department in Department.objects.order_by('amt_order'):
 			d = {}
 			d['did'] = department.id
 			d['name'] = department.name
