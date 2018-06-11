@@ -1006,15 +1006,13 @@ function exportt() {
 	});
 }
 
-function export_single() {
+function export_item(etype) {
 	var a = $("li.active").children('a');
-	var tab_id = parseInt(a.attr('id').slice(8));
-	var tab_text = a.text();
 	var title = $("#title").text();
 	$.ajax({
 		url: window.location.href,
 		type: 'POST',
-		data: {'op': 'export_single', 'year': $("#year").val(), "title": title, "tab_id": tab_id, "tab_text": tab_text},
+		data: {'op': 'export_single', 'year': $("#year").val(), "title": title, "etype": etype},
 		success: function(data) {
 			var data = JSON.parse(data);
 			if (data['result'] == 'OK') {
