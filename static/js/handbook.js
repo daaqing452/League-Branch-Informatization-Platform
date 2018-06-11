@@ -80,8 +80,8 @@ function load_handbook() {
 			}
 			else{
 				$("#nav_2").show();
-				$("#chapter_8").parent().eq(0).attr("class","active");
-				$("#table_8").show();
+				$("#chapter_6").parent().eq(0).attr("class","active");
+				$("#table_6").show();
 			}
 		}
 	});
