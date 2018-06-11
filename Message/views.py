@@ -308,13 +308,27 @@ def handbook_show(request, hid):
 			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'export_single':
+	if op == 'export_item':
 		title = request.POST.get('title')
-		tab_id = int(request.POST.get('tab_id'))
-		tab_text = request.POST.get('tab_text')
+		etype = int(request.POST.get('etype'))
+		content = json.loads(handbook.content)
 		if handbook.htype == 'd':
-			jdata['result'] = 'OK'
-			jdata['export_path'] = export_txt(title + ' - ' + tab_text, json.loads(handbook.content)[tab_id][0][0][0])
+			if etype == 100:
+				jdata['result'] = 'OK'
+				jdata['export_path'] = export_txt(title + ' - 等级评估方案', content[6][0][0][0])
+			elif etype == 101:
+				jdata['result'] = 'OK'
+				jdata['export_path'] = export_txt(title + ' - 实施细则', content[7][0][0][0])
+			elif etype == 102:
+				jdata['result'] = 'OK'
+				jdata['export_path'] = export_txt(title + ' - 等级评估工作领导小组组成', content[8][0][0][0])
+			elif etype == 103:
+				jdata['result'] = 'OK'
+				jdata['export_path'] = export_txt(title + ' - 初评甲级团支部名单', content[9][0][0][0])
+		elif handbook.htype == 'b':
+			if etype == 0:
+				jdata['result'] = 'OK'
+				jdata['export_path'] = export_handbook_fundamental_info(title, content[0])
 		else:
 			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
@@ -401,13 +415,13 @@ def jiatuan_show(request, jid):
 		if etype == 0:
 			jdata["export_path"] = export_jiatuan_fundamental_info(title, content[0])
 		elif etype == 1:
-			jdata["export_path"] = export_txt(title + ' - 基本情况', content[0][2][0][0])
+			jdata["export_path"] = export_txt(title + '-基本情况', content[0][2][0][0])
 		elif etype == 2:
-			jdata["export_path"] = export_txt(title + ' - 基本要求', content[0][3][0][0])
+			jdata["export_path"] = export_txt(title + '-基本要求', content[0][3][0][0])
 		elif etype == 3:
-			jdata["export_path"] = export_txt(title + ' - 支部事业与文化', content[0][4][0][0])
+			jdata["export_path"] = export_txt(title + '-支部事业与文化', content[0][4][0][0])
 		elif etype == 4:
-			jdata["export_path"] = export_txt(title + ' - 支部工作案例', content[1][0])
+			jdata["export_path"] = export_txt(title + '-支部工作案例', content[1][0])
 		else:
 			jdata['result'] = '错误'
 		return HttpResponse(json.dumps(jdata))
@@ -749,7 +763,7 @@ def export_handbook(handbook, aff):
 	return export_path
 
 def export_txt(title, txt):
-	filename = 'media/' + title + ' - ' + str(datetime.datetime.now()) + '.txt'
+	filename = 'media/' + title + '-' + str(datetime.datetime.now()) + '.txt'
 	f = codecs.open(filename, 'w', 'utf-8')
 	txt = re.compile(r'<[^>]+>', re.S).sub('', txt)
 	txt = re.compile(r'\t', re.S).sub('', txt)
@@ -758,7 +772,7 @@ def export_txt(title, txt):
 	return filename
 
 def export_jiatuan_fundamental_info(title, a):
-	filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
+	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
 	f = codecs.open(filename, 'w', 'gbk')
 	f.write('团支部名称,团支部书记姓名,男性团员人数,女性团员人数,团员总人数,男性党员人数,女性党员人数,党员总人数,男性申请入党人数,女性申请入党人数,申请入党总人数,班级男性人数,班级女性人数,班级总人数\n')
 	f.write(a[0][0][0] + ',' + a[0][0][1])
@@ -768,7 +782,7 @@ def export_jiatuan_fundamental_info(title, a):
 	return filename
 
 def export_handbook_fundamental_info(title, a):
-	filename = 'media/' + title + ' - 基本信息 - ' + str(datetime.datetime.now()) + '.csv'
+	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
 	print(a)
-	return
+	xxx
 	f = codecs.open(filename, 'w', 'gbk')
