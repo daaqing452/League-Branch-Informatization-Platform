@@ -99,7 +99,7 @@ def index(request):
 			branchs = Branch.objects.filter(id=material.submit_id)
 			if len(branchs) == 0: continue
 			branch = branchs[0]
-			departments = Department.objects.get(id=branch.did)
+			departments = Department.objects.filter(id=branch.did)
 			if len(departments) == 0: continue
 			department = departments[0]
 			if not department.id in jiatuan_dict: jiatuan_dict[department.id] = []

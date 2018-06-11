@@ -312,29 +312,50 @@ def handbook_show(request, hid):
 		title = request.POST.get('title')
 		etype = int(request.POST.get('etype'))
 		content = json.loads(handbook.content)
+		jdata['result'] = 'OK'
 		if handbook.htype == 'd':
 			if etype == 100:
-				jdata['result'] = 'OK'
-				jdata['export_path'] = export_txt(title + ' - 等级评估方案', content[6][0][0][0])
+				jdata['export_path'] = export_txt(title+'-等级评估方案', content[6][0][0][0])
 			elif etype == 101:
-				jdata['result'] = 'OK'
-				jdata['export_path'] = export_txt(title + ' - 实施细则', content[7][0][0][0])
+				jdata['export_path'] = export_txt(title+'-实施细则', content[7][0][0][0])
 			elif etype == 102:
-				jdata['result'] = 'OK'
-				jdata['export_path'] = export_txt(title + ' - 等级评估工作领导小组组成', content[8][0][0][0])
+				jdata['export_path'] = export_txt(title+'-等级评估工作领导小组组成', content[8][0][0][0])
 			elif etype == 103:
-				jdata['result'] = 'OK'
-				jdata['export_path'] = export_txt(title + ' - 初评甲级团支部名单', content[9][0][0][0])
+				jdata['export_path'] = export_txt(title+'-初评甲级团支部名单', content[9][0][0][0])
+			else:
+				jdata['result'] = '错误 d'
 		elif handbook.htype == 'b':
 			if etype == 0:
-				jdata['result'] = 'OK'
-				jdata['export_path'] = export_handbook_fundamental_info(title, content[0])
+				jdata['export_path'] = export_handbook_fundamental_info(title, content[0][0])
+			elif etype == 1:
+				jdata['export_path'] = export_csv(title+'-奖惩情况', '奖惩对象,时间,内容', content[0][1])
+			elif etype == 2:
+				jdata['export_path'] = export_csv(title+'-团员花名册', '学号,姓名,性别,民族,政治面貌,籍贯,出生日期,入团时间,备注', content[0][2])
+			elif etype == 3:
+				jdata['export_path'] = export_csv(title+'-申请入团名单', '学号,姓名,性别,民族,籍贯,出生日期,申请入团时间,备注', content[0][3])
+			elif etype == 4:
+				jdata['export_path'] = export_csv(title+'-交纳团费情况', '月份,支部人数,应交人数,实交人数,应交金额,实交金额,备注', content[0][4])
+			elif etype == 5:
+				jdata['export_path'] = export_csv(title+'-推优入党名单', '学号,姓名,提交申请书时间,入党时间,转正时间', content[0][5])
+			elif etype == 10:
+				jdata['export_path'] = export_txt(title+'-全年计划', content[1][0][0][0])
+			elif etype == 11:
+				jdata['export_path'] = export_txt(title+'-春季学期计划', content[1][1][0][0])
+			elif etype == 12:
+				jdata['export_path'] = export_txt(title+'-秋季学期计划', content[1][2][0][0])
+			elif etype == 20:
+				jdata['export_path'] = export_txt(title+'-支部事业简介', content[2][0][0][0])
+			elif etype == 21:
+				jdata['export_path'] = export_txt(title+'-支部事业目标', content[2][1][0][0])
+			elif etype == 22:
+				jdata['export_path'] = export_txt(title+'-预期成果', content[2][2][0][0])
+			elif etype == 30:
+				jdata['export_path'] = export_handbook_theme_activity(title+'-主题团日', content[3])
+			else:
+				jdata['result'] = '错误 b'
 		else:
-			jdata['result'] = '错误'
+			jdata['result'] = '错误 0'
 		return HttpResponse(json.dumps(jdata))
-
-	if op == 'export_item':
-		pass
 
 	rdata['readonly'] = True
 	if handbook.htype == 'd':
@@ -771,6 +792,20 @@ def export_txt(title, txt):
 	f.close()
 	return filename
 
+def export_csv(title, first_row, a):
+	filename = 'media/' + title + '-' + str(datetime.datetime.now()) + '.csv'
+	f = codecs.open(filename, 'w', 'gbk')
+	f.write(first_row + '\n')
+	for b in a:
+		for i in range(len(b)):
+			f.write('"' + b[i] + '"')
+			if i == len(b)-1:
+				f.write('\n')
+			else:
+				f.write(',')
+	f.close()
+	return filename
+
 def export_jiatuan_fundamental_info(title, a):
 	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
 	f = codecs.open(filename, 'w', 'gbk')
@@ -783,6 +818,15 @@ def export_jiatuan_fundamental_info(title, a):
 
 def export_handbook_fundamental_info(title, a):
 	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
-	print(a)
-	xxx
 	f = codecs.open(filename, 'w', 'gbk')
+	f.write('团员人数,支部书记	,组织委员	,宣传委员	,备注')
+	for b in a[1:]: f.write(',' + b[0])
+	f.write('\n')
+	f.write(a[0][0] + ',' + a[0][1] + ',' + a[0][2] + ',' + a[0][3] + ',"' + a[0][4] + '"')
+	for b in a[1:]: f.write(',' + b[1])
+	f.write('\n')
+	f.close()
+	return filename
+
+def export_handbook_theme_activity(title, a):
+	pass

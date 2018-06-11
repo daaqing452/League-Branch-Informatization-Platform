@@ -237,7 +237,7 @@
             <div  style="display: none;" id="table_1">
                 <h4>全年计划
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(6)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(10)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="quannianjihua">
@@ -246,7 +246,7 @@
                 </table>
                 <h4>春季学期计划
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(7)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(11)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="chunjixueqijihua">
@@ -255,7 +255,7 @@
                 </table>
                 <h4>秋季学期计划
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(8)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(12)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="qiujixueqijihua">
@@ -268,7 +268,7 @@
             <div  style="display: none;" id="table_2">
                 <h4>支部事业简介
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(9)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(20)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyejianjie">
@@ -277,7 +277,7 @@
                 </table>
                 <h4>支部事业目标
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(10)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(21)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyemubiao">
@@ -286,7 +286,7 @@
                 </table>
                 <h4>预期成果
                 {% if readonly %}
-                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(11)">导出</button>
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(22)">导出</button>
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="zhibushiyeyuqichengguo">
@@ -296,7 +296,10 @@
             </div>
             <!--思想引领-->
             <div  style="display: none;" id="table_3">
-                <h4>主题团日</h4>
+                <h4>主题团日
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(30)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed"  style="table-layout:fixed;word-break:break-all">
                         <tr>
                             <td align="center" style="width: 250px;">活动主题</td>
