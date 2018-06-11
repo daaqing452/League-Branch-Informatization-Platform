@@ -333,7 +333,10 @@
                         </tr>
                         
                 </table>
-                <h4>组织生活</h4>
+                <h4>组织生活
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(31)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
                             <td align="center">活动类型</td>
@@ -374,7 +377,10 @@
             
             <!--自定义-->
             <div  style="display: none;" id="table_4">
-                <h4>支部活动</h4>
+                <h4>支部活动
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(40)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all;" >
                         <tr>
                             <td align="center">活动类型</td>
@@ -413,13 +419,19 @@
             </div>
             <!--工作总结-->
             <div style="display: none;" id="table_5">
-                <h4>秋季学期工作总结</h4>
+                <h4>秋季学期工作总结
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(50)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="qiujixueqigongzuozongjie">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="qiujixueqigongzuozongjie_bianji"></textarea></td>
                         </tr>
                 </table>
-                <h4>春季学期工作总结</h4>
+                <h4>春季学期工作总结
+                {% if readonly %}
+                <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(51)">导出</button>
+                {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr class="chunjixueqigongzuozongjie">
                             <td><textarea style="width: 100%; height: 200px; overflow: auto; resize: none;" name="chunjixueqigongzuozongjie_bianji"></textarea></td>
@@ -464,7 +476,7 @@
                 <button class="btn btn-primary btn-xs" style="float: left;" onclick="export_item(103)">导出</button>
             </div>
             {% if readonly %}
-            <button id="button_export" class="btn btn-primary" style="float: right; width: 150px; margin-left:20px" onclick="exportt()">全部导出为PDF</button>
+            <button id="button_export" class="btn btn-primary" style="float: right; width: 150px; margin-left:20px" disabled='disabled' onclick="exportt()">全部导出为PDF</button>
             {% else %}
             <button id="button_submit" class="btn btn-primary" style="float: right; width: 100px; margin-left:20px" onclick="submit(1)">提交</button>
             <button id="button_save" class="btn btn-primary" style="float: right; width: 100px; margin-left:20px" onclick="submit(0)">暂存</button>

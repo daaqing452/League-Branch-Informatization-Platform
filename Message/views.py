@@ -350,7 +350,15 @@ def handbook_show(request, hid):
 			elif etype == 22:
 				jdata['export_path'] = export_txt(title+'-预期成果', content[2][2][0][0])
 			elif etype == 30:
-				jdata['export_path'] = export_handbook_theme_activity(title+'-主题团日', content[3])
+				jdata['export_path'] = export_handbook_theme_activity(title+'-主题团日', '活动主题,活动时间,地点,参与人数,主持人,记录人,活动内容,活动总结', content[3][0])
+			elif etype == 31:
+				jdata['export_path'] = export_handbook_theme_activity(title+'-组织生活', '活动类型,活动主题,活动时间,地点,参与人数,主持人,记录人,活动内容,活动总结', content[3][1])
+			elif etype == 40:
+				jdata['export_path'] = export_handbook_theme_activity(title+'-支部活动', '活动类型,活动主题,活动时间,地点,参与人数,主持人,记录人,活动内容,活动总结', content[4][0])
+			elif etype == 50:
+				jdata['export_path'] = export_txt(title+'-秋季学期工作总结', content[5][0][0][0])
+			elif etype == 51:
+				jdata['export_path'] = export_txt(title+'-春季学期工作总结', content[5][1][0][0])
 			else:
 				jdata['result'] = '错误 b'
 		else:
@@ -604,6 +612,11 @@ def save_file(path, file_name, data):
     file.flush()
     file.close()
 
+def filterhtml(txt):
+	txt = re.compile(r'<[^>]+>', re.S).sub('', txt)
+	txt = re.compile(r'\t', re.S).sub('', txt)
+	txt = re.compile(r'&nbsp;', re.S).sub(' ', txt)
+	return txt
 
 
 def export_handbook(handbook, aff):
@@ -786,9 +799,7 @@ def export_handbook(handbook, aff):
 def export_txt(title, txt):
 	filename = 'media/' + title + '-' + str(datetime.datetime.now()) + '.txt'
 	f = codecs.open(filename, 'w', 'utf-8')
-	txt = re.compile(r'<[^>]+>', re.S).sub('', txt)
-	txt = re.compile(r'\t', re.S).sub('', txt)
-	f.write(txt)
+	f.write(filterhtml(txt))
 	f.close()
 	return filename
 
@@ -810,8 +821,8 @@ def export_jiatuan_fundamental_info(title, a):
 	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
 	f = codecs.open(filename, 'w', 'gbk')
 	f.write('团支部名称,团支部书记姓名,男性团员人数,女性团员人数,团员总人数,男性党员人数,女性党员人数,党员总人数,男性申请入党人数,女性申请入党人数,申请入党总人数,班级男性人数,班级女性人数,班级总人数\n')
-	f.write(a[0][0][0] + ',' + a[0][0][1])
-	for i in range(12): f.write(',' + a[1][i//3][i%3])
+	f.write('"'+a[0][0][0]+'","'+a[0][0][1]+'"')
+	for i in range(12): f.write(',"'+a[1][i//3][i%3]+'"')
 	f.write('\n')
 	f.close()
 	return filename
@@ -820,13 +831,21 @@ def export_handbook_fundamental_info(title, a):
 	filename = 'media/' + title + '-基本信息-' + str(datetime.datetime.now()) + '.csv'
 	f = codecs.open(filename, 'w', 'gbk')
 	f.write('团员人数,支部书记	,组织委员	,宣传委员	,备注')
-	for b in a[1:]: f.write(',' + b[0])
+	for b in a[1:]: f.write(',"' + b[0] + '"')
 	f.write('\n')
-	f.write(a[0][0] + ',' + a[0][1] + ',' + a[0][2] + ',' + a[0][3] + ',"' + a[0][4] + '"')
-	for b in a[1:]: f.write(',' + b[1])
+	f.write('"'+a[0][0]+'","'+a[0][1]+'","'+a[0][2]+'","'+a[0][3]+'","' + a[0][4] + '"')
+	for b in a[1:]: f.write(',"' + b[1] + '"')
 	f.write('\n')
 	f.close()
 	return filename
 
-def export_handbook_theme_activity(title, a):
-	pass
+def export_handbook_theme_activity(title, first_row, a):
+	filename = 'media/' + title + '-主题团日-' + str(datetime.datetime.now()) + '.csv'
+	f = codecs.open(filename, 'w', 'gbk')
+	f.write(first_row+'\n')
+	for i in range(0,len(a),3):
+		for b in a[i]: f.write('"'+b+'",')
+		f.write('"'+filterhtml(a[i+1][0])+'",')
+		f.write('"'+filterhtml(a[i+2][0])+'"\n')
+	f.close()
+	return filename
