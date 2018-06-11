@@ -205,7 +205,7 @@ def department(request, did):
 
 	if op == 'get_departments':
 		departments = []
-		for department in Department.objects.all():
+		for department in Department.objects.order_by('amt_order'):
 			d = {}
 			d['did'] = department.id
 			d['name'] = department.name
@@ -319,7 +319,7 @@ def branch(request, bid):
 	if op == 'get_branchs':
 		did = int(request.POST.get("did", -1))
 		branchs = []
-		for branch in Branch.objects.filter(did=did):
+		for branch in Branch.objects.filter(did=did).order_by('amt_order'):
 			d = {}
 			d['bid'] = branch.id
 			d['name'] = branch.name
