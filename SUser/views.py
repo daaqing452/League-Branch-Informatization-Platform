@@ -103,6 +103,10 @@ def index(request):
 			if len(departments) == 0: continue
 			department = departments[0]
 			if not department.id in jiatuan_dict: jiatuan_dict[department.id] = []
+			assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+			if len(assignments) == 0: continue
+			jiatuan_branchs = json.loads(assignments[0].branchs)
+			if not str(branch.id) in jiatuan_branchs: continue
 			d = {}
 			d['name'] = branch.name
 			d['material'] = '/jiatuan/' + str(material.id) + '/'
@@ -262,13 +266,16 @@ def department(request, did):
 				return HttpResponse(json.dumps(jdata))
 			minge = int(minge[str(department.id)])
 		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
-		if len(assignments) > 0:
-			jdata['info'] = '已通知'
-			return HttpResponse(json.dumps(jdata))
 		if len(jiatuans) != minge:
 			jdata['info'] = '支部数与名额不符'
 			return HttpResponse(json.dumps(jdata))
-		assignment = JiatuanAssignment.objects.create(year=year, did=department.id, branchs=json.dumps(jiatuans))
+		if len(assignments) > 0:
+			jdata['info'] = '已通知'
+			assignment = assignments[0]
+		else:
+			assignment = JiatuanAssignment.objects.create(year=year, did=department.id)
+		assignment.branchs = json.dumps(jiatuans)
+		assignment.save()
 		jdata['info'] = 'yes'
 		for jiatuan in jiatuans:
 			branch = Branch.objects.get(id=jiatuan)

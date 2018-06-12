@@ -109,7 +109,7 @@ function jiatuan_year_onchange() {
 				var branch = branchs[i];
 				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' onclick='branch_checkbox_onclick()' branch_name='" + branch["name"] + "' ";
 				if (data['assigned']) {
-					s += "disabled=true ";
+					//s += "disabled=true ";
 					if (assigned_branchs.indexOf(''+branch["bid"]) != -1) s += "checked='checked' ";
 				}
 				s += "/> ";
@@ -126,7 +126,7 @@ function jiatuan_year_onchange() {
 				}
 			}
 			if (data['assigned']) {
-				$('button#inform').attr("disabled", "disabled");
+				//$('button#inform').attr("disabled", "disabled");
 				if (data['submitted']) {
 					$('#myModelYes').text("已向校级提交");
 					$('#myModelYes').attr('disabled', 'disabled');
