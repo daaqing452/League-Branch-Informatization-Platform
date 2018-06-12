@@ -21,7 +21,7 @@
             <td>
                 <span class="glyphicon glyphicon-user"></span>&nbsp;
                 {% for admin in d.admins %}
-                    {{ admin.username }}<span style="color:#ff0000;font-size:1px" class="glyphicon glyphicon-remove" sid={{ admin.id }} dbid={{ d.object.id }} onclick="delete_db_admin(this)"></span>&nbsp;&nbsp;
+                    {{ admin.username }}<span style="color:#ff0000;font-size:10px" class="glyphicon glyphicon-remove" sid={{ admin.id }} dbid={{ d.object.id }} onclick="delete_db_admin(this)"></span>&nbsp;&nbsp;
                 {% endfor %}
             </td>
     		<td><span class="glyphicon glyphicon-arrow-up" onclick="updown(this, -1)"> </span></td>

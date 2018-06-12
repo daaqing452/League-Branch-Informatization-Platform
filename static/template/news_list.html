@@ -12,10 +12,10 @@
 		    	<div>
 		    		<a href="/news/{{ news.id }}/"> {{ news.title }} </a>
 		    	</div>
-		    	<div style="color:#aaaaaa; font-size:1px; float:right">
+		    	<div style="color:#aaaaaa; font-size:10px; float:right">
 		    		<span> {{ news.post_time | date:"Y-m-d H:i:s" }}</span>
 		    		{% if is_admin %}
-		    		<span nid={{ news.id }} class="label label-danger" onclick="deletee(this)"> 删除 </span>
+		    		<span nid={{ news.id }} class="btn-danger btn-xs" onclick="deletee(this)"> 删除 </span>
 		    		{% endif %}
 		    	</div>
 		    </li>

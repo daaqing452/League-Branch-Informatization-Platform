@@ -117,7 +117,7 @@ function jiatuan_year_onchange() {
 						var jiatuans = department['jiatuans'];
 						for (var j = 0; j < jiatuans.length; j++) {
 							var jiatuan = jiatuans[j];
-							s += "<div style=\"font-size:5px\">" + jiatuan["name"] + " ";
+							s += "<div style=\"font-size:10px\">" + jiatuan["name"] + " ";
 							s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
 							if (jiatuan.hasOwnProperty("handbook")) {
 								s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
