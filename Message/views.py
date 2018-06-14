@@ -854,7 +854,7 @@ def export_handbook_theme_activity(title, first_row, a):
 def authority_files(request):
 	rdata, op, suser = get_request_basis(request)
 
-	if request.user.is_staff:
+	if suser.admin_school:
 		helps = reversed(Help.objects.all())
 	else:
 		helps = reversed(Help.objects.filter(released=True))
