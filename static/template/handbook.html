@@ -47,7 +47,7 @@
                 {% endif %}</h4>
                 <table class="table table-condensed" style="table-layout:fixed;word-break:break-all">
                         <tr>
-                            <td align="center">团员人数</td>
+                            <td align="center">团员人数(含党员、预备党员)</td>
                             <td align="center">支部书记</td>
                             <td align="center">组织委员</td>
                             <td align="center">宣传委员</td>
@@ -64,7 +64,7 @@
                                 <span class="glyphicon glyphicon-plus" onclick="addOption_3(this)"></span></span>
                         </tr>
                 </table>
-                <h4>奖惩情况
+                <h4>奖惩情况(填写本学年情况，没有可不填)
                 {% if readonly %}
                 <button class="btn btn-primary btn-xs" style="float:right" onclick="export_item(1)">导出</button>
                 {% endif %}</h4>
@@ -133,7 +133,8 @@
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="男/女"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XX族"></textarea></td>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="共青团员、中共预备党员、中共党员"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;display: none"></textarea><select style="width: 100%; height: 31px;"><option value = "共青团员">共青团员</option>
+                            <option value = "中共预备党员">中共预备党员</option><option value = "中共党员">中共党员</option></select></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XX省XX市(县)"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX" ></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
@@ -350,7 +351,8 @@
                             <td align="center">操作</td>
                         </tr>
                         <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="推优入党、批评与自我批评、基本理论学习等"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;display: none"></textarea><select style="width: 100%; height: 31px;"><option value = "推优入党">推优入党</option>
+                            <option value = "批评与自我批评">批评与自我批评</option><option value = "基本理论学习">基本理论学习</option><option value = "其他">其他</option></select></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
@@ -394,7 +396,8 @@
                             <td align="center">操作</td>
                         </tr>
                         <tr>
-                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="学风建设、体育活动、社会实践、支部事业与文化"></textarea></td>
+                            <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;display: none"></textarea><select style="width: 100%; height: 31px;"><option value = "学风建设">学风建设</option>
+                            <option value = "体育活动">体育活动</option><option value = "社会实践">社会实践</option><option value = "支部事业与文化">支部事业与文化</option><option value = "其他">其他</option></select></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>
                             <td class="huodongshijian"><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;" placeholder="XXXX-XX-XX"></textarea></td>
                             <td><textarea style="width: 100%; height: 31px; overflow: auto; resize: none;"></textarea></td>

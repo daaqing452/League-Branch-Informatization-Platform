@@ -50,5 +50,8 @@ urlpatterns = [
     url(r'^global_setting/$', global_setting),
     url(r'^amt_setting/(i)/$', amt_setting),
     url(r'^amt_setting/(d)/([0-9]{1,9})/$', amt_setting),
+
+    url(r'^authority_files/$', authority_files),
+    #url(r'^authority_files_tip/(\d{1,10})/$', authority_files_tip),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

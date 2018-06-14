@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+	{% load static %}
+    {% block context %}
+<script src='{% static 'js/authority_files.js' %}'> </script>
+<div class="col-md-offset-1 col-md-10 ">
+<h3 class="text-center"> 规范文件 </h3> 
+<table class="table table-hover"> 
+	<tr>
+		{% if user.is_staff %}
+		<td align=center> 创建日期 </td>
+		{% endif %}
+		<td align=center> 标题 </td>
+		{% if user.is_staff %}
+		<td align=center> 状态 </td>
+		<td align=center> </td>
+		{% endif %}
+	</tr>
+	{% for help in helps %}
+	<tr>
+		{% if user.is_staff %}
+		<td> {{ help.create_time | date:"Y-m-d H:i:s" }} </td>
+		{% endif %}
+		<td><a href='/tip/{{ help.id }}/'>
+			{% if help.title %}
+				{{ help.title }}
+			{% else %}
+				（未命名）
+			{% endif %}
+		</a></td>
+		{% if user.is_staff %}
+		<td>
+			{% if help.released %}
+			已发布
+			{% else %}
+			尚未发布
+			{% endif %}
+		</td>
+		<td hid={{ help.id }} onclick="delete_help(this)"> <span class='glyphicon glyphicon-remove'> </td>
+		{% endif %}
+	</tr>
+	{% endfor %}
+</table>
+{% if user.is_staff %}
+<button class="btn btn-success " style="float:right" onclick="add_one()"> 添加 </button> <br/>
+{% endif %}
+
+{{ info }}
+</div>
+
+    {% endblock context %}

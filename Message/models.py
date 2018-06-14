@@ -58,3 +58,12 @@ class JiatuanMaterial(models.Model):
 	content = models.TextField(default='')
 	submitted = models.BooleanField(default=False)
 	attachment = models.TextField(default='[]')
+
+class Help(models.Model):
+	title = models.CharField(max_length=128, default='')
+	content = models.TextField(default='')
+	attachment = models.TextField(default='[]')
+	founder = models.IntegerField(default=-1)
+	released = models.BooleanField(default=0)
+	create_time = models.DateTimeField(default='1970-01-01 00:00:00.000000')
+	release_time = models.DateTimeField(default='1970-01-01 00:00:00.000000')

@@ -849,3 +849,21 @@ def export_handbook_theme_activity(title, first_row, a):
 		f.write('"'+filterhtml(a[i+2][0])+'"\n')
 	f.close()
 	return filename
+
+def authority_files(request):
+	# 验证身份
+	if not request.user.is_authenticated:
+		return Utils.redirect_login(request)
+	rdata = {}
+	rdata['user'] = user = request.user
+	rdata['suser'] = suser = SUser.objects.get(uid=user.id)
+	op = request.POST.get('op')
+
+	if user.is_staff:
+		helps = reversed(Help.objects.all())
+	else:
+		helps = reversed(Help.objects.filter(released=True))
+
+	rdata['helps'] = helps
+	return render(request, 'authority_files.html', rdata)
+

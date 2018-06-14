@@ -31,7 +31,6 @@ var htype = "b";
 $(document).ready(function(){
 	for (var i = 0; i < years.length; i++) $("#year").append("<option>" + years[i] + "</option>");
 	if (!readonly) year_onchange();
-	
 });
 
 var options = {  
@@ -52,14 +51,21 @@ items : ['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'itali
 var bianji_list = new Array("quannianjihua_bianji","chunjixueqijihua_bianji","qiujixueqijihua_bianji","zhibushiyejianjie_bianji","zhibushiyemubiao_bianji",
 					"zhibushiyeyuqichengguo_bianji","qiujixueqigongzuozongjie_bianji","chunjixueqigongzuozongjie_bianji",
 					"huodongneirong_bianji_0","huodongneirong_bianji_1","huodongneirong_bianji_2","huodongneirong_bianji_3",
-					"huodongneirong_bianji_4","huodongneirong_bianji_5","huodongneirong_bianji_6","huodongneirong_bianji_7",
-					"huodongneirong_bianji_8","huodongneirong_bianji_9","dengjipinggufangan_bianji",
+					"huodongneirong_bianji_4","huodongneirong_bianji_5","dengjipinggufangan_bianji",
 					"shishixize_bianji","dengjipinggulingdao_bianji","chujijiajituanzhibu_bianji");
 var editor = new Array();  
 KindEditor.ready(function(K) {  
 	for(var i = 0; i < bianji_list.length; i++){
 		editor[i] = K.create('textarea[name="'+bianji_list[i]+'"]',options);
-	
+		if(bianji_list[i].indexOf("huodongneirong_bianji") >= 0){
+			var blength = bianji_list[i].length;
+			if(parseInt(bianji_list[i][blength-1])%2 == 0){
+				editor[i].html("填写活动具体形式、内容、环节,不可只写名称,过于简略");
+			}
+			else{
+				editor[i].html("填写活动意义、同学感想及收获、不足之处等");
+			}
+		}
 	}
 });  
 
@@ -125,6 +131,7 @@ function fill_content(content){
 	if(content == null){
 		return;
 	}
+	console.log(JSON.stringify(content));
 	//console.log(content);
 	var HANDBOOK_content = JSON.parse(content);
 	for(var i = 0; i < 10; i++){
@@ -170,6 +177,7 @@ function fill_content(content){
 
 						KindEditor.ready(function(K) { 
 							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+							editor[bianji_length].html("填写活动具体形式、内容、环节,不可只写名称,过于简略");
 						});
 
 						var tr = table.find("tr").last();
@@ -179,6 +187,7 @@ function fill_content(content){
 
 						KindEditor.ready(function(K) { 
 							editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+							editor[bianji_length].html("填写活动意义、同学感想及收获、不足之处等");
 						});  
 					}
 					
@@ -203,20 +212,30 @@ function fill_content(content){
 							}
 						} 
 						
-						
 						if(keditor_flag){
 							var textarea_name = tr.find("textarea").last().attr("name");
 							var editor_index = bianji_list.indexOf(textarea_name);
 							editor[editor_index].edit.doc.body.style.backgroundColor = '';
 							var TR_content = TABLE_content[content_cnt];
-							editor[editor_index].html(TR_content[0]);
+							if(TR_content[0] != ""){
+								editor[editor_index].html(TR_content[0]);
+							}
 							//console.log(tr.attr("class")+" "+textarea_content);
 						}
 						else{
 							var TR_content = TABLE_content[content_cnt];
 							var textarea_num = TR_content.length;
 							for(var n = 0; n < textarea_num; n++){
-								tr.find("textarea").eq(n).val(TR_content[n]);
+								if(tr.find("textarea").eq(n).parents("td").eq(0).find("select").length != 0){
+									//console.log("this one has select");
+									var select = tr.find("textarea").eq(n).parents("td").eq(0).find("select").eq(0);	
+									select.val(TR_content[n]);
+								}
+								else{
+									tr.find("textarea").eq(n).val(TR_content[n]);
+									tr.find("textarea").eq(n).css("background","");
+								}
+								
 								
 							}
 						}
@@ -277,8 +296,15 @@ function fill_content(content){
 					}
 					else{
 						for(var n = 0; n < textarea_num; n++){
-							tr.find("textarea").eq(n).val(TR_content[n]);
-							tr.find("textarea").eq(n).css("background","");
+							if(tr.find("textarea").eq(n).parents("td").eq(0).find("select").length != 0){
+								//console.log("this one has select");
+								var select = tr.find("textarea").eq(n).parents("td").eq(0).find("select").eq(0);	
+								select.val(TR_content[n]);
+							}
+							else{
+								tr.find("textarea").eq(n).val(TR_content[n]);
+								tr.find("textarea").eq(n).css("background","");
+							}
 						}
 					}
 					
@@ -429,9 +455,18 @@ function read_only(content){
 							var TR_content = TABLE_content[content_cnt];
 							var textarea_num = TR_content.length;
 							for(var n = 0; n < textarea_num; n++){
+								if(tr.find("textarea").eq(n).parents("td").eq(0).find("select").length != 0){
+									//console.log("this one has select");
+									var select = tr.find("textarea").eq(n).parents("td").eq(0).find("select").eq(0);	
+									select.remove();
+									tr.find("textarea").eq(n).show();
+
+								}
+								
 								tr.find("textarea").eq(n).val(TR_content[n]);
 								tr.find("textarea").eq(n).attr("disabled", "disabled");
 								tr.find("textarea").eq(n).attr("readonly", "readonly");
+								
 								
 							}
 						}
@@ -490,9 +525,18 @@ function read_only(content){
 					}
 					else{
 						for(var n = 0; n < textarea_num; n++){
+							if(tr.find("textarea").eq(n).parents("td").eq(0).find("select").length != 0){
+								//console.log("this one has select");
+								var select = tr.find("textarea").eq(n).parents("td").eq(0).find("select").eq(0);	
+								select.remove();
+								tr.find("textarea").eq(n).show();
+
+							}
+							
 							tr.find("textarea").eq(n).val(TR_content[n]);
 							tr.find("textarea").eq(n).attr("disabled", "disabled");
 							tr.find("textarea").eq(n).attr("readonly", "readonly");
+							
 						}
 					}
 				}
@@ -779,18 +823,22 @@ function submit(subtype){
 						}
 					}
 					for(var n = 0; n < textarea_num; n++){
-						
-						tr.find("textarea").eq(n).css("background","");
-						var textarea_content = tr.find("textarea").eq(n).val();
-						var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
-						if (subtype == 0) false_message = true;
-						if(false_message != true){
-							if(is_in_array(wrong_messages,false_message) == false){
-								wrong_messages.push(false_message);
+						if(tr.find("textarea").eq(n).parents("td").eq(0).find("select").length != 0){
+							//console.log("this one has select");
+							var select = tr.find("textarea").eq(n).parents("td").eq(0).find("select").eq(0);
+							var textarea_content = select.find("option:selected").text();
+						}
+						else{
+							tr.find("textarea").eq(n).css("background","");
+							var textarea_content = tr.find("textarea").eq(n).val();
+							var false_message = check_fill(tr,already_fill,tr.attr("class"),n,textarea_content);
+							if (subtype == 0) false_message = true;
+							if(false_message != true){
+								if(is_in_array(wrong_messages,false_message) == false){
+									wrong_messages.push(false_message);
+								}
+								tr.find("textarea").eq(n).css("background","#CCCCCC");
 							}
-							tr.find("textarea").eq(n).css("background","#CCCCCC");
-							
-							
 						}
 						TR_content.push(textarea_content);
 					}
@@ -871,6 +919,7 @@ function addOption_2(b){
 
 	KindEditor.ready(function(K) { 
 		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+		editor[bianji_length].html("填写活动具体形式、内容、环节,不可只写名称,过于简略");
 	});
 
 	var tr = $this_table.find("tr").last();
@@ -880,6 +929,7 @@ function addOption_2(b){
 
 	KindEditor.ready(function(K) { 
 		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+		editor[bianji_length].html("填写活动意义、同学感想及收获、不足之处等");
 	});  
 
 }
@@ -923,6 +973,7 @@ function addOption_leixing(b){
 
 	KindEditor.ready(function(K) { 
 		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+		editor[bianji_length].html("填写活动具体形式、内容、环节,不可只写名称,过于简略");
 	});
 
 	var tr = $this_table.find("tr").last();
@@ -932,6 +983,7 @@ function addOption_leixing(b){
 
 	KindEditor.ready(function(K) { 
 		editor[bianji_length] = K.create('textarea[name="huodongneirong_bianji_'+bianji_length+'"]',options);
+		editor[bianji_length].html("填写活动意义、同学感想及收获、不足之处等");
 	});  
 }
 

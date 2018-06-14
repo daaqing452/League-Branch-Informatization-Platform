@@ -127,11 +127,12 @@ function fill_content(content){
 }
 
 function read_only(content){
-	if (!content) content = '[[[["1","2"]],[["3","4",""],["","",""],["","",""],["","",""]],[[""]],[[""]],[[""]]],["爱中国"],["/media/20170904122418-ctr_heat_map_page.png","/media/20170904122425-duration_heat_map_row.png"]]';
+	if (!content) return
 	var JIATUAN_content = JSON.parse(content);
 	var SHENQING_content = JIATUAN_content[0];
 	var div = $("#table_0");
 	var table_num = div.find("table").length;
+
 	for(var k = 0; k < table_num; k++){
 		var TABLE_content = SHENQING_content[k]
 		var table = div.find("table").eq(k);
@@ -162,9 +163,9 @@ function read_only(content){
 	KindEditor.remove('textarea[name="photo"]');
 	$("#photo_text").hide();
 	$(".attachment").remove();
-	$("#case_text").val(JIATUAN_content[1][0]);
-	$("#case_text").attr("disabled", "disabled");
-	$("#case_text").attr("readonly", "readonly");
+	$("#case_text").remove();
+	$("#table_1").append('<div style=\"height: 300px; width: 100%; overflow: auto; resize: none; border:1px solid #ADADAD;\"></div>')
+	$("#table_1").find("div").last().append(JIATUAN_content[1][0]);
 	var PIC_content = JIATUAN_content[2];
 	for(var i = 0; i < PIC_content.length; i++){
 		var url = PIC_content[i];
