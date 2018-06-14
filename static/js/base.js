@@ -272,7 +272,7 @@ function logout(){
 		data: {"op": "logout"},
 		success: function(data) {
 			var data = JSON.parse(data);
-			window.location.reload();
+			window.location.href = "/index/";
 		}
 	});
 }

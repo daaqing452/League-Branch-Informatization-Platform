@@ -111,7 +111,7 @@ function submit(){
         success: function(data) {
         	var data = JSON.parse(data);
         	alert('发布成功');
-            window.location.href = '/authority_files/';
+            window.location.href = '/case_study/';
         }
 	});
 	return;

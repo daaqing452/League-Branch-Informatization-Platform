@@ -53,5 +53,9 @@ urlpatterns = [
 
     url(r'^authority_files/$', authority_files),
     url(r'^authority_files_tip/(\d{1,10})/$', authority_files_tip),
+    url(r'^announcement/$', announcement),
+    url(r'^announcement_tip/(\d{1,10})/$', announcement_tip),
+    url(r'^case_study/$', case_study),
+    url(r'^case_study_tip/(\d{1,10})/$', case_study_tip),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
