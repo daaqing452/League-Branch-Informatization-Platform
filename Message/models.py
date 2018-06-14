@@ -60,6 +60,7 @@ class JiatuanMaterial(models.Model):
 	attachment = models.TextField(default='[]')
 
 class Help(models.Model):
+	#authourity_files
 	title = models.CharField(max_length=128, default='')
 	content = models.TextField(default='')
 	attachment = models.TextField(default='[]')

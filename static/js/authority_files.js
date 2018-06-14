@@ -1,6 +1,6 @@
 function add_one(){
 	$.ajax({
-		url: '/tip/00000/',
+		url: '/authority_files_tip/00000/',
 		type: 'POST',
 		data: {'op': 'create'},
 		success: function(data) {
@@ -15,7 +15,7 @@ function delete_help(obj) {
 		var td = $(obj);
 		var hid = td.attr('hid');
 		$.ajax({
-			url: '/tip/' + hid + '/',
+			url: '/authority_files_tip/' + hid + '/',
 			type: 'POST',
 			data: {'op': 'delete'},
 			success: function(data) {

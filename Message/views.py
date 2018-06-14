@@ -864,19 +864,14 @@ def authority_files(request):
 
 def authority_files_tip(request,hid):
 	# 验证身份
-	if not request.user.is_authenticated:
-		return Utils.redirect_login(request)
-	rdata = {}
-	rdata['user'] = user = request.user
-	rdata['suser'] = suser = SUser.objects.get(uid=user.id)
-	op = request.POST.get('op')
+	rdata, op, suser = get_request_basis(request)
 
 	helps = Help.objects.filter(id=int(hid))
 	if len(helps) == 0:
 		rdata['info'] = '帮助不存在'
 	else:
 		help = helps[0]
-		if not request.user.is_staff and not help.released:
+		if not suser.admin_school and not help.released:
 			return render(request, 'permission_denied.html', {})
 
 	if op == 'create':
