@@ -854,7 +854,7 @@ def export_handbook_theme_activity(title, first_row, a):
 def authority_files(request):
 	rdata, op, suser = get_request_basis(request)
 
-	if suser.admin_school:
+	if suser is not None and suser.admin_school:
 		helps = reversed(Help.objects.all())
 	else:
 		helps = reversed(Help.objects.filter(released=True))
@@ -900,7 +900,7 @@ def authority_files_tip(request,hid):
 def announcement(request):
 	rdata, op, suser = get_request_basis(request)
 
-	if suser.admin_school:
+	if suser is not None and suser.admin_school:
 		helps = reversed(AHelp.objects.all())
 	else:
 		helps = reversed(AHelp.objects.filter(released=True))
@@ -946,7 +946,7 @@ def announcement_tip(request,hid):
 def case_study(request):
 	rdata, op, suser = get_request_basis(request)
 
-	if suser.admin_school:
+	if suser is not None and suser.admin_school:
 		helps = reversed(CHelp.objects.all())
 	else:
 		helps = reversed(CHelp.objects.filter(released=True))
