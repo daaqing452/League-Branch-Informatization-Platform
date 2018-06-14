@@ -628,4 +628,3 @@ def global_setting(request):
 		return render(request, 'global_setting.html', rdata)
 	else:
 		return render(request, 'permission_denied.html', rdata)
-
