@@ -25,7 +25,42 @@ def index(request):
 	if op == 'login':
 		username = request.POST.get('username', '')
 		password = request.POST.get('password', '')
-		users = User.objects.filter(username=username)
+
+		if username is not None and password is not None:
+			users = User.objects.filter(username=username)
+			existed = (len(users) > 0)
+			
+			# 清华账号
+			if username.isdigit() and len(username) == 10:
+				yes = auth_tsinghua(request, username, password)
+				if yes:
+					# 不存在就新建
+					if not existed:
+						password = Utils.hash_md5(username)
+						user = User.objects.create_user(username=username, password=password)
+						suser = SUser.objects.create(uid=user.id, username=username)
+					# 登录
+					user = auth.authenticate(username=username, password=password)
+					auth.login(request, user)
+					jdata['result'] = '成功'
+				else:
+					jdata['result'] = '密码错误'
+			
+			# 非清华账号
+			else:
+				if existed:
+					user = auth.authenticate(username=username, password=password)
+					if user is not None:
+						auth.login(request, user)
+						jdata['result'] = '成功'
+					else:
+						jdata['result'] = '密码错误'
+				else:
+					jdata['result'] = '用户名不存在'
+
+		return HttpResponse(json.dumps(jdata))
+
+		'''users = User.objects.filter(username=username)
 		if len(users) == 0:
 			jdata['result'] = '用户名不存在'
 		else:
@@ -45,7 +80,7 @@ def index(request):
 				jdata['result'] = '成功'
 			else:
 				jdata['result'] = '密码错误'
-		return HttpResponse(json.dumps(jdata))
+		return HttpResponse(json.dumps(jdata))'''
 
 	if op == 'logout':
 		auth.logout(request)
