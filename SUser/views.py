@@ -15,16 +15,33 @@ import json
 import random
 
 NEWS_SHOW_NUM = 8
-
+MAGIC_NUMBER = 456321887;
 
 @csrf_exempt 
 def index(request):
 	rdata, op, suser = get_request_basis(request)
 	jdata = {}
 
+	def uglyDecrypt(s):
+		t = ''
+		for i in range(0, len(s), 7):
+			x = 0
+			tt = ''
+			for j in range(6, -1, -1):
+				y = ord(s[i+j]) - 97
+				x = x * 26 + y
+			x = x ^ MAGIC_NUMBER
+			for i in range(3):
+				y = x % 1000
+				if y > 0: tt = chr(y) + tt
+				x = x // 1000
+			t += tt
+		return t
+
 	if op == 'login':
 		username = request.POST.get('username', '')
 		password = request.POST.get('password', '')
+		password = uglyDecrypt(password)
 
 		if username is not None and password is not None:
 			users = User.objects.filter(username=username)
@@ -35,17 +52,19 @@ def index(request):
 				yes = auth_tsinghua(request, username, password)
 				if yes:
 					# 不存在就新建
+					print("new!!")
 					if not existed:
-						password = Utils.hash_md5(username)
+						password = username
 						user = User.objects.create_user(username=username, password=password)
 						suser = SUser.objects.create(uid=user.id, username=username)
 					# 登录
+					password = username
 					user = auth.authenticate(username=username, password=password)
 					auth.login(request, user)
 					jdata['result'] = '成功'
 				else:
 					jdata['result'] = '密码错误'
-			
+
 			# 非清华账号
 			else:
 				if existed:
@@ -60,31 +79,12 @@ def index(request):
 
 		return HttpResponse(json.dumps(jdata))
 
-		'''users = User.objects.filter(username=username)
-		if len(users) == 0:
-			jdata['result'] = '用户名不存在'
-		else:
-			# 如果不是root进行清华验证
-			# if username != 'root':
-			#	yes = auth_tsinghua(request, username, password)
-			#	if yes:
-			#		password = xxxx
-			#	else:
-			#		password = ''
-			# 验证
-			user = auth.authenticate(username=username, password=password)
-			if user is not None:
-				auth.login(request, user)
-				suser = SUser.objects.filter(username=user.username)[0]
-				get_request_basis_identity(jdata, suser, False)
-				jdata['result'] = '成功'
-			else:
-				jdata['result'] = '密码错误'
-		return HttpResponse(json.dumps(jdata))'''
-
 	if op == 'logout':
 		auth.logout(request)
 		return HttpResponse(json.dumps(jdata))
+
+	if op == 'get_magic_number':
+		return HttpResponse(json.dumps({'magic_number': MAGIC_NUMBER}))
 
 	if op == 'apply':
 		group = random.randint(1, 0x3fffffff) * (random.randint(0, 1) * 2 - 1)
