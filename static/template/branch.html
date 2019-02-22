@@ -2,26 +2,35 @@
 	{% load static %}
     {% block context %}
     <div class = "row">
-        <div style="width: 90%;margin:0 auto;">
-            <div class="btn-group btn-group-justified" role="group" style="width: 100%; margin: 10px 0px 10px 0px;">
-            <div class="btn-group">
-            <button class="btn btn-default"  ><span class="glyphicon glyphicon-home"></span> {{ branch.name }}
-            </button>
-            </div>
+      <div style="width: 90%; margin: 0 auto;">
+            <div class="btn-toolbar" role="toolbar" style="width: 50%; margin: 10px 0px 0px 0px; float: left">
+            
             {% if is_admin %}
-              <div class="btn-group">
-                <button class="btn" style="background-color: #999999;color: #fff;" onclick="window.location.href='/handbook/b/{{ branch.id }}'">新建团支部工作手册</button>
+              <div class="btn-group" style="margin-left: 0px">
+                <button class="btn" style="background-color: #4D0B7D;color: #fff;" onclick="window.location.href='/handbook/b/{{ branch.id }}'">新建团支部工作手册</button>
               </div>
               <div class="btn-group">
-                <button class="btn" style="background-color: #CCCC99;color: #fff;" id="jiatuan" onclick="window.location.href='/jiatuan/b/{{ branch.id }}'">校甲团材料提交</button>
+                <button class="btn" style="background-color: #4D0B7D;color: #fff;" id="jiatuan" onclick="window.location.href='/jiatuan/b/{{ branch.id }}'">校甲团材料提交</button>
               </div>
               <div class="btn-group">
-                <button class="btn" style="background-color: #C1A075;color: #fff;" id="load_member()" data-toggle="modal" data-target="#myModal" onclick="load_member()">导入支部成员名单</button>
+                <button class="btn" style="background-color: #4D0B7D;color: #fff;" id="load_member()" data-toggle="modal" data-target="#myModal" onclick="load_member()">导入支部成员名单</button>
               </div>
             {% endif %}
+            
+            </div>
+            <div style="float: right;">
+                <h5 >
+                  <p style="color: black; "><span class="glyphicon glyphicon-home" style="margin-right: 1px"></span> {{ branch.name }} </p>
+                </h5>
+                
             </div>
         </div>
+    </div>
+    <div class="row">
+      <div style="width: 90%; margin: 0 auto;">
+        <hr style="border-color: #4D0B7D; margin: 0px 0px 20px 0px; border-width: 2px">
       </div>
+    </div>
     <script src="{% static "js/branch.js" %}"> </script>
     <div class = "row">
         <div style="height: 400px;width: 90%;margin:0 auto;">
@@ -29,7 +38,9 @@
                 <table style="table-layout:fixed;width: 90%;margin-left: 5%;margin-right:90%;">
                     <thead>
                         <tr>
-                            <th align="center"><h3>近期新闻</h3><hr></th>
+                            <th align="center"><h5 style="background: #4D0B7D; width: 50%"><p style="color: white; padding: 6px">近期新闻</p></h5>
+                            <hr style="border-color: #9750CA">
+                            </th>
                         </tr>
                     </thead>
                     <tbody style="display:block; height:280px">
@@ -43,9 +54,9 @@
                     <tfoot>
                         <tr>
                           {% if is_admin %}
-                          <td style="float:left"> <button class="btn" style="padding:2px 10px 2px 10px;background-color: #CCCC99;color: #fff;" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()">发布新闻</button></td>
+                          <td style="float:left"> <button class="btn" style="padding:2px 10px 2px 10px;color: #4D0B7D;" id="release_news" data-toggle="modal" data-target="#myModal" onclick="release_n()"><span class="glyphicon glyphicon-plus"></span></button></td>
                           {% endif %}
-                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}/'><button class="btn" style="padding:2px 10px 2px 10px;background-color: #C1A075;color: #fff;"> 显示更多</button> </a> </td>
+                          <td style="float:right"> <a href='/news_list/b/{{ branch.id }}/'><button class="btn" style="padding:2px 10px 2px 10px;background-color: #4D0B7D; color: #fff;"> 显示更多</button> </a> </td>
                         </tr>
                     </tfoot>
 
@@ -96,9 +107,8 @@
             </div>
     </div>
 
-
         
-        <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
+    <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
 
 
     {% endblock context %}
