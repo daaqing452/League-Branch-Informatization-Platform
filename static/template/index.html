@@ -132,9 +132,12 @@
                   <hr style="border-color:  #4D0B7D; ">
                   <table style="table-layout:fixed; width: 90%;margin-right:90%;">
                     <tbody style="display:block;height:280px">  
+                      {% for ahelp in ahelps %}
                       <tr>
-                        <td>need content</td>
+                        <td><a href="/announcement_tip/{{ ahelp.id }}/">{{ ahelp.title }}</a></td>
+                        <td>{{ ahelp.release_time | date:"y-m-d" }}</td>
                       </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -146,9 +149,12 @@
                   <hr style="border-color:  #4D0B7D; ">
                   <table style="table-layout:fixed; width: 90%;margin-right:90%;">
                     <tbody style="display:block;height:280px">  
+                      {% for chelp in chelps %}
                       <tr>
-                        <td>need content</td>
+                        <td><a href="/case_study_tip/{{ chelp.id }}/">{{ chelp.title }}</a></td>
+                        <td>{{ chelp.release_time | date:"y-m-d" }}</td>
                       </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -160,9 +166,12 @@
                   <hr style="border-color:  #4D0B7D; ">
                   <table style="table-layout:fixed; width: 90%;margin-right:90%;">
                     <tbody style="display:block;height:280px">  
+                      {% for help in helps %}
                       <tr>
-                        <td>need content</td>
+                        <td><a href="/authority_files_tip/{{ help.id }}/">{{ help.title }}</a></td>
+                        <td>{{ help.release_time | date:"y-m-d" }}</td>
                       </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>

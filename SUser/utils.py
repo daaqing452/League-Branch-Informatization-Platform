@@ -2,7 +2,7 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
 from SUser.models import *
-from Message.models import Message
+from Message.models import *
 import json
 import time
 
@@ -63,6 +63,11 @@ def get_request_basis(request):
 	rdata['unread_messages_length'] = len(messages)
 
 	rdata['years'] = json.loads(School.objects.all()[0].years)
+
+	# 通知公告、优秀支部案例、规范文件
+	rdata['helps'] = reversed(Help.objects.filter(released=True))
+	rdata['chelps'] = reversed(CHelp.objects.filter(released=True))
+	rdata['ahelps'] = reversed(AHelp.objects.filter(released=True))
 
 	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
