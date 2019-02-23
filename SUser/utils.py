@@ -6,6 +6,8 @@ from Message.models import *
 import json
 import time
 
+MAX_ITEM_ON_HELP = 6
+
 def get_request_basis_identity(rdata, suser, unserial=True):
 	# 个人归属
 	rdata['self_department'] = None
@@ -65,9 +67,15 @@ def get_request_basis(request):
 	rdata['years'] = json.loads(School.objects.all()[0].years)
 
 	# 通知公告、优秀支部案例、规范文件
-	rdata['helps'] = reversed(Help.objects.filter(released=True))
-	rdata['chelps'] = reversed(CHelp.objects.filter(released=True))
-	rdata['ahelps'] = reversed(AHelp.objects.filter(released=True))
+	helps = list(reversed(Help.objects.filter(released=True)))
+	helps = helps[:min(len(helps), MAX_ITEM_ON_HELP)]
+	rdata['helps'] = helps
+	chelps = list(reversed(CHelp.objects.filter(released=True)))
+	chelps = chelps[:min(len(chelps), MAX_ITEM_ON_HELP)]
+	rdata['chelps'] = chelps
+	ahelps = list(reversed(AHelp.objects.filter(released=True)))
+	ahelps = ahelps[:min(len(ahelps), MAX_ITEM_ON_HELP)]
+	rdata['ahelps'] = ahelps
 
 	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
