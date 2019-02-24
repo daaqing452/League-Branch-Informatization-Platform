@@ -120,3 +120,15 @@
     
     <input type='hidden' id='csrf_token' value='{{ csrf_token }}'>
     {% endblock context %}
+
+
+    {% block footer %}
+        <script type="text/javascript">
+          $("#dashboard").show()
+        </script>
+
+        <footer style="position: fixed; bottom: 0; width: 100%; background: linear-gradient(to right, #4C0E9C, #F4C8B3); height: 50px; text-align: center;">
+        <p style="color: white; margin-top:10px">清华大学团支部信息管理平台 </br>
+        Copyright&copy2018 tuanzhibu.student.tsinghua.edu.cn, All Rights Reserved</p>
+        </footer>
+    {% endblock footer %}
