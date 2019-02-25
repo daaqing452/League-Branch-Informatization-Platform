@@ -142,15 +142,19 @@
                 <div style="width: 90%;margin:0 auto;">
                     <div style="width: 30%;height: 400px;float:left;margin-right: 5%">
                       <h4 style="margin-left: 2%; color: #4D0B7D;">
-                        <span class="glyphicon glyphicon-bullhorn" style="margin-right: 2%; "></span> 通知公告
-                        <a href='/announcement/' style="color: #4D0B7D; margin-left: 55%"> More </a>
+                        <table>
+                          <tr>
+                            <td style="width: 100%;">  <span class="glyphicon glyphicon-bullhorn" style="margin-right: 2%; "></span> 通知公告 </td>
+                            <td style="width: 100%; float: right;"> <a href='/announcement/' style="color: #4D0B7D; margin-left: 55%"> More </a> </td>
+                          </tr>
+                        </table>
                       </h4>
                       <hr style="border-color:  #4D0B7D; ">
                       <table style="table-layout:fixed; width: 100%;">
                         <tbody style="display:block;height:280px">  
                           {% for ahelp in ahelps %}
-                          <tr>
-                            <td style="width: 100%"><a href="/announcement_tip/{{ ahelp.id }}/">{{ ahelp.title }}</a></td>
+                          <tr style="display:table; table-layout:fixed; width: 100%">
+                            <td style="width: 100%;text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><a href="/announcement_tip/{{ ahelp.id }}/">{{ ahelp.title }}</a></td>
                             <td style="width: 100%; text-align: right; white-space: nowrap;">{{ ahelp.release_time | date:"y-m-d" }}</td>
                           </tr>
                           {% endfor %}
@@ -159,15 +163,19 @@
                     </div>
                     <div style="width: 30%;height: 400px;float:left;margin-right: 5%;">
                       <h4 style="margin-left: 2%; color: #4D0B7D;">
-                        <span class="glyphicon glyphicon-list-alt" style="margin-right: 2%; "></span> 优秀支部案例
-                        <a href='/case_study/' style="color: #4D0B7D; margin-left: 45%"> More </a>
+                        <table>
+                          <tr>
+                            <td style="width: 100%;"> <span class="glyphicon glyphicon-list-alt" style="margin-right: 2%; "></span> 优秀支部案例 </td>
+                            <td style="width: 100%; float: right;"> <a href='/case_study/' style="color: #4D0B7D;"> More </a> </td>
+                          </tr>
+                        </table>
                       </h4>
                       <hr style="border-color:  #4D0B7D; ">
                       <table style="table-layout:fixed; width: 100%;">
                         <tbody style="display:block;height:280px">  
                           {% for chelp in chelps %}
-                          <tr>
-                            <td style="width: 100%"><a href="/case_study_tip/{{ chelp.id }}/">{{ chelp.title }}</a></td>
+                          <tr style="display:table; table-layout:fixed; width: 100%">
+                            <td style="width: 100%;text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><a href="/case_study_tip/{{ chelp.id }}/">{{ chelp.title }}</a></td>
                             <td style="width: 100%; text-align: right; white-space: nowrap;">{{ chelp.release_time | date:"y-m-d" }}</td>
                           </tr>
                           {% endfor %}
@@ -176,15 +184,19 @@
                     </div>
                     <div style="width: 30%;height: 400px;float:left;">
                       <h4 style="margin-left: 2%; color: #4D0B7D;">
-                        <span class="glyphicon glyphicon-list" style="margin-right: 2%; "></span> 规范文件
-                        <a href='/authority_files/' style="color: #4D0B7D; margin-left: 55%"> More </a>
+                        <table>
+                          <tr>
+                            <td style="width: 100%;">  <span class="glyphicon glyphicon-list" style="margin-right: 2%; "></span> 规范文件 </td>
+                            <td style="width: 100%; float: right;"> <a href='/authority_files/' style="color: #4D0B7D; margin-left: 55%"> More </a> </td>
+                          </tr>
+                        </table>
                       </h4>
                       <hr style="border-color:  #4D0B7D; ">
                       <table style="table-layout:fixed; width: 100%;">
                         <tbody style="display:block;height:280px">  
                           {% for help in helps %}
-                          <tr>
-                            <td style="width: 100%"><a href="/authority_files_tip/{{ help.id }}/">{{ help.title }}</a></td>
+                          <tr style="display:table;table-layout:fixed; width: 100%">
+                            <td style="width: 100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><a href="/authority_files_tip/{{ help.id }}/">{{ help.title }}</a></td>
                             <td style="width: 100%; text-align: right; white-space: nowrap;">{{ help.release_time | date:"y-m-d" }}</td>
                           </tr>
                           {% endfor %}
