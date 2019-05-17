@@ -60,7 +60,7 @@ class JiatuanMaterial(models.Model):
 	attachment = models.TextField(default='[]')
 
 class Help(models.Model):
-	#authourity_files
+	# authourity_files
 	title = models.CharField(max_length=128, default='')
 	content = models.TextField(default='')
 	attachment = models.TextField(default='[]')
@@ -70,7 +70,7 @@ class Help(models.Model):
 	release_time = models.DateTimeField(default='1970-01-01 00:00:00.000000')
 
 class AHelp(models.Model):
-	#announcement
+	# announcement
 	title = models.CharField(max_length=128, default='')
 	content = models.TextField(default='')
 	attachment = models.TextField(default='[]')
@@ -80,7 +80,7 @@ class AHelp(models.Model):
 	release_time = models.DateTimeField(default='1970-01-01 00:00:00.000000')
 
 class CHelp(models.Model):
-	#case_study
+	# case_study
 	title = models.CharField(max_length=128, default='')
 	content = models.TextField(default='')
 	attachment = models.TextField(default='[]')

@@ -52,7 +52,9 @@ function jiatuan() {
 	//$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='submit_minge()'>分配名额</button></div>");
 	jiatuan_year_onchange();
 	$("#myModelYes").text("分配名额");
+	$(".modal-footer").append("<button class='btn btn-success'>批准</button>")
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit(10)");
+	$(".modal-footer").children("button").eq(2).attr("onclick","jiatuan_approve()");
 }
 
 function submit_apportion() {
@@ -117,7 +119,9 @@ function jiatuan_year_onchange() {
 						var jiatuans = department['jiatuans'];
 						for (var j = 0; j < jiatuans.length; j++) {
 							var jiatuan = jiatuans[j];
-							s += "<div style=\"font-size:10px\">" + jiatuan["name"] + " ";
+							s += "<div style=\"font-size:10px\">";
+							s += "<input type='checkbox' bid='" + jiatuan["bid"] + "'/>&nbsp;"
+							s += jiatuan["name"] + " ";
 							s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
 							if (jiatuan.hasOwnProperty("handbook")) {
 								s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
@@ -151,4 +155,13 @@ function load_admin() {
 		导入模板<a href='/static/file/department_admin.csv'>下载</a> \
 	");
 	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
+}
+
+function jiatuan_approve() {
+	var approve_jiatuans = new Array();
+	$("input:checked").each(function() {
+		var input = $(this);
+		approve_jiatuans.push(input.attr("bid"));
+	});
+	console.log(approve_jiatuans);
 }

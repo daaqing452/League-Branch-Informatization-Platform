@@ -143,6 +143,7 @@ def index(request):
 			jiatuan_branchs = json.loads(assignments[0].branchs)
 			if not str(branch.id) in jiatuan_branchs: continue
 			d = {}
+			d['bid'] = branch.id
 			d['name'] = branch.name
 			d['material'] = '/jiatuan/' + str(material.id) + '/'
 			handbooks = Handbook.objects.filter(htype='b', year=year, submit_id=branch.id)
@@ -316,7 +317,7 @@ def department(request, did):
 			branch = Branch.objects.get(id=jiatuan)
 			branch_admin = json.loads(branch.admin)
 			for everyone in branch_admin:
-				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团评选结果', text='恭喜'+branch.name+'团支部获得'+str(year)+'年甲级团支部称号！请向院系提交甲团材料。')
+				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团评选结果', text=branch.name+'支部已入选'+str(year)+'年校甲级团支部候选支部，请向院系提交甲团材料。')
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'submit_jiatuan_material':

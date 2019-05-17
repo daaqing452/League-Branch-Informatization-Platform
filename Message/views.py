@@ -386,7 +386,7 @@ def jiatuan_edit(request, bid):
 		department = Department.objects.get(id=branch.did)
 		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
 		if len(assignments) == 0:
-			jdata['info'] = '院系尚未制定甲团'
+			jdata['info'] = '院系尚未指定甲团'
 			return HttpResponse(json.dumps(jdata))
 		branchs = json.loads(assignments[0].branchs)
 		if not str(branch.id) in branchs:
