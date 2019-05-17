@@ -114,24 +114,22 @@ function jiatuan_year_onchange() {
 				if (department['minge'] > 0) minge = department['minge'];
 				s += "<input style='width:20px' type='text' id='minge-" + i + "' did=" + department['did'] + " value='" + minge + "' department_name='" + department["name"] + "'/>";
 				s += department["name"] + "<br/>";
-				if (department["submitted"]) {
-					if (department.hasOwnProperty("jiatuans")) {
-						var jiatuans = department['jiatuans'];
-						for (var j = 0; j < jiatuans.length; j++) {
-							var jiatuan = jiatuans[j];
-							s += "<div style=\"font-size:10px\">";
-							s += "<input type='checkbox' bid='" + jiatuan["bid"] + "' branch_name='" + jiatuan["name"] + "' ";
-							if (jiatuan["approved"]) s += "checked='checked' disabled='disabled'";
-							s += "/>&nbsp;"
-							s += jiatuan["name"] + " ";
-							s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
-							if (jiatuan.hasOwnProperty("handbook")) {
-								s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
-							} else {
-								s += "工作手册";
-							}
-							s += "</div>";
+				if (department.hasOwnProperty("jiatuans")) {
+					var jiatuans = department['jiatuans'];
+					for (var j = 0; j < jiatuans.length; j++) {
+						var jiatuan = jiatuans[j];
+						s += "<div style=\"font-size:10px\">";
+						s += "<input type='checkbox' bid='" + jiatuan["bid"] + "' branch_name='" + jiatuan["name"] + "' ";
+						if (jiatuan["approved"]) s += "checked='checked' disabled='disabled'";
+						s += "/> ";
+						s += jiatuan["name"] + " ";
+						s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
+						if (jiatuan.hasOwnProperty("handbook")) {
+							s += "<a href=\"" + jiatuan['handbook'] + "\">手册</a>" 
+						} else {
+							s += "手册";
 						}
+						s += "</div>";
 					}
 				}
 				div.append(s);

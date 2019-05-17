@@ -42,35 +42,22 @@ function review_year_onchange() {
 }
 
 function jiatuan() {
-	$(".modal-dialog").width(800);
+	$(".modal-dialog").width(600);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("确定校甲团支部");
 	var s = "<select id=\"year\" class=\"form-control\" onchange=\"jiatuan_year_onchange()\">";
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
 	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4>");
-	$("#myModal_body").append("<span id='submitted_branch'></span><br/><br/>");
+	$("#myModal_body").append("<span id='submitted_branch'></span><br/>");
+	$("#myModal_body").append("<span id='delivered_branch'></span><br/>");
+	$("#myModal_body").append("<span id='approved_branch'></span><br/><br/>");
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
 	$(".modal-footer").empty();
 	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
 	$(".modal-footer").append("<button class='btn btn-primary' id='inform' onclick='jiatuan_inform()'>通知甲团</button>");
 	$(".modal-footer").append("<button class='btn btn-success' onclick='commit(11)'>向校级提交</button>");
 	jiatuan_year_onchange();
-
-	/*$("#myModal_body").append("<hr/>");
-	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
-	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
-	$("#myModelYes").text("提交");
-	editor = KindEditor.create('textarea[name="sg_text"]', {
-        resizeType : 1,
-        allowPreviewEmoticons : false,
-        allowImageRemote : false,
-        useContextmenu : false,
-        uploadJson : '/uploadFile/',
-        width : '100%',
-        items : [
-            'insertfile']
-    });*/
 }
 
 var max_minge = 0;
@@ -103,27 +90,48 @@ function jiatuan_year_onchange() {
 			}
 			$('span#minge').text(data["minge"]);
 			max_minge = parseInt(data["minge"]);
-			$('span#submitted_branch').text("已提交支部：");
-			var submitted_branch_num = 0;
+
+			if (data['assigned']) {
+				$('span#submitted_branch').text("已提交材料的支部：");
+				$('span#delivered_branch').text("已送至校级的支部：");
+				$('span#approved_branch').text('已批准通过的支部：');
+			}
 
 			var branchs = data["branchs"];
 			div.append("<table id='minge' length='" + branchs.length + "'><tr>");
 			for (var i = 0; i < branchs.length; i++) {
 				var branch = branchs[i];
-				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' onclick='branch_checkbox_onclick()' branch_name='" + branch["name"] + "' ";
+				var s = "<td width='120'>";
+				// 已分配甲团，选择向校级提交材料
 				if (data['assigned']) {
-					if (assigned_branchs.indexOf(''+branch["bid"]) != -1) s += "checked='checked' ";
+					// 甲团
+					if (assigned_branchs.indexOf(''+branch["bid"]) != -1) {
+						s += "<input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' branch_name='" + branch["name"] + "' ";
+						// 已提交材料
+						// if (branch.hasOwnProperty("material")) {
+						if (branch["submitted"]) {
+							if (branch['delivered']) {
+								$('span#delivered_branch').append(branch["name"] + ", ");
+								s += "disabled='disabled' checked='checked'";
+							}
+							if (branch['approved']) {
+								$('span#approved_branch').append(branch["name"] + ", ");
+							}
+							s += "/> <a href='" + branch["material"] + "'>" + branch["name"] + "</a>";
+							$('span#submitted_branch').append(branch["name"] + ", ");
+						// 未提交
+						} else {
+							s += "disabled='disabled' />" + branch["name"];
+						}
+					// 非甲团
+					} else {
+						s += "<span style='text-decoration:line-through'>" + branch["name"] + "</span>";
+					}
+				// 未分配甲团，选择甲团
 				} else {
-					s += "disabled=true ";
+					s += "<input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' onclick='branch_checkbox_onclick()' branch_name='" + branch["name"] + "' /> " + branch["name"];
 				}
-				s += "/> ";
-				if (branch.hasOwnProperty("material")) {
-					s += "<a href='" + branch["material"] + "'>" + branch["name"] + "</a></td>";
-					$('span#submitted_branch').append(branch["name"] + ", ");
-					submitted_branch_num += 1;
-				} else {
-					s += branch["name"] + "</td>";
-				}
+				s += "</td>"
 				div.append(s);
 				if ((i + 1) % 5 == 0) {
 					div.append("</tr><tr>");
@@ -137,7 +145,6 @@ function jiatuan_year_onchange() {
 					$('#myModelYes').attr('disabled', 'disabled');
 				}*/
 			}
-			if (submitted_branch_num == 0) $('span#submitted_branch').empty();
 			div.append("</tr></table>");
 		}
 	});
@@ -178,18 +185,27 @@ function jiatuan_inform() {
 				} else {
 					alert(data["info"]);
 				}
+				$("#myModal").modal('hide');
 			}
 		});
 	}
 }
 
-function submit_jiatuan_to_school() {
+function deliver_jiatuan() {
 	var year = $("#year").val();
-	if (confirm("确认向校级提交？")) {
+	var deliver_jiatuans = new Array();
+	var info = "确认向校级提交\n";
+	$("input:checked[disabled!='disabled']").each(function() {
+		var input = $(this);
+		deliver_jiatuans.push(input.attr("bid"));
+		info += input.attr("branch_name") + "\n";
+	});
+	info += "支部的材料吗？";
+	if (confirm(info)) {
 		$.ajax({
 			url: window.location.href,
 			type: "POST",
-			data: {"op": "submit_jiatuan_to_school", "year": year},
+			data: {"op": "deliver", "year": year, "jiatuans": JSON.stringify(deliver_jiatuans)},
 			success: function(data) {
 				var data = JSON.parse(data);
 				if (data["info"] = "yes") {
@@ -197,6 +213,7 @@ function submit_jiatuan_to_school() {
 				} else {
 					alert(data["info"]);
 				}
+				$("#myModal").modal('hide');
 			}
 		});
 	}

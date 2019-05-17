@@ -130,7 +130,7 @@ def index(request):
 			minge = {}
 
 		jiatuan_dict = {}
-		for material in JiatuanMaterial.objects.filter(year=year):
+		for material in JiatuanMaterial.objects.filter(year=year, submitted=True, delivered=True):
 			branchs = Branch.objects.filter(id=material.submit_id)
 			if len(branchs) == 0: continue
 			branch = branchs[0]
@@ -162,8 +162,8 @@ def index(request):
 				d['minge'] = minge[str(department.id)]
 			else:
 				d['minge'] = 0
-			assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
-			d['submitted'] = (len(assignments) > 0 and assignments[0].submitted)
+			# assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+			# d['submitted'] = (len(assignments) > 0 and assignments[0].submitted)
 			departments.append(d)
 		jdata['departments'] = departments
 		return HttpResponse(json.dumps(jdata))
@@ -192,8 +192,7 @@ def index(request):
 	if op == 'approve':
 		year = request.POST.get('year')
 		jiatuans = json.loads(request.POST.get('jiatuans'))
-		materials = JiatuanMaterial.objects.filter(year=year, submitted=True)
-		for material in materials:
+		for material in JiatuanMaterial.objects.filter(year=year, submitted=True, delivered=True):
 			if material.approved: continue
 			branchs = Branch.objects.filter(id=material.submit_id)
 			if len(branchs) == 0: continue
@@ -206,6 +205,9 @@ def index(request):
 				for everyone in branch_admin:
 					message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, group=group, mtype=1, send_time=datetime.datetime.now(), title='甲团批准', text='恭喜' + branch.name + '支部获得' + year + '年校甲级团支部称号！')
 			else:
+				material.submitted = False
+				material.delivered = False
+				material.save()
 				for everyone in branch_admin:
 					message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, group=group, mtype=1, send_time=datetime.datetime.now(), title='甲团未批准', text='甲团材料未通过审核，请修改。')
 		return HttpResponse(json.dumps(jdata))
@@ -299,14 +301,19 @@ def department(request, did):
 			if len(materials) > 0:
 				# attachment = json.loads(materials[0].attachment)
 				# if len(attachment) > 0: d['material'] = attachment[0][1]
+				material = materials[0]
 				d['material'] = '/jiatuan/' + str(materials[0].id) + '/'
+				d['submitted'] = material.submitted
+				d['delivered'] = material.delivered
+				d['approved'] = material.approved
+			else:
+				d['submitted'] = False
 			branchs.append(d)
 		jdata['branchs'] = branchs
 		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
 		if len(assignments) > 0:
 			jdata['assigned'] = True
 			jdata['assigned_branchs'] = assignments[0].branchs
-			jdata['submitted'] = assignments[0].submitted
 		else:
 			jdata['assigned'] = False
 		return HttpResponse(json.dumps(jdata))
@@ -343,25 +350,25 @@ def department(request, did):
 				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团评选结果', text=branch.name+'支部已入选'+str(year)+'年校甲级团支部候选支部，请向院系提交甲团材料。')
 		return HttpResponse(json.dumps(jdata))
 
-	if op == 'submit_jiatuan_material':
-		year = request.POST.get('year')
-		title = request.POST.get('title')
-		text = request.POST.get('text')
-		attachment = request.POST.get('attachment')
-		materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
-		if len(materials) > 0: materials[0].delete();
-		material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
-		return HttpResponse(json.dumps(jdata))
+	# if op == 'submit_jiatuan_material':
+	# 	year = request.POST.get('year')
+	# 	title = request.POST.get('title')
+	# 	text = request.POST.get('text')
+	# 	attachment = request.POST.get('attachment')
+	# 	materials = JiatuanMaterial.objects.filter(htype='d', review_id=0, submit_id=department.id, year=year)
+	# 	if len(materials) > 0: materials[0].delete();
+	# 	material = JiatuanMaterial.objects.create(htype='d', review_id=0, submit_id=department.id, year=year, attachment=attachment)
+	# 	return HttpResponse(json.dumps(jdata))
 
-	if op == 'submit_jiatuan_to_school':
+	if op == 'deliver':
+		# assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
+		# if len(assignments) == 0:
+		# 	jdata["info"] = "尚未分配名额"
+		# 	return HttpResponse(json.dumps(jdata))
 		year = request.POST.get('year')
-		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)
-		if len(assignments) == 0:
-			jdata["info"] = "尚未分配名额"
-			return HttpResponse(json.dumps(jdata))
-		assignment = assignments[0]
-		assignment.submitted = True
-		assignment.save()
+		jiatuans = json.loads(request.POST.get('jiatuans'))
+		for bid in jiatuans:
+			JiatuanMaterial.objects.filter(year=year, submit_id=bid).update(delivered=True)
 		jdata["info"] = "yes"
 		return HttpResponse(json.dumps(jdata))
 

@@ -255,7 +255,7 @@ function commit(flag, param){
 		}
 		// 甲团-院系
 		case 11:{
-			submit_jiatuan_to_school();
+			deliver_jiatuan();
 			break;
 		}
 		// 甲团-班级

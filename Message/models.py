@@ -50,14 +50,14 @@ class JiatuanAssignment(models.Model):
 	year = models.IntegerField(default=0)
 	did = models.IntegerField(default=0)
 	branchs = models.TextField(default='[]')
-	submitted = models.BooleanField(default=False)
 
 class JiatuanMaterial(models.Model):
 	submit_id = models.IntegerField(default=0)
 	year = models.IntegerField(default=0)
 	content = models.TextField(default='')
-	submitted = models.BooleanField(default=False)
 	attachment = models.TextField(default='[]')
+	submitted = models.BooleanField(default=False)
+	delivered = models.BooleanField(default=False)
 	approved = models.BooleanField(default=False)
 
 class Help(models.Model):
