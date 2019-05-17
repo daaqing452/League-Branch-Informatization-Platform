@@ -58,6 +58,7 @@ class JiatuanMaterial(models.Model):
 	content = models.TextField(default='')
 	submitted = models.BooleanField(default=False)
 	attachment = models.TextField(default='[]')
+	approved = models.BooleanField(default=False)
 
 class Help(models.Model):
 	# authourity_files

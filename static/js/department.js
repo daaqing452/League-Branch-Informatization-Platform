@@ -14,7 +14,8 @@ function review_b(){
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
 	$('#myModal_body').append("<div id=\"handbook_url\"></div>");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(7)");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
 	review_year_onchange();
 }
 
@@ -50,9 +51,12 @@ function jiatuan() {
 	$("#myModal_body").append("<h4>甲团名额：<span id='minge'></span><h4>");
 	$("#myModal_body").append("<span id='submitted_branch'></span><br/><br/>");
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
-	$("#myModal_body").append("<div align='left'><button class='btn btn-primary' id='inform' onclick='jiatuan_inform()'>通知甲团</button></div>");
-	$('#myModelYes').text("向校级提交");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
+	$(".modal-footer").append("<button class='btn btn-primary' id='inform' onclick='jiatuan_inform()'>通知甲团</button>");
+	$(".modal-footer").append("<button class='btn btn-success' onclick='commit(11)'>向校级提交</button>");
 	jiatuan_year_onchange();
+
 	/*$("#myModal_body").append("<hr/>");
 	$("#myModal_body").append("<input class=\"form-control\" id=\"news_title\" type=\"text\" placeholder=\"标题\"/><br/>");
 	$("#myModal_body").append("<textarea  name=\"sg_text\" id=\"news_text\"></textarea><br/>");
@@ -67,7 +71,6 @@ function jiatuan() {
         items : [
             'insertfile']
     });*/
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(11)");
 }
 
 var max_minge = 0;
@@ -109,8 +112,9 @@ function jiatuan_year_onchange() {
 				var branch = branchs[i];
 				var s = "<td width='150'><input type='checkbox' id='minge-" + i + "' bid='" + branch['bid'] + "' onclick='branch_checkbox_onclick()' branch_name='" + branch["name"] + "' ";
 				if (data['assigned']) {
-					//s += "disabled=true ";
 					if (assigned_branchs.indexOf(''+branch["bid"]) != -1) s += "checked='checked' ";
+				} else {
+					s += "disabled=true ";
 				}
 				s += "/> ";
 				if (branch.hasOwnProperty("material")) {
@@ -126,11 +130,12 @@ function jiatuan_year_onchange() {
 				}
 			}
 			if (data['assigned']) {
-				//$('button#inform').attr("disabled", "disabled");
-				if (data['submitted']) {
+				$('button#inform').text("已通知");
+				$('button#inform').attr("disabled", "disabled");
+				/*if (data['submitted']) {
 					$('#myModelYes').text("已向校级提交");
 					$('#myModelYes').attr('disabled', 'disabled');
-				}
+				}*/
 			}
 			if (submitted_branch_num == 0) $('span#submitted_branch').empty();
 			div.append("</tr></table>");

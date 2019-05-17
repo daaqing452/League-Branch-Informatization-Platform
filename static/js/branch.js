@@ -6,7 +6,7 @@ $(document).ready(function(){
    })
 });
 
-function jiatuan() {
+/*function jiatuan() {
 	$(".modal-dialog").width(800);
 	$("#myModal_body").empty();
 	$("#myModalLabel").text("甲团");
@@ -30,7 +30,7 @@ function jiatuan() {
 }
 
 function jiatuan_year_onchange() {
-}
+}*/
 
 function load_member() {
 	$("#myModal_body").empty();
@@ -45,5 +45,6 @@ function load_member() {
 		<br/> \
 		导入模板<a href='/static/file/branch_member.csv'>下载</a> \
 	");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
 }

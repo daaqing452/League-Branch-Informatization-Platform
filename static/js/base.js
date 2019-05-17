@@ -68,6 +68,10 @@ function uglyEncrypt(s) {
 function commit(flag, param){
 	switch(flag){
 		//登录
+		case 0:{
+			$("#myModal").modal('hide');
+			break;
+		}
 		case 1:{
 			var username = $("#username").val();
 			var password = $("#password").val();

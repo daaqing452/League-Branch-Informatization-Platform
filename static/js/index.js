@@ -16,7 +16,8 @@ function review_d(){
 	for (var i = 0; i < years.length; i++) s += "<option>" + years[i] + "</option>";
 	$("#myModal_body").append(s + "</select><br/>");
 	$('#myModal_body').append("<div id=\"handbook_url\"></div>");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(7)");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
 	review_year_onchange();
 }
 
@@ -49,12 +50,11 @@ function jiatuan() {
 	$("#myModal_body").append("设置截止时间：<input id='deadline' type='text' style='width:85%' />");
 	$("#myModal_body").append("<hr/>")
 	$("#myModal_body").append("<div id='minge_div'></div><br/>");
-	//$("#myModal_body").append("<div align='left'><button class='btn btn-primary' onclick='submit_minge()'>分配名额</button></div>");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
+	$(".modal-footer").append("<button class='btn btn-primary' onclick='commit(10)'>分配名额</button>")
+	$(".modal-footer").append("<button class='btn btn-success' onclick='jiatuan_approve()'>批准</button>");
 	jiatuan_year_onchange();
-	$("#myModelYes").text("分配名额");
-	$(".modal-footer").append("<button class='btn btn-success'>批准</button>")
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit(10)");
-	$(".modal-footer").children("button").eq(2).attr("onclick","jiatuan_approve()");
 }
 
 function submit_apportion() {
@@ -120,7 +120,9 @@ function jiatuan_year_onchange() {
 						for (var j = 0; j < jiatuans.length; j++) {
 							var jiatuan = jiatuans[j];
 							s += "<div style=\"font-size:10px\">";
-							s += "<input type='checkbox' bid='" + jiatuan["bid"] + "'/>&nbsp;"
+							s += "<input type='checkbox' bid='" + jiatuan["bid"] + "' branch_name='" + jiatuan["name"] + "' ";
+							if (jiatuan["approved"]) s += "checked='checked' disabled='disabled'";
+							s += "/>&nbsp;"
 							s += jiatuan["name"] + " ";
 							s += "<a href=\"" + jiatuan['material'] + "\">材料</a> ";
 							if (jiatuan.hasOwnProperty("handbook")) {
@@ -154,14 +156,29 @@ function load_admin() {
 		<br/> \
 		导入模板<a href='/static/file/department_admin.csv'>下载</a> \
 	");
-	$(".modal-footer").children("button").eq(1).attr("onclick","commit()");
+	$(".modal-footer").empty();
+	$(".modal-footer").append("<button class='btn btn-default' onclick='commit(0)'>取消</button>");
 }
 
 function jiatuan_approve() {
+	var year = $("#year").val();
 	var approve_jiatuans = new Array();
-	$("input:checked").each(function() {
+	var info = "确认批准支部\n";
+	$("input:checked[disabled!='disabled']").each(function() {
 		var input = $(this);
 		approve_jiatuans.push(input.attr("bid"));
+		info += input.attr("branch_name") + "\n";
 	});
-	console.log(approve_jiatuans);
+	info += "为甲级团支部吗？";
+	if (confirm(info)) {
+		$.ajax({
+			url: window.location.href,
+			type: "POST",
+			data: {"op" : "approve", "year": year, "jiatuans": JSON.stringify(approve_jiatuans)},
+			success: function(data) {
+				alert("操作成功");
+				$("#myModal").modal('hide');
+			}
+		});
+	}
 }

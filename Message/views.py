@@ -407,7 +407,7 @@ def jiatuan_edit(request, bid):
 		year = int(request.POST.get('year'))
 		jiatuans = JiatuanMaterial.objects.filter(year=year, submit_id=branch.id)
 		if len(jiatuans) == 0:
-			jiatuan = JiatuanMaterial.objects.create(year=year, submit_id=branch.id)
+			jiatuan = JiatuanMaterial.objects.create(year=year, submit_id=branch.id, approved=False)
 		else:
 			jiatuan = jiatuans[0]
 		jiatuan.content = content

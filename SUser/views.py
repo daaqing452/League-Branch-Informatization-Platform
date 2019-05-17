@@ -87,7 +87,6 @@ def index(request):
 		return HttpResponse(json.dumps({'magic_number': MAGIC_NUMBER}))
 
 	if op == 'apply':
-		group = random.randint(1, 0x3fffffff) * (random.randint(0, 1) * 2 - 1)
 		atype = int(request.POST.get('type'))
 		if atype == 0:
 			mtype = 2
@@ -114,6 +113,7 @@ def index(request):
 			recv_uids = json.loads(branch.admin)
 			text = suser.username + ' 申请 ' + branch.name + ' 的成员'
 			meta = {'did': department.id, 'bid': branch.id}
+		group = get_random_group()
 		for recv_uid in recv_uids:
 			message = Message.objects.create(recv_uid=recv_uid, send_uid=suser.id, group=group, mtype=mtype, send_time=datetime.datetime.now(), title='权限申请', text=text, meta=json.dumps(meta))
 		return HttpResponse(json.dumps(jdata))
@@ -146,6 +146,7 @@ def index(request):
 			d['bid'] = branch.id
 			d['name'] = branch.name
 			d['material'] = '/jiatuan/' + str(material.id) + '/'
+			d['approved'] = material.approved
 			handbooks = Handbook.objects.filter(htype='b', year=year, submit_id=branch.id)
 			if len(handbooks) > 0:
 				d['handbook'] = '/handbook/' + str(handbooks[0].id) + '/'
@@ -181,10 +182,32 @@ def index(request):
 			department = Department.objects.get(id=minge['did'])
 			department_admin = json.loads(department.admin)
 			minge_dict[department.id] = int(minge['value'])
+			group = get_random_group()
 			for everyone in department_admin:
-				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
+				message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, group=group, mtype=1, send_time=datetime.datetime.now(), title='甲团名额分配', text=str(year)+'年'+department.name+'院系甲团名额：'+str(minge['value']))
 		apportion.minge = json.dumps(minge_dict)
 		apportion.save()
+		return HttpResponse(json.dumps(jdata))
+
+	if op == 'approve':
+		year = request.POST.get('year')
+		jiatuans = json.loads(request.POST.get('jiatuans'))
+		materials = JiatuanMaterial.objects.filter(year=year, submitted=True)
+		for material in materials:
+			if material.approved: continue
+			branchs = Branch.objects.filter(id=material.submit_id)
+			if len(branchs) == 0: continue
+			branch = branchs[0]
+			branch_admin = json.loads(branch.admin)
+			group = get_random_group()
+			if str(branch.id) in jiatuans:
+				material.approved = True
+				material.save()
+				for everyone in branch_admin:
+					message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, group=group, mtype=1, send_time=datetime.datetime.now(), title='甲团批准', text='恭喜' + branch.name + '支部获得' + year + '年校甲级团支部称号！')
+			else:
+				for everyone in branch_admin:
+					message = Message.objects.create(recv_uid=everyone, send_uid=suser.id, group=group, mtype=1, send_time=datetime.datetime.now(), title='甲团未批准', text='甲团材料未通过审核，请修改。')
 		return HttpResponse(json.dumps(jdata))
 
 	# 导入院系管理员名单
@@ -293,12 +316,12 @@ def department(request, did):
 		jiatuans = json.loads(request.POST.get('jiatuans'))
 		apportions = JiatuanApportion.objects.filter(year=year)
 		if len(apportions) == 0:
-			jdata['info'] = '未分配甲团名额'
+			jdata['info'] = '校级未分配甲团名额'
 			return HttpResponse(json.dumps(jdata))
 		else:
 			minge = json.loads(apportions[0].minge)
 			if not str(department.id) in minge:
-				jdata['info'] = '未被分配甲团名额'
+				jdata['info'] = '未被分配到甲团名额'
 				return HttpResponse(json.dumps(jdata))
 			minge = int(minge[str(department.id)])
 		assignments = JiatuanAssignment.objects.filter(year=year, did=department.id)

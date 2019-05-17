@@ -93,26 +93,30 @@
                 </li>
 
                 <li style="font-size:50%">
-                    {% ifequal self_department none %}
-                        <a id="identity" href="/index/" style='color: white;'>无</a>
+                    {% if self_admin_school %}
+                        <a id="identity" href="/index/" style='color: white;'>校级管理员</a>
                     {% else %}
-                        <a id="identity" style="margin:-10px 0px 0px 0px;height:1px;" 
-                            {% if self_admin_department %}
-                                href="/department/{{ self_department.id }}/">{{ self_department.name }}管理员
-                            {% else %}
-                                href="/branch/{{ self_branch.id }}/">{{ self_department.name }}成员
-                            {% endif %}
-                        <br/>
-                            {% ifequal self_branch none %}
-                            {% else %}
-                                {% if self_admin_branch %}
-                                    {{ self_branch.name }}管理员
+                        {% ifequal self_department none %}
+                            <a id="identity" href="/index/" style='color: white;'>无</a>
+                        {% else %}
+                            <a id="identity" style="color:white;"
+                                {% if self_admin_department %}
+                                    href="/department/{{ self_department.id }}/">{{ self_department.name }} 管理员
                                 {% else %}
-                                    {{ self_branch.name }}成员
+                                    {% ifequal self_branch none %}
+                                        href="/department/{{ self_department.id }}/">{{ self_department.name }} 成员
+                                    {% else %}
+                                        href="/branch/{{ self_branch.id }}/">{{ self_branch.name }}
+                                        {% if self_admin_branch %}
+                                            管理员
+                                        {% else %}
+                                            成员
+                                        {% endif %}
+                                    {% endifequal %}
                                 {% endif %}
-                            {% endifequal %}
-                        </a>
-                    {% endifequal %}
+                            </a>
+                        {% endifequal %}
+                    {% endif %}
                 </li>
 
                 <li>

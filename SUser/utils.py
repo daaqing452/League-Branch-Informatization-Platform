@@ -4,17 +4,20 @@ from django.contrib.auth.models import User
 from SUser.models import *
 from Message.models import *
 import json
+import random
 import time
 
 MAX_ITEM_ON_HELP = 6
 
 def get_request_basis_identity(rdata, suser, unserial=True):
 	# 个人归属
+	rdata['self_admin_school'] = False
 	rdata['self_department'] = None
 	rdata['self_admin_department'] = False
 	rdata['self_branch'] = None
 	rdata['self_admin_branch'] = False
 	if suser is not None:
+		if suser.admin_school: rdata['self_admin_school'] = True
 		for department in Department.objects.all():
 			if suser.id in json.loads(department.admin):
 				rdata['self_admin_department'] = True
@@ -111,3 +114,7 @@ def permission(suser, opt, par=None):
 			return login and (suser.admin_school or ((par[0] is not None) and (par[1] is not None) and (par[0].id == par[1].id)))
 		if opt[1] == 'w':
 			return login and (suser.admin_super or (suser.id in json.loads(par.admin)))
+
+def get_random_group():
+	group = random.randint(1, 0x3fffffff) * (random.randint(0, 1) * 2 - 1)
+	return group
