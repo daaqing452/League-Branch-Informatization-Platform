@@ -49,16 +49,22 @@ def get_request_basis(request):
 		suser = SUser.objects.filter(username=request.user.username)[0]
 		rdata['suser'] = suser
 	rdata['login'] = suser is not None
+	get_request_basis_identity(rdata, suser)
 
-	# 所有院系
-	departments = Department.objects.order_by('amt_order')
-	d0 = []
-	for department in departments:
-		d1 = {}
-		d1['department'] = department
-		d1['branchs'] = [{'branch': branch} for branch in Branch.objects.filter(did=department.id).order_by('amt_order')]
-		d0.append(d1)
-	rdata['departments'] = d0
+	# 院系
+	if suser is not None:
+		if suser.admin_school:
+			departments = Department.objects.order_by('amt_order')
+		else:
+			department = rdata['self_department']
+			departments = [department] if (department is not None) else []
+		d0 = []
+		for department in departments:
+			d1 = {}
+			d1['department'] = department
+			d1['branchs'] = [{'branch': branch} for branch in Branch.objects.filter(did=department.id).order_by('amt_order')]
+			d0.append(d1)
+		rdata['departments'] = d0
 
 	# 消息
 	messages = []
@@ -80,7 +86,6 @@ def get_request_basis(request):
 	ahelps = ahelps[:min(len(ahelps), MAX_ITEM_ON_HELP)]
 	rdata['ahelps'] = ahelps
 
-	get_request_basis_identity(rdata, suser)
 	return rdata, op, suser
 
 def upload_file(raw):

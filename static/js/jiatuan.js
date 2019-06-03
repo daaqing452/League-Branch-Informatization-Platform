@@ -39,9 +39,15 @@ function year_onchange() {
 				$("div#main_content").show();
 				fill_content(data['content']);
 				if (data['submitted']) {
-					$("#button_save").attr({"disabled":"disabled"});
+					$("#button_save").hide();
+					$("#button_submit").hide();
+					//$("#button_save").attr({"disabled":"disabled"});
+					//$("#button_submit").attr({"disabled":"disabled"});
 				} else {
-					$("#button_save").removeAttr("disabled");
+					$("#button_save").show();
+					$("#button_submit").show();
+					//$("#button_save").removeAttr("disabled");
+					//$("#button_submit").removeAttr("disabled");
 				}
 			} else {
 				$("span#load_info").show();
