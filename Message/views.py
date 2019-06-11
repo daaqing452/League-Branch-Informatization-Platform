@@ -395,10 +395,11 @@ def jiatuan_edit(request, bid):
 		jdata['info'] = 'yes'
 		jiatuans = JiatuanMaterial.objects.filter(year=year, submit_id=branch.id)
 		jdata['content'] = None
-		jdata['submitted'] = False
+		jdata['submitted'] = jdata['delivered'] = False
 		if len(jiatuans) > 0:
 			jdata['content'] = jiatuans[0].content
 			jdata['submitted'] = jiatuans[0].submitted
+			jdata['delivered'] = jiatuans[0].delivered
 		return HttpResponse(json.dumps(jdata))
 
 	if op == 'submit':
