@@ -337,7 +337,7 @@ function read_only(content){
 		var table_num = div.children("table").length;
 		for(var k = 0; k < table_num; k++){
 			var TABLE_content = CHAPTER_content[k]
-			var table = div.children("table").eq(k);
+			var table = div.children("table").eq(k).children("tbody").eq(0);
 			var tr_num = table.children("tr").length;
 			var real_num = tr_num;
 			var start_num = 0;
