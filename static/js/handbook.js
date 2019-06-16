@@ -500,13 +500,14 @@ function read_only(content){
 						tr.appendTo(table);
 					}	
 				}
-
+				console.log(bianji_list);
 				for(var m = 0; m < TABLE_content.length; m++){
 					var TR_content = TABLE_content[m];
 					var textarea_num = TR_content.length;
 					var tr = table.find("tr").eq(start_num+m);
 					var keditor_flag = false;
 					var tr_class = tr.attr("class");
+					console.log(tr_class);
 					for(var it = 0; it < bianji_list.length; it++){
 						if(bianji_list[it].indexOf(tr_class) >= 0){
 							keditor_flag = true;
