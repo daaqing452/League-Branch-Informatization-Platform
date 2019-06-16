@@ -514,6 +514,7 @@ function read_only(content){
 					} 
 					if(keditor_flag){
 						var textarea_name = tr.find("textarea").eq(1).prop("name");
+						console.log(textarea_name);
 						KindEditor.html('textarea[name="'+textarea_name+'"]',TR_content[0]);
 						var editor_index = bianji_list.indexOf(textarea_name);
 						editor[editor_index].readonly(true);
